@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   GeneClarity design system
+   Colour, type and spacing tokens sampled from the supplied
+   prototype design reference. Everything else builds on these.
+   ============================================================ */
+
+:root {
+  --gc-brand-700: #14655a;
+  --gc-brand-800: #0f4f46;
+  --gc-mint-50: #f4fbf7;
+  --gc-mint-100: #eaf7f1;
+  --gc-ink-900: #12201d;
+  --gc-ink-500: #4a5a57;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--gc-mint-50);
+  color: var(--gc-ink-900);
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Arabic gets its own, better-matched typeface and a touch more line height. */
+html[lang='ar'] body {
+  font-family: 'Cairo', 'Segoe UI', Tahoma, system-ui, sans-serif;
+}
+
+html[lang='ar'] .arabic-tight {
+  letter-spacing: 0;
+  line-height: 1.75;
+}
+
+@layer components {
+  /* --- Screen shell -------------------------------------------------
+     Mimics the phone-frame presentation of the reference design while
+     staying responsive: on desktop it centres as a card, on mobile it
+     fills the viewport. */
+  .screen {
+    @apply relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-mint-50;
+  }
+
+  .screen--white {
+    @apply bg-white;
+  }
+
+  /* --- Buttons ------------------------------------------------------ */
+  .btn {
+    @apply inline-flex w-full items-center justify-center gap-2 rounded-control px-5 text-[15px] font-bold
+           transition-all duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300
+           disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  .btn--primary {
+    @apply bg-brand-700 text-white shadow-button hover:bg-brand-800 active:translate-y-px;
+  }
+
+  .btn--secondary {
+    @apply border border-brand-200 bg-white text-brand-700 hover:border-brand-300 hover:bg-mint-50;
+  }
+
+  .btn--ghost {
+    @apply bg-transparent text-brand-700 hover:bg-brand-100;
+  }
+
+  .btn--soft {
+    @apply bg-brand-100 text-brand-800 hover:bg-brand-200;
+  }
+
+  .btn--danger {
+    @apply bg-danger-500 text-white hover:bg-danger-600;
+  }
+
+  .btn--sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn--lg {
+    @apply px-6 py-4 text-base;
+  }
+
+  /* --- Cards -------------------------------------------------------- */
+  .card {
+    @apply rounded-card border border-mint-200 bg-white p-4 shadow-card;
+  }
+
+  .card--mint {
+    @apply border-brand-200 bg-mint-100;
+  }
+
+  /* --- Form controls ------------------------------------------------ */
+  .field {
+    @apply w-full rounded-control border border-ink-100 bg-white px-4 py-3.5 text-[15px] text-ink-900
+           placeholder:text-ink-300 transition-colors duration-150
+           focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-100;
+  }
+
+  .field--error {
+    @apply border-danger-500 focus:border-danger-500 focus:ring-danger-100;
+  }
+
+  .label {
+    @apply mb-1.5 block text-[13px] font-semibold text-ink-700;
+  }
+
+  /* --- Section heading --------------------------------------------- */
+  .section-title {
+    @apply text-lg font-extrabold text-ink-900;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.14em] text-brand-600;
+  }
+
+  /* --- Pill / badge -------------------------------------------------- */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold;
+  }
+
+  .pill--sample {
+    @apply bg-caution-100 text-caution-600;
+  }
+
+  .pill--ok {
+    @apply bg-brand-100 text-brand-800;
+  }
+
+  /* --- Lists --------------------------------------------------------- */
+  .menu-row {
+    @apply flex w-full items-center gap-3 px-4 py-4 text-start transition-colors hover:bg-mint-50;
+  }
+}
+
+/* --- Utilities ------------------------------------------------------ */
+
+/* Decorative DNA watermark used on splash / welcome screens. */
+.dna-watermark {
+  background-image: radial-gradient(
+      circle at 20% 30%,
+      rgba(63, 174, 139, 0.16) 0,
+      transparent 45%
+    ),
+    radial-gradient(circle at 80% 70%, rgba(20, 101, 90, 0.12) 0, transparent 45%);
+}
+
+/* Soft organic wave used at the bottom of the splash screen, matching
+   the reference art direction. */
+.brand-wave {
+  background: linear-gradient(160deg, #22856b 0%, #14655a 55%, #0f4f46 100%);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Respect the user's motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
