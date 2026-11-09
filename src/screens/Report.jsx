@@ -66,7 +66,7 @@ export default function Report() {
         </div>
 
         <div className="mt-5">
-          <SafetyNote text={t('rep.note')} />
+          <SafetyNote text={t('rep.note')} tone="info" />
         </div>
 
         <div className="mt-4">

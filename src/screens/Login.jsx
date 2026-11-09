@@ -25,6 +25,7 @@ export default function Login() {
   const [reveal, setReveal] = useState(false)
   const [remember, setRemember] = useState(true)
   const [errors, setErrors] = useState({})
+  const [socialNote, setSocialNote] = useState(false)
 
   const validate = () => {
     const next = {}
@@ -81,8 +82,8 @@ export default function Login() {
 
       <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-8">
         <div className="mt-4 text-center">
-          <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-mint-100 text-brand-700">
-            <Icon name="user" size={30} strokeWidth={1.7} />
+          <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-brand-700 text-white shadow-button">
+            <Icon name="leaf" size={30} strokeWidth={1.8} />
           </span>
           <h1 className="mt-4 text-[25px] font-extrabold text-ink-900">
             {t('auth.welcomeBack')}
@@ -161,23 +162,51 @@ export default function Login() {
           </Button>
         </form>
 
-        {/* Demonstration notice — makes the absence of a real auth backend explicit. */}
-        <div className="mt-6 rounded-card border border-mint-200 bg-mint-50 p-4">
-          <p className="text-[13px] font-extrabold text-brand-800">
-            {t('auth.demoTitle')}
-          </p>
-          <p className="mt-1 text-[12.5px] leading-relaxed text-ink-500">
-            {t('auth.demoBody')}
-          </p>
-          <Button
-            variant="secondary"
-            size="sm"
-            className="mt-3"
-            icon="sparkle"
-            onClick={fillDemo}
+        {/* "or" divider + social sign-in, as in the reference design.
+            These buttons are visual only: nothing is connected, and the
+            note below says so rather than implying a real integration. */}
+        <div className="my-5 flex items-center gap-3" aria-hidden="true">
+          <span className="h-px flex-1 bg-ink-100" />
+          <span className="text-[12.5px] font-bold text-ink-300">{t('auth.or')}</span>
+          <span className="h-px flex-1 bg-ink-100" />
+        </div>
+
+        <div className="flex flex-col gap-2.5">
+          <button
+            type="button"
+            onClick={() => setSocialNote(true)}
+            className="btn btn--secondary"
           >
+            <Icon name="google" size={18} />
+            {t('auth.continueGoogle')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setSocialNote(true)}
+            className="btn btn--secondary"
+          >
+            <Icon name="apple" size={18} />
+            {t('auth.continueApple')}
+          </button>
+        </div>
+
+        {socialNote && (
+          <p className="mt-2.5 text-center text-[12px] leading-snug text-ink-400 animate-fade-up">
+            {t('auth.socialDemo')}
+          </p>
+        )}
+
+        {/* Demonstration notice — makes the absence of a real auth backend explicit. */}
+        <div className="mt-4 rounded-control border border-mint-200 bg-mint-50 px-3.5 py-3">
+          <p className="text-[12px] leading-snug text-ink-500">{t('auth.demoBody')}</p>
+          <button
+            type="button"
+            onClick={fillDemo}
+            className="mt-1.5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-brand-700 underline decoration-brand-400 underline-offset-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 rounded"
+          >
+            <Icon name="sparkle" size={14} />
             {t('auth.demoFill')}
-          </Button>
+          </button>
         </div>
 
         <p className="mt-5 text-center text-[14px] text-ink-400">

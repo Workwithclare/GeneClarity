@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Screen, BottomNav } from '../components/Shell.jsx'
-import { LogoMark } from '../components/Logo.jsx'
+import { AvatarArt } from '../components/Illustrations.jsx'
 import { Button, SectionTitle, SampleBanner, Pill } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
@@ -20,64 +20,45 @@ export default function Dashboard() {
 
   if (!user) return null
 
-  const unread = state.notifications.filter((n) => !n.read).length
   const carrierCount = state.results.filter((r) => r.status === 'carrier').length
 
   const quickAccess = [
-    { key: 'dash.myReport', icon: 'file', to: '/report' },
-    { key: 'dash.healthTips', icon: 'heart', to: '/learn' },
-    { key: 'dash.faqs', icon: 'help', to: '/support' },
-    { key: 'dash.settings', icon: 'settings', to: '/settings' },
+    { key: 'dash.myReport', icon: 'file', to: '/report', chip: 'bg-mint-100 text-brand-700' },
+    {
+      key: 'dash.healthTips',
+      icon: 'heart',
+      to: '/learn',
+      chip: 'bg-blush-100 text-blush-500',
+    },
+    { key: 'dash.faqs', icon: 'help', to: '/faqs', chip: 'bg-sky-100 text-sky-500' },
+    { key: 'dash.settings', icon: 'settings', to: '/settings', chip: 'bg-ink-50 text-ink-500' },
   ]
 
   return (
     <Screen>
-      {/* Home has no back button — it is a root screen. The header carries
-          the brand plus notifications and account access instead. */}
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-white/90 px-5 py-3 backdrop-blur-md">
-        <div className="flex items-center gap-2">
-          <LogoMark size={28} />
-          <span className="text-[16px] font-extrabold tracking-tight text-brand-800">
-            Gene<span className="text-brand-500">Clarity</span>
-          </span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => navigate('/notifications')}
-            aria-label={t('notif.title')}
-            className="relative grid h-10 w-10 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
-          >
-            <Icon name="bell" size={21} />
-            {unread > 0 && (
-              <span className="absolute end-2 top-2 grid h-4 min-w-4 place-items-center rounded-full bg-danger-500 px-1 text-[10px] font-bold text-white">
-                {unread}
-              </span>
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/profile')}
-            aria-label={t('dash.profile')}
-            className="grid h-9 w-9 place-items-center rounded-full bg-brand-700 text-[12px] font-extrabold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
-          >
-            {user.avatarInitials || 'GC'}
-          </button>
-        </div>
-      </header>
-
-      <main className="flex-1 overflow-y-auto px-5 pb-4">
-        {/* Greeting */}
-        <div className="pt-1">
-          <h1 className="text-[24px] font-extrabold leading-tight text-ink-900">
+      {/* Home has no back button — the reference header carries the
+          greeting on the left and the account portrait on the right. */}
+      <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-white/90 px-5 py-3.5 backdrop-blur-md">
+        <div className="min-w-0">
+          <h1 className="truncate text-[22px] font-extrabold leading-tight text-ink-900">
             {t('dash.hello')} {user.fullName.split(' ')[0]}{' '}
             <span aria-hidden="true">👋</span>
           </h1>
-          <p className="mt-0.5 text-[13.5px] text-ink-400">{t('dash.companion')}</p>
+          <p className="truncate text-[13px] text-ink-400">{t('dash.companion')}</p>
         </div>
 
-        <div className="mt-4">
+        <button
+          type="button"
+          onClick={() => navigate('/profile')}
+          aria-label={t('dash.profile')}
+          className="shrink-0 rounded-full ring-2 ring-brand-100 transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+        >
+          <AvatarArt size={44} />
+        </button>
+      </header>
+
+      <main className="flex-1 overflow-y-auto px-5 pb-4">
+        <div className="pt-1">
           <SampleBanner />
         </div>
 
@@ -88,7 +69,7 @@ export default function Dashboard() {
           className="mt-4 flex w-full items-center gap-3.5 rounded-card border border-brand-200 bg-mint-100 p-4 text-start shadow-card transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
         >
           <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-brand-700 shadow-sm">
-            <Icon name="sparkle" size={24} />
+            <Icon name="shield" size={24} />
           </span>
           <span className="min-w-0 flex-1">
             <span className="block text-[15px] font-extrabold text-brand-800">
@@ -117,7 +98,7 @@ export default function Dashboard() {
                 className="flex flex-col items-start gap-3 rounded-card border border-mint-200 bg-white p-4 text-start shadow-card transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 animate-fade-up"
                 style={{ animationDelay: `${i * 55}ms` }}
               >
-                <span className="grid h-11 w-11 place-items-center rounded-full bg-mint-100 text-brand-700">
+                <span className={`grid h-11 w-11 place-items-center rounded-2xl ${item.chip}`}>
                   <Icon name={item.icon} size={21} />
                 </span>
                 <span className="text-[14px] font-extrabold text-ink-900">

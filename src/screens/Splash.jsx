@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LogoMark } from '../components/Logo.jsx'
+import { LogoMark, Wordmark } from '../components/Logo.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 
 /**
- * Splash screen. Mirrors the reference design: deep green brand wave,
- * light logo, spinner and a "Loading…" label.
+ * Splash screen — matches the reference design: light background with
+ * the green brand mark and wordmark, and a deep-green organic wave at
+ * the bottom carrying the spinner and "Loading…" label.
  *
  * It routes onward automatically. Returning users who already have a
  * session go straight to the dashboard; new visitors see the welcome.
@@ -38,46 +39,50 @@ export default function Splash() {
   }, [navigate])
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-brand-800">
-      {/* Decorative DNA watermark */}
-      <div className="dna-watermark pointer-events-none absolute inset-0 opacity-70" />
-
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-8 pb-32 text-center animate-fade-in">
-        <LogoMark size={96} light />
+    <div className="screen relative overflow-hidden bg-white">
+      {/* Brand lockup, centred in the light area */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 px-8 pb-44 text-center animate-fade-in">
+        <LogoMark size={104} />
         <div>
-          <p
-            className="text-4xl font-extrabold tracking-tight text-white"
-            style={{ letterSpacing: '-0.02em' }}
-          >
-            Gene<span className="text-brand-300">Clarity</span>
-          </p>
-          <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.24em] text-brand-200/85">
+          <Wordmark size="text-4xl" />
+          <p className="mt-2.5 text-[10px] font-bold uppercase tracking-[0.24em] text-brand-600">
             {t('brand.line')}
           </p>
         </div>
       </div>
 
-      {/* Loading indicator */}
-      <div className="relative z-10 flex flex-col items-center gap-3 pb-40 animate-fade-in">
+      {/* Deep-green organic wave at the bottom — drawn as an SVG path so
+          the crest curves like the reference art rather than a dome. */}
+      <svg
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-60 w-full"
+        viewBox="0 0 448 240"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="gcWave" x1="0" y1="0" x2="1" y2="1">
+            <stop stopColor="#22856B" />
+            <stop offset="0.55" stopColor="#14655A" />
+            <stop offset="1" stopColor="#0F4F46" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M0 64C90 20 180 88 264 56c70-27 130-33 184-13v197H0V64Z"
+          fill="url(#gcWave)"
+        />
+      </svg>
+
+      {/* Loading indicator, sitting inside the wave */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex h-60 flex-col items-center justify-end gap-3 pb-14 animate-fade-in">
         <span
           className="h-7 w-7 rounded-full border-[3px] border-white/25 border-t-white animate-spin-slow"
           aria-hidden="true"
         />
-        <p className="text-[13px] font-semibold text-white/85">{t('splash.loading')}</p>
+        <p className="text-[13px] font-semibold text-white/90">{t('splash.loading')}</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/55">
+          {t('splash.notice')}
+        </p>
       </div>
-
-      {/* Brand wave */}
-      <div
-        className="brand-wave pointer-events-none absolute inset-x-0 bottom-0 h-56"
-        style={{
-          borderRadius: '100% 100% 0 0 / 34% 34% 0 0',
-        }}
-        aria-hidden="true"
-      />
-
-      <p className="absolute inset-x-0 bottom-6 z-10 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">
-        {t('splash.notice')}
-      </p>
     </div>
   )
 }

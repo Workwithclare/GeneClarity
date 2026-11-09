@@ -20,7 +20,7 @@ export function Screen({ children, className = '', white = false }) {
  * optional right-hand slot. `dir` is respected so the chevron mirrors
  * correctly in Arabic.
  */
-export function AppBar({ title, onBack, right, subtitle, border = true }) {
+export function AppBar({ title, onBack, right, subtitle, border = true, hideBack = false }) {
   const navigate = useNavigate()
   const { isRTL } = useLanguage()
   const handleBack = onBack || (() => navigate(-1))
@@ -31,14 +31,20 @@ export function AppBar({ title, onBack, right, subtitle, border = true }) {
         border ? 'border-b border-ink-100' : ''
       }`}
     >
-      <button
-        type="button"
-        onClick={handleBack}
-        aria-label={isRTL ? 'التالي' : 'Back'}
-        className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
-      >
-        <Icon name={isRTL ? 'chevronRight' : 'chevronLeft'} size={22} />
-      </button>
+      {hideBack ? (
+        /* Root tab screens (e.g. Profile) have no back target — the
+           reference design shows only the trailing action there. */
+        <span className="h-10 w-10 shrink-0" aria-hidden="true" />
+      ) : (
+        <button
+          type="button"
+          onClick={handleBack}
+          aria-label={isRTL ? 'التالي' : 'Back'}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+        >
+          <Icon name={isRTL ? 'chevronRight' : 'chevronLeft'} size={22} />
+        </button>
+      )}
 
       <div className="min-w-0 flex-1 text-center">
         {title && (

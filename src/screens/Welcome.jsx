@@ -32,17 +32,18 @@ export default function Welcome() {
           <LogoLockup markSize={68} showTagline={false} />
         </div>
 
-        <div className="mt-4 text-center">
-          <h1 className="text-[26px] font-extrabold leading-tight text-ink-900">
-            {t('brand.promise1')}{' '}
-            <span className="text-brand-700">{t('brand.promise2')}</span>
+        <div className="mt-5 text-center">
+          <h1 className="text-[27px] font-extrabold leading-[1.25] text-ink-900">
+            {t('brand.promise1')}
+            <br />
+            {t('brand.promise2')}
           </h1>
-          <p className="mx-auto mt-2 max-w-[19rem] text-[14.5px] leading-relaxed text-ink-500">
+          <p className="mx-auto mt-2.5 max-w-[19rem] text-[14.5px] leading-relaxed text-ink-500">
             {t('brand.promiseSub')}
           </p>
         </div>
 
-        <div className="mt-2 flex justify-center">
+        <div className="mt-3 flex justify-center">
           <FamilyIllustration width={300} />
         </div>
 

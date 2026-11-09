@@ -83,11 +83,9 @@ export default function Onboarding() {
       </header>
 
       <div className="flex flex-1 flex-col px-6 pt-6" key={index}>
-        {/* Step icon */}
-        <div className="mx-auto animate-scale-in" key={`icon-${index}`}>
-          <span className="grid h-20 w-20 place-items-center rounded-full bg-mint-100 text-brand-700">
-            <Icon name={step.icon} size={38} strokeWidth={1.6} />
-          </span>
+        {/* Step icon — a plain green glyph, as in the reference */}
+        <div className="mx-auto text-brand-700 animate-scale-in" key={`icon-${index}`}>
+          <Icon name={step.icon} size={56} strokeWidth={1.5} />
         </div>
 
         <div className="mt-6 text-center animate-fade-up" key={`copy-${index}`}>

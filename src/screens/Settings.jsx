@@ -8,8 +8,9 @@ import { useStore } from '../store/AppStore.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
 
 /**
- * Settings hub — mirrors the reference "Settings" screen: language,
- * notifications, privacy, data sharing, about and help.
+ * Settings — a single flat list matching the reference design:
+ * Language, Notifications (toggle), Privacy & Security, Data Sharing,
+ * About App, Help & Support.
  */
 export default function Settings() {
   const navigate = useNavigate()
@@ -28,74 +29,53 @@ export default function Settings() {
     { icon: 'help', labelKey: 'set.helpSupport', to: '/support' },
   ]
 
-  const notifySwitches = [
-    ['notifyResults', 'set.notifications', 'set.notificationsSub'],
-    ['notifyEmail', 'set.emailSub', null],
-    ['notifyReminders', 'set.remindersSub', null],
-    ['notifyMarketing', 'set.marketingSub', null],
-  ]
-
   return (
     <Screen>
       <AppBar title={t('set.title')} onBack={() => navigate('/profile')} />
 
-      <main className="flex-1 overflow-y-auto px-5 pb-8 pt-5">
-        {/* Language — always first, matching the reference */}
-        <section>
-          <h2 className="eyebrow">{t('set.appearance')}</h2>
-          <div className="mt-2 flex items-center gap-3 rounded-card border border-mint-200 bg-white px-4 py-3.5 shadow-card">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-mint-100 text-brand-700">
-              <Icon name="globe" size={18} />
+      <main className="flex-1 overflow-y-auto px-5 pb-8 pt-4">
+        <div className="divide-y divide-ink-100 overflow-hidden rounded-card border border-mint-200 bg-white shadow-card">
+          {/* Language — the row carries the toggle itself */}
+          <div className="flex items-center gap-3.5 px-4 py-3.5">
+            <span className="grid h-8 w-8 shrink-0 place-items-center text-ink-500">
+              <Icon name="globe" size={19} />
             </span>
             <span className="flex-1 text-[14.5px] font-bold text-ink-900">
               {t('set.language')}
             </span>
             <LanguageToggle variant="chip" />
           </div>
-          <p className="mt-1.5 px-1 text-[12px] text-ink-400">
-            {lang === 'ar' ? 'يتطلب الوضع من اليمين إلى اليسار تخطيطًا معكوسًا تلقائيًا.' : 'Arabic automatically switches the whole interface to right-to-left.'}
-          </p>
-        </section>
 
-        {/* Notifications */}
-        <section className="mt-6">
-          <h2 className="eyebrow">{t('set.notifications')}</h2>
-          <div className="mt-2 divide-y divide-ink-100 rounded-card border border-mint-200 bg-white px-4 shadow-card">
-            {notifySwitches.map(([key, labelKey, descKey]) => (
-              <Switch
-                key={key}
-                id={`set-${key}`}
-                checked={state.settings[key]}
-                onChange={(value) => dispatch({ type: 'SET_SETTING', key, value })}
-                label={t(labelKey)}
-                description={descKey ? t(descKey) : undefined}
-              />
-            ))}
+          {/* Notifications — one master switch, as in the reference */}
+          <div className="px-4">
+            <Switch
+              id="set-notifications"
+              checked={state.settings.notifyNotifications}
+              onChange={(value) =>
+                dispatch({ type: 'SET_SETTING', key: 'notifyNotifications', value })
+              }
+              label={t('set.notifications')}
+            />
           </div>
-        </section>
 
-        {/* Navigation rows */}
-        <section className="mt-6">
-          <h2 className="eyebrow">{t('set.privacySecurity')}</h2>
-          <div className="mt-2 divide-y divide-ink-100 overflow-hidden rounded-card border border-mint-200 bg-white shadow-card">
-            {navRows.map((row) => (
-              <button
-                key={row.labelKey}
-                type="button"
-                onClick={() => navigate(row.to)}
-                className="menu-row focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
-              >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-mint-100 text-brand-700">
-                  <Icon name={row.icon} size={18} />
-                </span>
-                <span className="flex-1 text-[14.5px] font-bold text-ink-900">
-                  {t(row.labelKey)}
-                </span>
-                <Icon name={chevron} size={18} className="shrink-0 text-ink-300" />
-              </button>
-            ))}
-          </div>
-        </section>
+          {/* Navigation rows */}
+          {navRows.map((row) => (
+            <button
+              key={row.labelKey}
+              type="button"
+              onClick={() => navigate(row.to)}
+              className="menu-row focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center text-ink-500">
+                <Icon name={row.icon} size={19} />
+              </span>
+              <span className="flex-1 text-[14.5px] font-bold text-ink-900">
+                {t(row.labelKey)}
+              </span>
+              <Icon name={chevron} size={18} className="shrink-0 text-ink-300" />
+            </button>
+          ))}
+        </div>
 
         {/* Honest note about where data lives */}
         <div className="mt-5 flex items-start gap-2.5 rounded-control bg-brand-100 px-4 py-3">

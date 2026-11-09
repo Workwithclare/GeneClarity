@@ -149,22 +149,6 @@ html[lang='ar'] .arabic-tight {
 
 /* --- Utilities ------------------------------------------------------ */
 
-/* Decorative DNA watermark used on splash / welcome screens. */
-.dna-watermark {
-  background-image: radial-gradient(
-      circle at 20% 30%,
-      rgba(63, 174, 139, 0.16) 0,
-      transparent 45%
-    ),
-    radial-gradient(circle at 80% 70%, rgba(20, 101, 90, 0.12) 0, transparent 45%);
-}
-
-/* Soft organic wave used at the bottom of the splash screen, matching
-   the reference art direction. */
-.brand-wave {
-  background: linear-gradient(160deg, #22856b 0%, #14655a 55%, #0f4f46 100%);
-}
-
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

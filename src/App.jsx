@@ -16,6 +16,8 @@ import ConditionDetail from './screens/ConditionDetail.jsx'
 import CoupleConnect from './screens/CoupleConnect.jsx'
 import PartnerConsent from './screens/PartnerConsent.jsx'
 import Support from './screens/Support.jsx'
+import Faq from './screens/Faq.jsx'
+import Done from './screens/Done.jsx'
 import Profile from './screens/Profile.jsx'
 import Settings from './screens/Settings.jsx'
 import PrivacySettings from './screens/PrivacySettings.jsx'
@@ -69,6 +71,8 @@ export default function App() {
         <Route path="/couple" element={<CoupleConnect />} />
         <Route path="/couple/consent" element={<PartnerConsent />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/faqs" element={<Faq />} />
+        <Route path="/done" element={<Done />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings/privacy" element={<PrivacySettings />} />

@@ -158,6 +158,52 @@ export function CounsellorIllustration({ className = '', width = 170 }) {
   )
 }
 
+/** Profile / dashboard portrait — original flat artwork, no photo stock. */
+export function AvatarArt({ size = 96, className = '' }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 96 96"
+      className={className}
+      role="img"
+      aria-label="Profile portrait"
+    >
+      <circle cx="48" cy="48" r="48" fill={TONES.wash} />
+      {/* shoulders / top */}
+      <path d="M14 96c2.5-18 16-28 34-28s31.5 10 34 28z" fill={TONES.mid} />
+      {/* neck */}
+      <rect x="41" y="52" width="14" height="18" rx="7" fill="#8C5A3C" />
+      {/* hair mass behind the head */}
+      <circle cx="48" cy="40" r="22" fill="#12201D" />
+      {/* face */}
+      <circle cx="48" cy="43" r="18" fill="#8C5A3C" />
+      {/* fringe / curls over the forehead */}
+      <path
+        d="M31 42a17 17 0 0134 0c-4-6-9-9-17-9s-13 3-17 9z"
+        fill="#12201D"
+      />
+      <circle cx="29" cy="46" r="7" fill="#12201D" />
+      <circle cx="67" cy="46" r="7" fill="#12201D" />
+      {/* simple, friendly face */}
+      <g fill="#12201D" opacity="0.8">
+        <circle cx="42" cy="44" r="1.9" />
+        <circle cx="54" cy="44" r="1.9" />
+      </g>
+      <path
+        d="M43 51.5a6.5 6.5 0 0010 0"
+        stroke="#12201D"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.75"
+      />
+      {/* collar detail */}
+      <path d="M40 70l8 8 8-8" stroke={TONES.cream} strokeWidth="4" fill="none" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 /** Report-ready success mark used on the report and completion screens. */
 export function SuccessMark({ size = 96, className = '' }) {
   return (
@@ -179,12 +225,20 @@ export function SuccessMark({ size = 96, className = '' }) {
         strokeLinejoin="round"
         fill="none"
       />
-      {/* celebration ticks */}
+      {/* celebration confetti — green and gold, as in the reference */}
       <g stroke={TONES.light} strokeWidth="4" strokeLinecap="round">
-        <path d="M14 20l-6-6M82 20l6-6M14 76l-6 6M82 76l6 6" />
+        <path d="M82 20l6-6M14 76l-6 6M48 6V1M48 95v-5" />
       </g>
-      <g stroke="#E9A93C" strokeWidth="4" strokeLinecap="round">
-        <path d="M48 6v-5M48 95v-5M6 48H1M95 48h-5" />
+      <g stroke="#F5C842" strokeWidth="4" strokeLinecap="round">
+        <path d="M14 20l-6-6M82 76l6 6" />
+      </g>
+      <g fill="#F5C842">
+        <circle cx="9" cy="48" r="3" />
+        <circle cx="87" cy="48" r="3" />
+      </g>
+      <g fill={TONES.light}>
+        <circle cx="24" cy="12" r="2.5" />
+        <circle cx="72" cy="84" r="2.5" />
       </g>
     </svg>
   )

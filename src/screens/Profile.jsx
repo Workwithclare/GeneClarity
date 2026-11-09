@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Screen, AppBar, BottomNav } from '../components/Shell.jsx'
+import { AvatarArt } from '../components/Illustrations.jsx'
 import { Button, Pill } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
@@ -10,6 +11,10 @@ import { useRequireAuth } from '../store/useRequireAuth.js'
 /**
  * Profile hub. Account-level actions live here; privacy controls are a
  * separate screen because they deserve their own deliberate space.
+ *
+ * Matches the reference layout: portrait, name, e-mail, then the menu
+ * list ending in Log Out. Notifications and Activity History stay in
+ * the list because the challenge requires both to be reachable.
  */
 export default function Profile() {
   const user = useRequireAuth()
@@ -28,7 +33,6 @@ export default function Profile() {
     { icon: 'lock', labelKey: 'prof.privacySettings', to: '/settings/privacy' },
     { icon: 'bell', labelKey: 'prof.notifications', to: '/notifications', badge: unread },
     { icon: 'clock', labelKey: 'prof.activity', to: '/activity' },
-    { icon: 'settings', labelKey: 'set.title', to: '/settings' },
     { icon: 'info', labelKey: 'prof.about', to: '/support' },
   ]
 
@@ -36,9 +40,10 @@ export default function Profile() {
 
   return (
     <Screen>
+      {/* Profile is a root tab: no back chevron, only the settings gear. */}
       <AppBar
         title={t('prof.title')}
-        onBack={() => navigate('/dashboard')}
+        hideBack
         right={
           <button
             type="button"
@@ -52,19 +57,11 @@ export default function Profile() {
       />
 
       <main className="flex-1 overflow-y-auto px-5 pb-4 pt-5">
-        {/* Identity card */}
+        {/* Identity */}
         <div className="flex flex-col items-center text-center animate-fade-up">
-          <div className="relative">
-            <span className="grid h-24 w-24 place-items-center rounded-full bg-brand-700 text-2xl font-extrabold text-white ring-4 ring-brand-100">
-              {user.avatarInitials || 'GC'}
-            </span>
-            <span
-              className="absolute -bottom-1 -end-1 grid h-8 w-8 place-items-center rounded-full border-2 border-white bg-brand-500 text-white"
-              aria-hidden="true"
-            >
-              <Icon name="check" size={15} strokeWidth={3} />
-            </span>
-          </div>
+          <span className="rounded-full ring-4 ring-brand-100">
+            <AvatarArt size={104} />
+          </span>
 
           <h1 className="mt-4 text-[21px] font-extrabold text-ink-900">
             {user.fullName}
@@ -89,8 +86,8 @@ export default function Profile() {
               onClick={() => navigate(row.to)}
               className="menu-row focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
             >
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-mint-100 text-brand-700">
-                <Icon name={row.icon} size={18} />
+              <span className="grid h-8 w-8 shrink-0 place-items-center text-brand-700">
+                <Icon name={row.icon} size={19} />
               </span>
               <span className="flex-1 text-[14.5px] font-bold text-ink-900">
                 {t(row.labelKey)}
@@ -110,8 +107,8 @@ export default function Profile() {
             onClick={() => setConfirmOut(true)}
             className="menu-row text-danger-500 hover:bg-danger-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
           >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-danger-100 text-danger-500">
-              <Icon name="logout" size={18} />
+            <span className="grid h-8 w-8 shrink-0 place-items-center">
+              <Icon name="logout" size={19} />
             </span>
             <span className="flex-1 text-[14.5px] font-bold">{t('act.signOut')}</span>
           </button>

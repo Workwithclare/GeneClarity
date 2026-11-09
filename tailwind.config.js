@@ -56,6 +56,20 @@ export default {
           400: '#E9A93C',
           600: '#A9711A',
         },
+        // Pastel accent chips used on the dashboard Quick Access tiles.
+        blush: {
+          100: '#FDECEC',
+          500: '#D9736E',
+        },
+        sky: {
+          100: '#E9F2FD',
+          500: '#5B84D9',
+        },
+        // Pale blue informational note (the report screen's "Note:" box).
+        note: {
+          100: '#EAF3FB',
+          700: '#3E6E8E',
+        },
         danger: {
           100: '#FDECEA',
           500: '#C0453B',

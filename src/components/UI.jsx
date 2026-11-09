@@ -71,8 +71,25 @@ export function SampleBanner({ compact = false }) {
   )
 }
 
-/** The "not a diagnosis" safety note. */
-export function SafetyNote({ text, className = '' }) {
+/**
+ * The "not a diagnosis" safety note.
+ *
+ * `tone="info"` renders the pale-blue informational box used for the
+ * report's "educational summary" note in the reference design.
+ */
+export function SafetyNote({ text, className = '', tone = 'brand' }) {
+  if (tone === 'info') {
+    return (
+      <div
+        role="note"
+        className={`rounded-control bg-note-100 px-4 py-3 ${className}`}
+      >
+        <p className="text-[12.5px] font-semibold leading-snug text-note-700">
+          {text}
+        </p>
+      </div>
+    )
+  }
   return (
     <div
       role="note"

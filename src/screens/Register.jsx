@@ -71,7 +71,9 @@ export default function Register() {
           .join(''),
       },
     })
-    navigate('/dashboard', { replace: true })
+    // The completion screen mirrors the reference's "You're all set!"
+    // moment before the user enters the app.
+    navigate('/done', { replace: true })
   }
 
   return (
@@ -91,8 +93,8 @@ export default function Register() {
 
       <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-8">
         <div className="mt-4 text-center">
-          <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-mint-100 text-brand-700">
-            <Icon name="userPlus" size={30} strokeWidth={1.7} />
+          <span className="mx-auto grid h-16 w-16 place-items-center text-brand-700">
+            <Icon name="userPlus" size={44} strokeWidth={1.6} />
           </span>
           <h1 className="mt-4 text-[25px] font-extrabold text-ink-900">
             {t('auth.createTitle')}

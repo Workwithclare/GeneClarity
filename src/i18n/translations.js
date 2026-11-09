@@ -11,16 +11,11 @@
 
 export const en = {
   // --- Brand -------------------------------------------------------
-  'brand.name': 'GeneClarity',
   'brand.tagline': 'Understanding and Reducing Inherited Disease Risk.',
   'brand.promise1': 'Know more.',
   'brand.promise2': 'Plan better.',
   'brand.promiseSub': 'Get clear, simple insights about your genetic health.',
   'brand.line': 'GENETICS · UNDERSTANDING · CHOICE',
-  'brand.slogan': 'Know more. Live healthier.',
-  'brand.values1': 'Trusted & Secure',
-  'brand.values2': 'Simple & Friendly',
-  'brand.values3': 'For Everyone',
 
   // --- Generic actions --------------------------------------------
   'act.getStarted': 'Get Started',
@@ -38,10 +33,8 @@ export const en = {
   'act.downloadPdf': 'Download PDF',
   'act.getSupport': 'Get Support',
   'act.goToDashboard': 'Go to Dashboard',
-  'act.send': 'Send a Message',
   'act.tryAgain': 'Try Again',
   'act.skip': 'Skip',
-  'act.done': 'Done',
 
   // --- Splash ------------------------------------------------------
   'splash.loading': 'Loading…',
@@ -102,12 +95,14 @@ export const en = {
   'auth.remember': 'Remember me',
   'auth.forgot': 'Forgot password?',
   'auth.or': 'or',
+  'auth.continueGoogle': 'Continue with Google',
+  'auth.continueApple': 'Continue with Apple',
+  'auth.socialDemo': 'Social sign-in is not connected in this prototype - the buttons are shown for design only.',
   'auth.createTitle': 'Create Account',
   'auth.createSub': 'Join GeneClarity today',
   'auth.noAccount': "Don't have an account?",
   'auth.hasAccount': 'Already have an account?',
   'auth.terms': 'I agree to the Terms & Privacy Policy',
-  'auth.demoTitle': 'Demonstration sign-in',
   'auth.demoBody':
     'No real account is created. Use any details to explore the prototype, or load the sample account below.',
   'auth.demoFill': 'Use sample account',
@@ -135,8 +130,6 @@ export const en = {
   'dash.report': 'Report',
   'dash.tips': 'Tips',
   'dash.profile': 'Profile',
-  'dash.sampleBanner':
-    'Sample records are shown for demonstration. These are not real results.',
   'dash.coupleCard': 'CoupleConnect',
   'dash.coupleSub': 'Explore compatibility information together, with consent.',
 
@@ -162,7 +155,6 @@ export const en = {
   'res.notCarried': 'Not a detected carrier',
   'res.uncertain': 'Variant of uncertain significance',
   'res.plainTitle': 'In plain language',
-  'res.forYou': 'What this means for you',
   'res.forCouple': 'What this means for a couple',
   'res.uncertainTitle': 'About uncertainty',
   'res.uncertainBody':
@@ -202,6 +194,8 @@ export const en = {
   // --- FAQ -------------------------------------------------------------
   'faq.title': 'Frequently Asked Questions',
   'faq.search': 'Search FAQs…',
+  'faq.noResults': 'No FAQs match your search.',
+  'faq.safety': 'Answers are general education, not advice about your own health.',
   'faq.helpTitle': 'Need more help?',
   'faq.helpBody': 'Talk to a genetic counsellor.',
   'faq.q1': 'What is a carrier?',
@@ -274,6 +268,7 @@ export const en = {
 
   // --- Support / counselling ------------------------------------------------
   'sup.title': 'Genetic Counselling',
+  'sup.helpSub': "We're here to help you.",
   'sup.lead':
     'Talk to a qualified professional about what your results mean for you.',
   'sup.whyTitle': 'When counselling helps',
@@ -291,7 +286,6 @@ export const en = {
   'sup.directoryTitle': 'Counsellor directory',
   'sup.directoryNote':
     'Illustrative entries for layout purposes. Not a real directory or referral service.',
-  'sup.verified': 'Verified service',
   'sup.emergency':
     'If you feel unwell or are worried about an urgent health problem, contact your doctor or local emergency service. GeneClarity is not an emergency service.',
 
@@ -313,13 +307,6 @@ export const en = {
   'set.dataSharing': 'Data Sharing',
   'set.aboutApp': 'About App',
   'set.helpSupport': 'Help & Support',
-  'set.appearance': 'Appearance',
-  'set.notificationsSub': 'Result updates, partner requests and reminders',
-  'set.emailSub': 'Email me important account changes',
-  'set.remindersSub': 'Counselling appointment reminders',
-  'set.marketingSub': 'Occasional product news',
-  'set.off': 'Off',
-  'set.on': 'On',
 
   // --- Privacy settings ------------------------------------------------------
   'priv.title': 'Privacy & Security',
@@ -364,8 +351,6 @@ export const en = {
   'act2.note': 'Activity stays on this device only.',
 
   // --- Support page / help -----------------------------------------------------
-  'help.title': 'Help & Support',
-  'help.sub': "We're here to help you.",
 
   // --- Success / completion ------------------------------------------------------
   'done.title': "You're all set!",
@@ -377,7 +362,6 @@ export const en = {
   'notice.sampleBody':
     'Every result, name and number in this prototype is an original example created for demonstration. Nothing here is a real screening result.',
   'notice.notDiagnostic': 'Not a diagnosis',
-  'notice.emergency': 'Not an emergency service',
   'notice.backHome': 'Back to start',
 
   // --- Errors --------------------------------------------------------------------
@@ -391,16 +375,11 @@ export const en = {
  * this file as the single source of truth for both languages.
  */
 export const ar = {
-  'brand.name': 'جين كلايري',
   'brand.tagline': 'ال理解和تقليل مخاطر الأمراض الوراثية.',
   'brand.promise1': 'اعرف المزيد.',
   'brand.promise2': 'خطّط بشكل أفضل.',
   'brand.promiseSub': 'احصل على رؤى واضحة وبسيطة عن صحتك الوراثية.',
   'brand.line': 'الوراثة · الفهم · الخيار',
-  'brand.slogan': 'اعرف المزيد. عش بصحة أفضل.',
-  'brand.values1': 'موثوق وآمن',
-  'brand.values2': 'بسيط وودود',
-  'brand.values3': 'لجميع الناس',
 
   'act.getStarted': 'ابدأ الآن',
   'act.signIn': 'تسجيل الدخول',
@@ -417,10 +396,8 @@ export const ar = {
   'act.downloadPdf': 'تنزيل PDF',
   'act.getSupport': 'احصل على الدعم',
   'act.goToDashboard': 'الانتقال إلى اللوحة',
-  'act.send': 'إرسال رسالة',
   'act.tryAgain': 'حاول مرة أخرى',
   'act.skip': 'تخطي',
-  'act.done': 'تم',
 
   'splash.loading': 'جارٍ التحميل…',
   'splash.notice': 'نموذج تجريبي',
@@ -476,12 +453,14 @@ export const ar = {
   'auth.remember': 'تذكرني',
   'auth.forgot': 'نسيت كلمة المرور؟',
   'auth.or': 'أو',
+  'auth.continueGoogle': 'المتابعة عبر Google',
+  'auth.continueApple': 'المتابعة عبر Apple',
+  'auth.socialDemo': 'تسجيل الدخول عبر الحسابات الاجتماعية غير مفعّل في هذا النموذج - الأزرار معروضة للتصميم فقط.',
   'auth.createTitle': 'إنشاء حساب',
   'auth.createSub': 'انضم إلى جين كلايري اليوم',
   'auth.noAccount': 'ليس لديك حساب؟',
   'auth.hasAccount': 'لديك حساب بالفعل؟',
   'auth.terms': 'أوافق على الشروط وسياسة الخصوصية',
-  'auth.demoTitle': 'دخول تجريبي',
   'auth.demoBody':
     'لا يتم إنشاء حساب حقيقي. استخدم أي بيانات لاستكشاف النموذج، أو حمّل الحساب التجريبي أدناه.',
   'auth.demoFill': 'استخدام حساب تجريبي',
@@ -508,7 +487,6 @@ export const ar = {
   'dash.report': 'التقرير',
   'dash.tips': 'نصائح',
   'dash.profile': 'الملف',
-  'dash.sampleBanner': 'تُعرض سجلات توضيحية لأغراض العرض. هذه ليست نتائج حقيقية.',
   'dash.coupleCard': 'ربط الزوجين',
   'dash.coupleSub': 'استكشف معلومات التوافق معًا وبموافقة كاملة.',
 
@@ -531,7 +509,6 @@ export const ar = {
   'res.notCarried': 'ليست حاملاً',
   'res.uncertain': 'تغير غير مؤكد',
   'res.plainTitle': 'بلغة بسيطة',
-  'res.forYou': 'ماذا يعني هذا لك',
   'res.forCouple': 'ماذا يعني هذا لزوجين',
   'res.uncertainTitle': 'بخصوص الغموض',
   'res.uncertainBody':
@@ -564,11 +541,12 @@ export const ar = {
     'محتوى تعليمي فقط. معلومات عامة وليست نصيحة عن حالتك الصحية.',
   'learn.related': 'مواضيع ذات صلة',
   'learn.whyMatters': 'لماذا يهم هذا',
-  'learn.whatYouCanDoo': 'ما يمكنك فعله',
   'learn.whatYouCanDo': 'ما يمكنك فعله',
 
   'faq.title': 'الأسئلة الشائعة',
   'faq.search': 'ابحث في الأسئلة…',
+  'faq.noResults': 'لا توجد أسئلة مطابقة لبحثك.',
+  'faq.safety': 'الإجابات معلومات تعليمية عامة وليست نصيحة عن حالتك الصحية.',
   'faq.helpTitle': 'تحتاج مزيدًا من المساعدة؟',
   'faq.helpBody': 'تحدث مع مرشد وراثي مؤهل.',
   'faq.q1': 'من هو الحامل؟',
@@ -603,7 +581,6 @@ export const ar = {
     'سيفقد شريكك فورًا الوصول إلى أي شيء مشترك. يحتفظ بحسابه الخاص.',
   'cc.whatPartnerSees': 'ما سيراه شريكي',
   'cc.seesConsent': 'الفئات التي تفعّلها فقط. لا شيء آخر.',
-  'cc.seesNoReport': 'لا يُعرض تقريرك الكامل افتراضيًا أبدًا.',
   'cc.ruleTitle': 'كيف تعمل المشاركة',
   'cc.rule1': 'يملك كل شخص حسابًا خاصًا منفصلًا.',
   'cc.rule2': 'لا تتم أي مشاركة قبل موافقتكما.',
@@ -635,6 +612,7 @@ export const ar = {
   'pc.withdrawBody': 'يمكنك إيقاف المشاركة في أي وقت ولأي سبب دون تبرير.',
 
   'sup.title': 'الإرشاد الوراثي',
+  'sup.helpSub': 'نحن هنا لمساعدتك.',
   'sup.lead': 'تحدث مع مؤهل لشرح معنى نتائجك في حالتك.',
   'sup.whyTitle': 'متى يفيدك الإرشاد',
   'sup.why1': 'تريد شرح الأرقام بما يناسب حالتك.',
@@ -650,7 +628,6 @@ export const ar = {
     'للعرض فقط — لا يتم حجز موعد حقيقي ولا إرسال أي رسالة من هذا النموذج.',
   'sup.directoryTitle': 'دليل المرشدين',
   'sup.directoryNote': 'مدخلات توضيحية لأغراض التصميم. ليست دليلًا حقيقيًا.',
-  'sup.verified': 'خدمة موثقة',
   'sup.emergency':
     'إذا شعرت بعدم الارتياح أو قلقًا بشأن حالة صحية عاجلة، فتواصل مع طبيبك أو خدمات الطوارئ المحلية. جين كلايري ليس خدمة طوارئ.',
 
@@ -670,13 +647,6 @@ export const ar = {
   'set.dataSharing': 'مشاركة البيانات',
   'set.aboutApp': 'عن التطبيق',
   'set.helpSupport': 'المساعدة والدعم',
-  'set.appearance': 'المظهر',
-  'set.notificationsSub': 'تحديثات النتائج وطلبات الشركاء والتذكيرات',
-  'set.emailSub': 'راسلني عند تغييرات مهمة في الحساب',
-  'set.remindersSub': 'تذكيرات مواعيد الإرشاد الوراثي',
-  'set.marketingSub': 'أخبار منتجات معدّلة',
-  'set.off': 'إيقاف',
-  'set.on': 'تشغيل',
 
   'priv.title': 'الخصوصية والأمان',
   'priv.lead': 'تحكّم في كيفية التعامل مع معلوماتك.',
@@ -716,8 +686,6 @@ export const ar = {
   'act2.languageChanged': 'تغيير اللغة',
   'act2.note': 'يبقى النشاط على هذا الجهاز فقط.',
 
-  'help.title': 'المساعدة والدعم',
-  'help.sub': 'نحن هنا لمساعدتك.',
 
   'done.title': 'كل شيء جاهز!',
   'done.body': 'شكرًا لاختيارك جين كلايري. رحلتك الصحية مهمة.',
@@ -727,7 +695,6 @@ export const ar = {
   'notice.sampleBody':
     'كل نتيجة واسم ورقم في هذا النموذج مثال أصلي أُنشئ للعرض. لا شيء هنا نتيجة فحص حقيقية.',
   'notice.notDiagnostic': 'ليس تشخيصًا',
-  'notice.emergency': 'ليست خدمة طوارئ',
   'notice.backHome': 'العودة إلى البداية',
 
   'err.title': 'تعذّر العثور على هذه الشاشة.',

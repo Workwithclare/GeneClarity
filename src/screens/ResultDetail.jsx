@@ -11,7 +11,14 @@ const STATUS_TITLE = {
   negative: 'res.notCarried',
   uncertain: 'res.uncertain',
 }
-const STATUS_TONE = { carrier: 'caution', negative: 'ok', uncertain: 'neutral' }
+
+// Each sample finding links to its matching educational topic so the
+// "Learn More" button lands somewhere relevant.
+const TOPIC_BY_RESULT = {
+  res_hbs: 'sickle-cell',
+  res_tay: 'tay-sachs',
+  res_cf: 'recessive',
+}
 
 /**
  * Plain-language result explanation — the "Key Insights" screen.
@@ -80,47 +87,46 @@ export default function ResultDetail() {
           <SampleBanner />
         </div>
 
-        {/* Headline finding */}
+        {/* Headline finding — icon, status name, plain sentence, as in
+            the reference "Key Insights" card. */}
         <section className="mt-4 rounded-card border border-brand-200 bg-mint-100 p-5 text-center animate-fade-up">
-          <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white text-brand-700 shadow-sm">
-            <Icon name="dna" size={32} strokeWidth={1.7} />
+          <span className="mx-auto flex justify-center text-brand-700">
+            <Icon name="dna" size={46} strokeWidth={1.6} />
           </span>
-          <p className="mt-3.5 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-600">
+          <h1 className="mt-2 text-[17px] font-extrabold text-ink-900">
             {t(STATUS_TITLE[result.status])}
-          </p>
-          <h1 className="mt-1.5 text-[19px] font-extrabold leading-snug text-ink-900">
-            {summary}
           </h1>
+          <p className="mt-1.5 text-[15px] font-semibold leading-snug text-ink-700">
+            {summary}
+          </p>
           <div className="mt-3 flex flex-wrap justify-center gap-2">
-            <Pill tone={STATUS_TONE[result.status]}>
-              {result.status === 'carrier'
-                ? t('res.carrierStatus')
-                : result.status === 'uncertain'
-                  ? t('res.uncertain')
-                  : t('res.notCarried')}
-            </Pill>
             <Pill tone="neutral">
               {result.gene} · {result.trait}
             </Pill>
+            <Pill tone="sample">{t('rep.sampleTag')}</Pill>
           </div>
         </section>
 
         {/* Plain-language explanation */}
         <section className="mt-4 rounded-card border border-mint-200 bg-white p-5 shadow-card animate-fade-up">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-100 text-brand-700">
-              <Icon name="message" size={17} />
-            </span>
-            <h2 className="text-[16px] font-extrabold text-ink-900">
-              {t('res.whatThisMeans')}
-            </h2>
-          </div>
-          <p className="mt-3 text-[14.5px] leading-relaxed text-ink-700">{plain}</p>
+          <h2 className="text-[16px] font-extrabold text-ink-900">
+            {t('res.whatThisMeans')}
+          </h2>
+          <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-700">{plain}</p>
 
           <div className="mt-4 border-t border-ink-100 pt-4">
             <p className="eyebrow">{t('res.plainTitle')}</p>
             <p className="mt-2 text-[14.5px] leading-relaxed text-ink-700">{forYou}</p>
           </div>
+
+          {/* "Learn More" leads into the matching educational topic. */}
+          <Link
+            to={`/learn/${TOPIC_BY_RESULT[result.id] || 'what-is-carrier'}`}
+            className="btn btn--secondary mt-4"
+          >
+            {t('act.learnMore')}
+            <Icon name="arrowRight" size={18} />
+          </Link>
         </section>
 
         {/* Uncertainty block — only when the finding is uncertain */}
