@@ -39,7 +39,7 @@ Then open <http://localhost:5173>.
 
 ## What is in the prototype
 
-20 screens covering the full journey, all reachable through the in-app
+22 screens covering the full journey, all reachable through the in-app
 navigation (no server-side routing needed — the app uses hash routes):
 
 | Area | Screens |
@@ -167,7 +167,7 @@ All challenge documentation is in [`docs/`](docs/):
 | --- | --- |
 | `01_PROJECT_OVERVIEW.md` | What GeneClarity is and who it serves |
 | `02_DESIGN_SYSTEM.md` | Colours, type, spacing, components |
-| `03_SCREEN_INVENTORY.md` | All 20 screens and their purpose |
+| `03_SCREEN_INVENTORY.md` | All 22 screens and their purpose |
 | `04_USER_JOURNEYS.md` | Key flows end to end |
 | `05_TECHNICAL_ARCHITECTURE.md` | Stack, routing, state, build |
 | `06_ACCESSIBILITY_AND_I18N.md` | A11y and Arabic RTL approach |

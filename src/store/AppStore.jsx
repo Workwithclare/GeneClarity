@@ -39,10 +39,8 @@ const initialState = {
     revokedAt: null,
   },
   settings: {
-    notifyResults: true,
-    notifyEmail: false,
-    notifyReminders: true,
-    notifyMarketing: false,
+    // Single master switch, matching the reference design's Settings list.
+    notifyNotifications: false,
     autoLock: true,
     shareResearch: false, // Off by default. Nothing leaves the device anyway.
     profileVisibility: true,

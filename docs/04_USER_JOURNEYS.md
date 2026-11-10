@@ -13,15 +13,16 @@ Four representative end-to-end flows as implemented in the prototype.
 4. **Privacy & Consent** → the user must actively accept the privacy notice.
    There is no pre-ticked box and no way to proceed without an explicit action.
 5. **Register** (demo) → or "Use sample account" on Login for a one-tap path.
-6. **Dashboard** → greeted by name, sees "Your Health Journey" and quick
+6. **You're all set** → success confirmation, then continue to the app.
+7. **Dashboard** → greeted by name, sees "Your Health Journey" and quick
    actions.
-7. **Report** → three synthetic findings (carrier / negative / uncertain), each
+8. **Report** → three synthetic findings (carrier / negative / uncertain), each
    under a "Demonstration data" banner.
-8. **Key Insight detail** → reads what the result means in plain language, what
+9. **Key Insight detail** → reads what the result means in plain language, what
    it does *not* mean, and is prompted towards counselling.
-9. **Learn** → explores "What does carrier mean?" and related topics.
+10. **Learn** → explores "What does carrier mean?" and related topics.
 
-**Safety beats along the way:** consent gate at step 4; sample banners on 7–8;
+**Safety beats along the way:** consent gate at step 4; sample banners on 8–9;
 uncertain result never states a risk number as fact; no decision-making
 language anywhere.
 

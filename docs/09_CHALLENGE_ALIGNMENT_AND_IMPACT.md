@@ -47,7 +47,7 @@
 **We can say (verified):**
 
 - The prototype builds successfully (`npm.cmd run build`, exit 0).
-- All 20 screens render with zero console errors in a real browser (manual QA
+- All 22 screens render with zero console errors in a real browser (manual QA
   sweep, English and Arabic).
 - RTL behaviour was verified programmatically (`dir`, font, element positions).
 - The consent flow works end to end in-browser: grant → active → revoke →

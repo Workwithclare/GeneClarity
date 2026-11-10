@@ -63,7 +63,7 @@ prototype reference image and is codified in `02_DESIGN_SYSTEM.md`.
 
 ## Status summary
 
-- **Implemented:** all 20 screens, EN + AR, consent/state logic, build passing.
+- **Implemented:** all 22 screens, EN + AR, consent/state logic, build passing.
 - **Tested:** production build, full browser walkthrough, RTL checks,
   zero console errors.
 - **Planned:** real auth, database, AI assistance, counselling directory.

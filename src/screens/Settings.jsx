@@ -50,7 +50,7 @@ export default function Settings() {
           <div className="px-4">
             <Switch
               id="set-notifications"
-              checked={state.settings.notifyNotifications}
+              checked={Boolean(state.settings.notifyNotifications)}
               onChange={(value) =>
                 dispatch({ type: 'SET_SETTING', key: 'notifyNotifications', value })
               }

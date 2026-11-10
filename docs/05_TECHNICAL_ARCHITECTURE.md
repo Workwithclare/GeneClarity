@@ -42,7 +42,7 @@ Key slices:
 - **`consent`** — account-level privacy acceptance (from `/consent`).
 - **`partner`** — status (`none` / `invited` / `active`), which granular scopes
   are granted (`summary`, `fullReport`, `notifications`), timestamps.
-- **`settings`** — notification switches, `profileVisibility`,
+- **`settings`** — single notification master switch, `profileVisibility`,
   `shareResearch` (**default off**), `autoLock`.
 - **`notifications`** / **`activity`** — local lists; activity is the audit
   trail of consent changes and account events.

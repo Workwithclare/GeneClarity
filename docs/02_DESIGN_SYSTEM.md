@@ -9,15 +9,18 @@ healthcare template). Tokens live in `src/styles/index.css` and
 | Token | Hex | Role |
 | --- | --- | --- |
 | `brand-700` | `#14655A` | Primary action colour, headings accent — the deep emerald from the reference |
-| `brand-500` | `#2E8B7A` | Hover/active, icons, links |
-| `brand-200` | `#A3DFC9` | Focus rings, borders |
-| `brand-100` | `#DFF4EC` | Soft fills, info notes |
-| `mint-50` | `#F3FAF7` | Page background |
-| `mint-100` | `#E8F6F0` | Card highlights, icon chips |
-| `mint-200` | `#C9EBDD` | Card borders |
-| `ink-900 → ink-300` | `#1B2B27 → #93A29F` | Text hierarchy (headings → muted → faint) |
-| `danger-500` | `#D64545` | Destructive actions, unread dots |
-| `caution-100/600` | `#FDF3DE / #9A6B1F` | "Demonstration data" banners |
+| `brand-500` | `#3FAE8B` | Hover/active, icons, links |
+| `brand-200` | `#C9EBDD` | Focus rings, borders |
+| `brand-100` | `#E6F5EF` | Soft fills, info notes |
+| `mint-50` | `#F4FBF7` | Page background |
+| `mint-100` | `#EAF7F1` | Card highlights, icon chips |
+| `mint-200` | `#DCF2E9` | Card borders |
+| `ink-900 → ink-300` | `#12201D → #93A29F` | Text hierarchy (headings → muted → faint) |
+| `danger-500` | `#C0453B` | Destructive actions, unread dots |
+| `caution-100/600` | `#FEF4E0 / #A9711A` | "Demonstration data" banners |
+| `blush-100/500` | `#FDECEC / #D9736E` | Pastel accent chip (dashboard Quick Access) |
+| `sky-100/500` | `#E9F2FD / #5B84D9` | Pastel accent chip (dashboard Quick Access) |
+| `note-100/700` | `#EAF3FB / #3E6E8E` | Pale-blue informational note (report "Note:" box) |
 
 Rules:
 
@@ -25,6 +28,8 @@ Rules:
 - Amber is reserved for demonstration/sample-data notices so they can never be
   mistaken for content.
 - Red is only for destructive/consent-revoking actions.
+- The pastel accents (blush / sky / note) are decorative navigation cues only —
+  they never encode a health meaning.
 
 ## Typography
 
