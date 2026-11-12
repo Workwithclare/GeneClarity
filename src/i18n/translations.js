@@ -98,6 +98,18 @@ export const en = {
   'auth.continueGoogle': 'Continue with Google',
   'auth.continueApple': 'Continue with Apple',
   'auth.socialDemo': 'Social sign-in is not connected in this prototype - the buttons are shown for design only.',
+  'auth.errInvalid': 'Email or password is incorrect.',
+  'auth.errEmailTaken': 'An account with this email already exists.',
+  'auth.errNetwork':
+    'Could not reach the sign-in service. Check your connection and try again.',
+  'auth.errGeneric': 'Something went wrong. Please try again.',
+  'auth.errConfirm': 'Check your inbox - we sent you a confirmation link.',
+  'auth.backendTitle': 'Secure account',
+  'auth.backendBody':
+    'Accounts are created and stored with Supabase Authentication. Nothing is sent to any other service.',
+  'auth.checkInbox':
+    'Almost there - open the link we emailed you, then sign in.',
+  'auth.working': 'One moment...',
   'auth.createTitle': 'Create Account',
   'auth.createSub': 'Join GeneClarity today',
   'auth.noAccount': "Don't have an account?",
@@ -456,6 +468,17 @@ export const ar = {
   'auth.continueGoogle': 'المتابعة عبر Google',
   'auth.continueApple': 'المتابعة عبر Apple',
   'auth.socialDemo': 'تسجيل الدخول عبر الحسابات الاجتماعية غير مفعّل في هذا النموذج - الأزرار معروضة للتصميم فقط.',
+  'auth.errInvalid': 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+  'auth.errEmailTaken': 'يوجد حساب بهذا البريد الإلكتروني بالفعل.',
+  'auth.errNetwork':
+    'تعذّر الوصول إلى خدمة تسجيل الدخول. تحقق من اتصالك وحاول مرة أخرى.',
+  'auth.errGeneric': 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
+  'auth.errConfirm': 'تحقق من بريدك الإلكتروني - أرسلنا لك رابط تأكيد.',
+  'auth.backendTitle': 'حساب آمن',
+  'auth.backendBody':
+    'يتم إنشاء الحسابات وحفظها عبر Supabase Authentication ولا يُرسل شيء إلى أي خدمة أخرى.',
+  'auth.working': 'لحظة من فضلك...',
+  'auth.checkInbox': 'اقتربنا - افتح الرابط الذي أرسلناه إلى بريدك ثم سجّل الدخول.',
   'auth.createTitle': 'إنشاء حساب',
   'auth.createSub': 'انضم إلى جين كلايري اليوم',
   'auth.noAccount': 'ليس لديك حساب؟',

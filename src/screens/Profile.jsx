@@ -7,6 +7,7 @@ import { Button, Pill } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
+import { signOutBackend } from '../lib/auth.js'
 
 /**
  * Profile hub. Account-level actions live here; privacy controls are a
@@ -124,6 +125,8 @@ export default function Profile() {
                 variant="danger"
                 size="sm"
                 onClick={() => {
+                  // Ends the Supabase session too (no-op in demo mode).
+                  signOutBackend()
                   dispatch({ type: 'SIGN_OUT' })
                   navigate('/login', { replace: true })
                 }}

@@ -5,9 +5,18 @@ import { Button, TextField, Tick } from '../components/UI.jsx'
 import LanguageToggle from '../components/LanguageToggle.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
+import { supabaseEnabled } from '../lib/supabase.js'
+import { signUpWithBackend } from '../lib/auth.js'
 
 /**
- * Registration screen.
+ * Registration screen — dual mode.
+ *
+ * Backend mode (Supabase configured): a real account is created with
+ * Supabase Authentication. If email confirmation is required, we say so
+ * honestly instead of pretending the user is signed in.
+ *
+ * Demo mode (no backend): a local demo session is created and the
+ * screen states clearly that no real account exists.
  *
  * Data-minimisation note: only a name and an email are requested. No
  * date of birth, address, national ID or health history is collected —
@@ -28,6 +37,9 @@ export default function Register() {
   const [reveal, setReveal] = useState(false)
   const [accepted, setAccepted] = useState(false)
   const [errors, setErrors] = useState({})
+  const [busy, setBusy] = useState(false)
+  const [formNote, setFormNote] = useState(null)
+  const [awaitingConfirm, setAwaitingConfirm] = useState(false)
 
   const setField = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }))
@@ -49,9 +61,40 @@ export default function Register() {
     return Object.keys(next).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setFormNote(null)
     if (!validate()) return
+
+    if (supabaseEnabled) {
+      // Real account creation with Supabase Authentication.
+      setBusy(true)
+      const result = await signUpWithBackend({
+        fullName: form.fullName,
+        email: form.email,
+        password: form.password,
+      })
+      setBusy(false)
+      if (result.ok) {
+        dispatch({ type: 'SIGN_IN', user: result.user })
+        navigate('/done', { replace: true })
+        return
+      }
+      if (result.needsConfirmation) {
+        // Email confirmation is required — show the honest next step
+        // instead of pretending the account is ready.
+        setAwaitingConfirm(true)
+        return
+      }
+      if (result.errorKey === 'auth.errEmailTaken') {
+        setErrors({ email: t('auth.errEmailTaken') })
+      } else {
+        setFormNote(result.errorKey || 'auth.errGeneric')
+      }
+      return
+    }
+
+    // Demo mode: no backend exists — create a local demo session.
     dispatch({
       type: 'SIGN_IN',
       user: {
@@ -74,6 +117,45 @@ export default function Register() {
     // The completion screen mirrors the reference's "You're all set!"
     // moment before the user enters the app.
     navigate('/done', { replace: true })
+  }
+
+  // Email-confirmation state: the account exists but is not active yet.
+  if (awaitingConfirm) {
+    return (
+      <div className="screen bg-white">
+        <header className="flex items-center justify-between px-4 pt-5">
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            aria-label={t('act.back')}
+            className="grid h-10 w-10 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+          >
+            <Icon name="chevronLeft" size={22} />
+          </button>
+          <LanguageToggle />
+          <span className="min-w-10" />
+        </header>
+
+        <div className="flex flex-1 flex-col justify-center px-6 pb-16 text-center">
+          <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-mint-100 text-brand-700">
+            <Icon name="mail" size={30} strokeWidth={1.7} />
+          </span>
+          <h1 className="mt-5 text-[23px] font-extrabold text-ink-900">
+            {t('auth.errConfirm')}
+          </h1>
+          <p className="mx-auto mt-2 max-w-[19rem] text-[14px] leading-relaxed text-ink-400">
+            {t('auth.checkInbox')}
+          </p>
+          <Button
+            size="lg"
+            className="mx-auto mt-7 w-full max-w-[19rem]"
+            onClick={() => navigate('/login')}
+          >
+            {t('act.signIn')}
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -173,10 +255,37 @@ export default function Register() {
             {t('auth.terms')}
           </Tick>
 
-          <Button size="lg" type="submit" className="mt-1">
-            {t('act.signUp')}
+          {formNote && (
+            <p
+              role="alert"
+              className="rounded-control bg-danger-100 px-3.5 py-2.5 text-[12.5px] font-semibold leading-snug text-danger-600 animate-fade-up"
+            >
+              {t(formNote)}
+            </p>
+          )}
+
+          <Button size="lg" type="submit" className="mt-1" disabled={busy}>
+            {busy ? t('auth.working') : t('act.signUp')}
           </Button>
         </form>
+
+        {/* Honest note about how registration works in the current mode. */}
+        {supabaseEnabled ? (
+          <div className="mt-4 rounded-control border border-mint-200 bg-mint-50 px-3.5 py-3">
+            <p className="text-[12.5px] font-extrabold text-brand-800">
+              {t('auth.backendTitle')}
+            </p>
+            <p className="mt-1 text-[12px] leading-snug text-ink-500">
+              {t('auth.backendBody')}
+            </p>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-control border border-mint-200 bg-mint-50 px-3.5 py-3">
+            <p className="text-[12px] leading-snug text-ink-500">
+              {t('auth.demoBody')}
+            </p>
+          </div>
+        )}
 
         <p className="mt-5 text-center text-[14px] text-ink-400">
           {t('auth.hasAccount')}{' '}

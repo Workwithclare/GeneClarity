@@ -9,7 +9,7 @@ softened.
 
 | # | Assumption | If wrong |
 | --- | --- | --- |
-| A1 | The challenge accepts a front-end prototype with no backend for this phase | Backend work would be needed before submission |
+| A1 | The challenge permits an optional Supabase backend alongside the demo mode (the original constraint set said no backend during the prototype phase — the team explicitly chose to add one, and this documentation was updated to match) | The backend switches off by deleting `.env.local`: the app falls back to the localStorage demo with no code change |
 | A2 | The supplied reference image is the intended visual identity for the entry | Design may need re-alignment |
 | A3 | English + Arabic covers the intended audience | Further languages/localisation required |
 | A4 | Mobile-first layout suits how judges will view it (browser + phone) | Desktop layout would need attention |
@@ -28,16 +28,37 @@ softened.
   referral directory, and contacting them is impossible by design.
 
 ### Product
-- **No real authentication.** Login validates non-empty fields only; the
-  "account" is a local object. Anyone with the device has the demo account.
-- **Per-browser storage.** Clearing browser data resets everything; there is no
-  cross-device sync (because there is no server).
+- **Dual-mode authentication.** In demo mode (no `.env.local`) login validates
+  non-empty fields only and the "account" is a local object — anyone with the
+  device has the demo account. In backend mode real sign-up/sign-in runs
+  against Supabase Authentication, but **has not yet been exercised against a
+  live project** (credentials pending) — treat it as implemented, untested.
+- **Server persistence only partially wired.** Accounts authenticate via
+  Supabase in backend mode, but results/consent/notifications/settings still
+  read and write `localStorage` in both modes; the database schema + RLS
+  policies exist (`supabase/migrations/0001_init.sql`) but the UI does not yet
+  call them. In demo mode: per-browser storage, clearing browser data resets
+  everything, no cross-device sync.
+- **RLS policies are written, not audited.** Owner-only + consent-gated
+  partner reads are declared in SQL, but no penetration test or adversarial
+  review has been run against them.
 - **No real notifications.** The inbox shows synthetic in-app items; no email,
-  SMS, or push is sent.
+  SMS, or push is sent. Supabase email confirmation is currently **disabled**
+  on the project so sign-up works instantly during development and demos —
+  this must be re-enabled before any real-world pilot (deliberate decision,
+  correctly reasoned: passwords and RLS are unaffected, but unconfirmed email
+  ownership would be).
 - **Print/export = browser features.** Report printing uses the browser print
   dialogue; export is a local JSON file. No PDF generation library is included.
 - **No tests.** There is no unit/integration/e2e test suite — verification was
   a manual browser walkthrough plus a passing production build.
+- **Known dependency advisories.** `npm audit` reports 4 pre-existing
+  vulnerabilities (esbuild ≤0.24.2 via vite ≤6.4.3; react-router 6–7.17 —
+  open-redirect and SSR-hydration advisories). None come from the Supabase
+  client; the fixes require breaking major upgrades (vite 8, react-router
+  7.18) and have deliberately not been forced. They affect dev tooling and a
+  router path this hash-routed app does not use for redirects, but they are
+  declared here rather than hidden.
 
 ### Evidence
 - **No user research.** No usability testing, interviews, or surveys have been
@@ -45,9 +66,11 @@ softened.
 - **No accessibility audit.** Semantic markup and keyboard focus are in place,
   but no WCAG audit or screen-reader testing has been performed; no compliance
   claim is made.
-- **No security testing.** No penetration test, dependency audit, or threat
-  modelling exercise has been conducted. (Mitigating fact: the prototype sends
-  no data anywhere — but that is architecture, not a test result.)
+- **No security testing.** No penetration test or threat modelling exercise
+  has been conducted. A dependency audit (`npm audit`) was run and its 4
+  pre-existing findings are declared above. In demo mode the app sends no data
+  anywhere; in backend mode access is constrained by RLS — but neither
+  statement is a test result.
 - **No clinical validation.** Nothing has been validated against real screening
   outcomes, and the prototype is not a medical device.
 
@@ -60,14 +83,14 @@ softened.
 | R3 | Arabic copy errors damage trust with Arabic-speaking judges/users | Medium | Medium | Honest limitation declared (A3 above); RTL mechanics themselves verified |
 | R4 | Consent flow demonstrated incorrectly during the live demo | Low | High | Step-by-step script in `12_DEMONSTRATION_AND_SUBMISSION_PLAN.md` |
 | R5 | Someone connects the repo to OneDrive again → `npm` breaks | Medium | Medium | Repo lives at `C:\Users\USER\GeneClarity`; documented in README and `05_` |
-| R6 | Scope creep into backend before the deadline | Medium | High | Backend explicitly out of scope for this phase; design documented only |
+| R6 | Backend scope grows past what can be demoed reliably | Medium | High | Backend is dual-mode: deleting `.env.local` returns the app to the fully-tested localStorage demo; only auth is wired so far, data sync stays *planned* until tested |
 | R7 | A real dataset is introduced later without governance review | Low | High | Rule in `10_`: list datasets with licence *before* integration |
 | R8 | Over-claiming in pitch materials contradicts the docs | Low | High | Submission materials must be checked against `09_`'s "cannot say" list |
 
 ## Deliberate non-goals (this phase)
 
-- Real backend, real auth, real data (planned for a later phase — Supabase
-  Auth + PostgreSQL + server-side AI functions).
+- Server-side data sync for results/consent/notifications (schema exists;
+  UI wiring is *planned*, not built).
 - Integration with laboratories, clinics, or national screening programmes.
 - Any AI feature — none is implemented, and none is claimed.
 - Native mobile apps (the prototype is a responsive web app).
@@ -78,4 +101,5 @@ softened.
 2. Professional Arabic translation review.
 3. Usability testing with screening-eligible adults (then: real metrics).
 4. WCAG 2.2 AA audit with assistive-technology testing.
-5. Backend build with the consent schema from `08_`, plus a security review.
+5. Finish the backend: wire the UI to the existing RLS schema, test the
+   consent flow end-to-end against a live project, then a security review.

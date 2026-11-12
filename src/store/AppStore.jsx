@@ -5,6 +5,8 @@ import {
   demoNotifications,
   demoActivity,
 } from '../data/demoData.js'
+import { supabaseEnabled } from '../lib/supabase.js'
+import { restoreSession, onAuthChange } from '../lib/auth.js'
 
 /**
  * GeneClarity application state.
@@ -229,6 +231,24 @@ export function AppProvider({ children }) {
       /* start from the clean initial state */
     }
     setReady(true)
+  }, [])
+
+  // Backend mode: the Supabase session is the source of truth for WHO is
+  // signed in. Demo mode never runs this effect, so localStorage-only
+  // behaviour is unchanged.
+  useEffect(() => {
+    if (!supabaseEnabled) return
+    let alive = true
+    restoreSession().then((user) => {
+      if (alive && user) dispatch({ type: 'SIGN_IN', user })
+    })
+    const subscription = onAuthChange((user) => {
+      dispatch(user ? { type: 'SIGN_IN', user } : { type: 'SIGN_OUT' })
+    })
+    return () => {
+      alive = false
+      subscription.unsubscribe()
+    }
   }, [])
 
   // Persist on every change, but never before the first read — writing

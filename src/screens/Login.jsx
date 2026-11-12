@@ -5,15 +5,20 @@ import { Button, TextField, SafetyNote } from '../components/UI.jsx'
 import LanguageToggle from '../components/LanguageToggle.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore, demoUser } from '../store/AppStore.jsx'
+import { supabaseEnabled } from '../lib/supabase.js'
+import { signInWithBackend } from '../lib/auth.js'
 
 /**
- * Sign-in screen.
+ * Sign-in screen — dual mode.
  *
- * ⚠ There is no server in this prototype. Passwords are NOT checked
- * against a real credential store — any well-formed input signs you in,
- * and the sample button fills the demo account. This is stated on the
- * screen itself so nobody mistakes it for real authentication.
- * Supabase Authentication replaces this in the backend phase.
+ * Backend mode (Supabase configured): passwords are checked against
+ * Supabase Authentication for real; errors are mapped to catalogue
+ * strings, never raw provider messages.
+ *
+ * Demo mode (no backend): passwords are NOT checked against a real
+ * credential store — any well-formed input signs you in, and the sample
+ * button fills the demo account. This is stated on the screen itself so
+ * nobody mistakes it for real authentication.
  */
 export default function Login() {
   const navigate = useNavigate()
@@ -26,6 +31,8 @@ export default function Login() {
   const [remember, setRemember] = useState(true)
   const [errors, setErrors] = useState({})
   const [socialNote, setSocialNote] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [formNote, setFormNote] = useState(null)
 
   const validate = () => {
     const next = {}
@@ -54,9 +61,33 @@ export default function Login() {
     navigate('/dashboard', { replace: true })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (validate()) signIn()
+    setFormNote(null)
+    if (!validate()) return
+
+    if (supabaseEnabled) {
+      // Real credential check against Supabase Authentication.
+      setBusy(true)
+      const result = await signInWithBackend(email, password)
+      setBusy(false)
+      if (result.ok) {
+        dispatch({ type: 'SIGN_IN', user: result.user })
+        navigate('/dashboard', { replace: true })
+        return
+      }
+      if (result.errorKey === 'auth.errInvalid') {
+        setErrors({ password: t('auth.errInvalid') })
+      } else if (result.errorKey === 'auth.errEmailTaken') {
+        setErrors({ email: t('auth.errEmailTaken') })
+      } else {
+        setFormNote(result.errorKey || 'auth.errGeneric')
+      }
+      return
+    }
+
+    // Demo mode: no credential store exists — accept well-formed input.
+    signIn()
   }
 
   const fillDemo = () => {
@@ -157,8 +188,17 @@ export default function Login() {
             </button>
           </div>
 
-          <Button size="lg" type="submit" className="mt-1">
-            {t('act.signIn')}
+          {formNote && (
+            <p
+              role="alert"
+              className="rounded-control bg-danger-100 px-3.5 py-2.5 text-[12.5px] font-semibold leading-snug text-danger-600 animate-fade-up"
+            >
+              {t(formNote)}
+            </p>
+          )}
+
+          <Button size="lg" type="submit" className="mt-1" disabled={busy}>
+            {busy ? t('auth.working') : t('act.signIn')}
           </Button>
         </form>
 
@@ -196,18 +236,29 @@ export default function Login() {
           </p>
         )}
 
-        {/* Demonstration notice — makes the absence of a real auth backend explicit. */}
-        <div className="mt-4 rounded-control border border-mint-200 bg-mint-50 px-3.5 py-3">
-          <p className="text-[12px] leading-snug text-ink-500">{t('auth.demoBody')}</p>
-          <button
-            type="button"
-            onClick={fillDemo}
-            className="mt-1.5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-brand-700 underline decoration-brand-400 underline-offset-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 rounded"
-          >
-            <Icon name="sparkle" size={14} />
-            {t('auth.demoFill')}
-          </button>
-        </div>
+        {/* Honest note about how sign-in works in the current mode. */}
+        {supabaseEnabled ? (
+          <div className="mt-4 rounded-control border border-mint-200 bg-mint-50 px-3.5 py-3">
+            <p className="text-[12.5px] font-extrabold text-brand-800">
+              {t('auth.backendTitle')}
+            </p>
+            <p className="mt-1 text-[12px] leading-snug text-ink-500">
+              {t('auth.backendBody')}
+            </p>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-control border border-mint-200 bg-mint-50 px-3.5 py-3">
+            <p className="text-[12px] leading-snug text-ink-500">{t('auth.demoBody')}</p>
+            <button
+              type="button"
+              onClick={fillDemo}
+              className="mt-1.5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-brand-700 underline decoration-brand-400 underline-offset-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 rounded"
+            >
+              <Icon name="sparkle" size={14} />
+              {t('auth.demoFill')}
+            </button>
+          </div>
+        )}
 
         <p className="mt-5 text-center text-[14px] text-ink-400">
           {t('auth.noAccount')}{' '}

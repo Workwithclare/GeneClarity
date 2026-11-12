@@ -35,6 +35,36 @@ Then open <http://localhost:5173>.
 > **Windows tip:** if PowerShell says `npm.ps1 cannot be loaded`, either use
 > `npm.cmd` as shown above, or run commands from `cmd.exe` instead.
 
+The app runs in **demo mode** straight away — no accounts needed. To connect a
+real backend (optional), see *Connecting the backend* below.
+
+### Connecting the backend (optional)
+
+The app is **dual-mode**: with Supabase configured it uses real accounts and a
+real database; without it, it falls back to the original localStorage demo, so
+nothing ever breaks.
+
+1. Create a free project at <https://supabase.com> (no paid tier needed).
+2. In the project's **SQL Editor**, paste and run
+   `supabase/migrations/0001_init.sql` (creates the tables + Row Level
+   Security policies).
+3. Copy `.env.example` to `.env.local` and fill in the two values from
+   **Project Settings → API**:
+
+   ```powershell
+   Copy-Item .env.example .env.local
+   # then edit .env.local:
+   # VITE_SUPABASE_URL=https://your-project.supabase.co
+   # VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+4. Restart `npm.cmd run dev`. The login/register screens now say
+   "Secure account" instead of the demo notice.
+
+`.env.local` is gitignored — never commit real keys. The anon key is a
+*public* client key; what it may actually read/write is limited by the Row
+Level Security policies in the SQL file, not by hiding the key.
+
 ---
 
 ## What is in the prototype
@@ -45,7 +75,7 @@ navigation (no server-side routing needed — the app uses hash routes):
 | Area | Screens |
 | --- | --- |
 | Entry | Splash, Welcome, Onboarding (3 steps), Privacy & consent |
-| Accounts | Registration, Login (with a one-tap sample account) |
+| Accounts | Registration, "You're all set" completion, Login (with a one-tap sample account) |
 | Core | Dashboard, Genetic report, Key insight detail (plain-language results) |
 | Learning | Learn library, Condition/topic detail |
 | Couple | CoupleConnect, Partner-sharing consent (grant / revoke) |
@@ -67,32 +97,38 @@ GeneClarity/
 ├─ index.html                 # Vite entry; loads Plus Jakarta Sans + Cairo
 ├─ vite.config.js             # React plugin, base './' for any static host
 ├─ tailwind.config.js         # Brand tokens + safelist for runtime-built classes
+├─ .env.example               # Template for the optional Supabase credentials
 ├─ public/favicon.svg
 ├─ src/
 │  ├─ App.jsx                 # Routes + scroll/language-dir side effects
 │  ├─ i18n/
 │  │  ├─ translations.js      # Single source of truth for ALL copy (EN + AR)
 │  │  └─ LanguageContext.jsx  # Language state, persists to localStorage
+│  ├─ lib/
+│  │  ├─ supabase.js          # Dual-mode client (null when not configured)
+│  │  └─ auth.js              # Sign-up/in/out helpers + error→key mapping
 │  ├─ store/
 │  │  ├─ AppStore.jsx         # Reducer for consent, settings, activity log
-│  │  └─ useRequireAuth.js    # Route guard (demo auth only)
+│  │  └─ useRequireAuth.js    # Route guard
 │  ├─ data/demoData.js        # All synthetic demo data + origin declarations
 │  ├─ components/             # Icon, Logo, Illustrations, Shell, UI primitives
 │  ├─ screens/                # One file per screen
 │  └─ styles/index.css        # Design system: tokens, .btn, .card, .field
+├─ supabase/migrations/       # SQL schema + Row Level Security policies
 └─ docs/                      # Challenge documentation (see below)
 ```
 
 **Key decisions**
 
-- **Vite + React + Tailwind** — fast, no backend, static output deployable to
+- **Vite + React + Tailwind** — fast to build, static output deployable to
   any free static host.
 - **HashRouter** — works on any static host without rewrite configuration.
-- **No backend, no cloud services.** No Firebase, Supabase, or external APIs.
-  All state lives in the browser (`localStorage`). This is a deliberate
-  constraint for this phase; the planned future backend is Supabase Auth +
-  PostgreSQL with server-side functions for any AI features (documented in
-  `docs/09`–`docs/11`, explicitly marked *planned*, not implemented).
+- **Dual-mode backend (Supabase, optional).** With `VITE_SUPABASE_URL` +
+  `VITE_SUPABASE_ANON_KEY` set in `.env.local`, accounts and data use Supabase
+  Auth + PostgreSQL with Row Level Security. Without them, the app runs the
+  original localStorage demo — same screens, same flows, nothing breaks. No
+  Firebase, no Google AI Studio, no paid services either way. AI features are
+  still *planned*, not built (`docs/09`–`docs/11`).
 - **All copy lives in `src/i18n/translations.js`** — no hardcoded English in
   components, which is what makes full Arabic RTL possible.
 
@@ -118,7 +154,7 @@ These are enforced throughout the code and copy:
 6. **No sensitive information in public screens or logs.** Activity history
    records consent events, not result contents.
 7. **Export is real and local** — the privacy screen downloads this browser's
-   stored demo state as JSON; nothing is transmitted anywhere.
+   stored demo state as JSON; it is never uploaded anywhere.
 
 ---
 
@@ -182,16 +218,18 @@ All challenge documentation is in [`docs/`](docs/):
 
 ## Status
 
-- **Implemented:** full 20-screen prototype, EN/AR, build passing.
+- **Implemented:** full 22-screen prototype, EN/AR, build passing; optional
+  Supabase backend (Auth + PostgreSQL schema with RLS) in dual-mode.
 - **Tested:** production build, browser walkthrough of all screens,
   zero console errors, RTL verification.
-- **Planned (not built):** real authentication, server database, AI features,
-  real counselling directory integration.
+- **Planned (not built):** server-side data sync wiring, partner consent
+  enforced end-to-end against a live project, AI features, real counselling
+  directory integration.
 - **Not claimed:** clinical validation, security testing, user-impact metrics,
   partnerships.
 
 ---
 
-*Prepared for the Future Health Digital Innovation Challenge. No git remote has
-been configured and nothing has been published — repository publication awaits
-team approval.*
+*Prepared for the Future Health Digital Innovation Challenge. Published to
+`github.com/Workwithclare/GeneClarity` with team approval; no credentials are
+committed (`.env.local` is gitignored).*

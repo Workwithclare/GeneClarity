@@ -65,20 +65,34 @@ contributors keep the chain of custody.
 | Resource | Used for | Licence/origin | Data sent |
 | --- | --- | --- | --- |
 | React, React Router, Vite, Tailwind, PostCSS, Autoprefixer | Build/runtime (npm packages) | MIT (standard OSS licences) | None at runtime |
+| `@supabase/supabase-js` | Optional backend client (Auth + Postgres) — **inactive until configured** | MIT | Only when `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` are set: sign-in credentials and app rows go to *the team's own* Supabase project; no third-party data broker is involved |
+| Supabase Auth + PostgreSQL (hosted, free tier) | Optional account/database backend | Supabase terms; the team's own project | Account email/password and synthetic app rows, protected by Row Level Security (`supabase/migrations/0001_init.sql`) |
 | Google Fonts: Plus Jakarta Sans, Cairo | Typefaces | SIL Open Font License | Browser fetches the font CSS/files from `fonts.googleapis.com`/`fonts.gstatic.com` (standard web-font behaviour; no app data is sent) |
 
 - **No analytics, tracking, advertising, crash reporting, or AI APIs** are
   called anywhere in the codebase.
 - **No credentials or API keys exist** in the repository (checked; `.env*` is
-  git-ignored as a standing rule).
+  git-ignored as a standing rule — `.env.local` holds the Supabase values
+  locally and is never committed).
+- **Challenge-constraint note:** the original constraint set listed Supabase
+  as out of scope for the prototype phase. The team made a documented,
+  deliberate decision to add it as an *optional* backend; this document and
+  `05_` were updated to match that reality. Removing `.env.local` returns the
+  app to frontend-only mode. Firebase, Firestore and Google AI Studio remain
+  unused and forbidden.
 
 ## 6. Data created at runtime (by the user of the demo)
 
 - Account state, consent grants/revocations, settings and the activity log are
-  written to **`localStorage` in the user's own browser only**.
-- Nothing is transmitted; there is no server to transmit to.
-- "Export my data" downloads a local JSON `Blob` — a real download, zero
-  network upload.
+  written to **`localStorage` in the user's own browser** (always, in both
+  modes — this is also the demo mode's only store).
+- In backend mode (configured `.env.local`), sign-up/sign-in credentials go to
+  the team's own Supabase Auth service; nothing else is transmitted yet,
+  because data sync is not wired.
+- In demo mode nothing is transmitted at all — there is no server to transmit
+  to.
+- "Export my data" downloads a local JSON `Blob` — a real download, never
+  uploaded.
 
 ## 7. Governance rules for future work
 
