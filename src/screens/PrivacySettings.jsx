@@ -209,7 +209,17 @@ export default function PrivacySettings() {
         <section className="mt-6">
           <div className="mb-2 flex items-center justify-between">
             <h2 className="eyebrow">{t('priv.logTitle')}</h2>
-            <Pill tone="neutral">{activity.length}</Pill>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => navigate('/activity')}
+                className="flex items-center gap-1 rounded-full px-2 py-1 text-[12px] font-bold text-brand-700 transition-colors hover:bg-brand-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+              >
+                {t('act.viewAll')}
+                <Icon name={chevron} size={14} />
+              </button>
+              <Pill tone="neutral">{activity.length}</Pill>
+            </div>
           </div>
           <div className="rounded-card border border-mint-200 bg-white p-4 shadow-card">
             <p className="text-[13px] leading-relaxed text-ink-500">

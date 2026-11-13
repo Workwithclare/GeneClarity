@@ -8,10 +8,10 @@ import { useStore } from '../store/AppStore.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
 
 const TYPE_META = {
-  report: { icon: 'file', tone: 'bg-brand-100 text-brand-700' },
-  privacy: { icon: 'lock', tone: 'bg-mint-100 text-brand-700' },
-  education: { icon: 'book', tone: 'bg-ink-50 text-ink-500' },
-  partner: { icon: 'users', tone: 'bg-caution-100 text-caution-600' },
+  report: { icon: 'file', tone: 'bg-brand-100 text-brand-700', to: '/report' },
+  privacy: { icon: 'lock', tone: 'bg-mint-100 text-brand-700', to: '/settings/privacy' },
+  education: { icon: 'book', tone: 'bg-ink-50 text-ink-500', to: '/learn' },
+  partner: { icon: 'users', tone: 'bg-caution-100 text-caution-600', to: '/couple' },
 }
 
 function timeAgo(iso, isAr) {
@@ -42,6 +42,13 @@ export default function Notifications() {
   const isAr = lang === 'ar'
   const items = showAll ? state.notifications : state.notifications.filter((n) => !n.read)
   const unreadCount = state.notifications.filter((n) => !n.read).length
+
+  // Tapping a card opens the screen it refers to and clears its unread
+  // flag — the notification is the shortcut, the destination is real.
+  const openNotification = (n) => {
+    if (!n.read) dispatch({ type: 'MARK_READ', id: n.id })
+    navigate((TYPE_META[n.type] || TYPE_META.report).to)
+  }
 
   return (
     <Screen>
@@ -99,7 +106,16 @@ export default function Notifications() {
                   style={{ animationDelay: `${i * 55}ms` }}
                 >
                   <div
-                    className={`flex gap-3.5 rounded-card border p-4 shadow-card ${
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openNotification(n)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        openNotification(n)
+                      }
+                    }}
+                    className={`flex cursor-pointer gap-3.5 rounded-card border p-4 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-button focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 ${
                       n.read
                         ? 'border-mint-200 bg-white'
                         : 'border-brand-200 bg-mint-100'
@@ -133,8 +149,13 @@ export default function Notifications() {
                         {!n.read && (
                           <button
                             type="button"
-                            onClick={() => dispatch({ type: 'MARK_READ', id: n.id })}
-                            className="rounded-full px-2.5 py-1 text-[11.5px] font-bold text-brand-700 transition-colors hover:bg-brand-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                            onClick={(e) => {
+                              // The whole card already opens the target —
+                              // this button only clears the flag in place.
+                              e.stopPropagation()
+                              dispatch({ type: 'MARK_READ', id: n.id })
+                            }}
+                            className="rounded-full px-2.5 py-1 text-[11.5px] font-bold text-brand-700 transition-colors hover:bg-brand-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
                           >
                             {t('notif.markOne')}
                           </button>

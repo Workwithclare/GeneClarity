@@ -38,8 +38,29 @@ export default function Splash() {
     return () => window.clearTimeout(timer)
   }, [navigate])
 
+  // Tapping anywhere skips the wait — same destination as the timer.
+  const skip = () => {
+    let hasSession = false
+    try {
+      const raw = window.localStorage.getItem('geneclarity.state.v1')
+      hasSession = Boolean(raw && JSON.parse(raw)?.user)
+    } catch {
+      /* treat as a new visitor */
+    }
+    navigate(hasSession ? '/dashboard' : '/welcome', { replace: true })
+  }
+
   return (
-    <div className="screen relative overflow-hidden bg-white">
+    <div
+      className="screen relative cursor-pointer overflow-hidden bg-white"
+      onClick={skip}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') skip()
+      }}
+      aria-label={t('splash.loading')}
+    >
       {/* Brand lockup, centred in the light area */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 px-8 pb-44 text-center animate-fade-in">
         <LogoMark size={104} />

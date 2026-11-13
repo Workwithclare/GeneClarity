@@ -143,7 +143,8 @@ export default function Support() {
             {counsellorDirectory.map((c) => (
               <li
                 key={c.id}
-                className="flex items-center gap-3.5 rounded-card border border-mint-200 bg-white p-4 shadow-card"
+                onClick={handleContact}
+                className="flex cursor-pointer items-center gap-3.5 rounded-card border border-mint-200 bg-white p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-button"
               >
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-700 text-[13px] font-extrabold text-white">
                   {(lang === 'ar' ? c.nameAr : c.nameEn)
@@ -163,7 +164,14 @@ export default function Support() {
                     {lang === 'ar' ? c.focusAr : c.focusEn}
                   </p>
                 </div>
-                <Button variant="soft" size="sm" onClick={handleContact}>
+                <Button
+                  variant="soft"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleContact()
+                  }}
+                >
                   {t('sup.book')}
                 </Button>
               </li>
@@ -185,6 +193,14 @@ export default function Support() {
             </p>
             <p className="mt-0.5 text-[13px] text-brand-200">{t('faq.helpBody')}</p>
           </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="w-auto shrink-0"
+            onClick={handleContact}
+          >
+            {t('act.getSupport')}
+          </Button>
         </div>
 
         <div className="mt-4">

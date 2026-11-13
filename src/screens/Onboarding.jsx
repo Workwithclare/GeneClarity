@@ -116,13 +116,17 @@ export default function Onboarding() {
         </ul>
 
         <div className="mt-auto pb-8 pt-8">
-          {/* Page dots */}
-          <div className="mb-5 flex justify-center gap-2" aria-hidden="true">
+          {/* Page dots — tappable, so the user can jump between steps */}
+          <div className="mb-5 flex justify-center gap-2">
             {STEPS.map((s, i) => (
-              <span
+              <button
                 key={s.titleKey}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === index ? 'w-6 bg-brand-700' : 'w-2 bg-ink-200'
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`${t('onb.step')} ${i + 1} ${t('onb.of')} ${STEPS.length}`}
+                aria-current={i === index ? 'step' : undefined}
+                className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 ${
+                  i === index ? 'w-6 bg-brand-700' : 'w-2 bg-ink-200 hover:bg-ink-300'
                 }`}
               />
             ))}

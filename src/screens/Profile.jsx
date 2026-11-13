@@ -60,9 +60,14 @@ export default function Profile() {
       <main className="flex-1 overflow-y-auto px-5 pb-4 pt-5">
         {/* Identity */}
         <div className="flex flex-col items-center text-center animate-fade-up">
-          <span className="rounded-full ring-4 ring-brand-100">
+          <button
+            type="button"
+            onClick={() => navigate('/settings')}
+            aria-label={t('set.title')}
+            className="rounded-full ring-4 ring-brand-100 transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+          >
             <AvatarArt size={104} />
-          </span>
+          </button>
 
           <h1 className="mt-4 text-[21px] font-extrabold text-ink-900">
             {user.fullName}

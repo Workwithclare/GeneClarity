@@ -32,6 +32,16 @@ export default function Report() {
   const hasResults = state.results.length > 0
   const lastUpdated = state.results[0]?.updatedAt
 
+  // The summary tiles double as shortcuts to the findings list below.
+  const scrollToFindings = () => {
+    document
+      .getElementById('findings')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const tileClass =
+    'rounded-control border border-mint-200 bg-white py-3 cursor-pointer transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-button focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200'
+
   return (
     <Screen>
       <AppBar title={t('rep.title')} onBack={() => navigate('/dashboard')} />
@@ -73,38 +83,38 @@ export default function Report() {
           <SampleBanner />
         </div>
 
-        {/* Summary figures */}
+        {/* Summary figures — each tile jumps to the findings list */}
         {hasResults && (
           <div className="mt-5 grid grid-cols-3 gap-2.5 text-center">
-            <div className="rounded-control border border-mint-200 bg-white py-3">
+            <button type="button" onClick={scrollToFindings} className={tileClass}>
               <p className="text-[19px] font-extrabold text-ink-900">
                 {state.results.length}
               </p>
               <p className="mt-0.5 text-[11px] font-semibold leading-tight text-ink-400">
                 {t('rep.testedCount')}
               </p>
-            </div>
-            <div className="rounded-control border border-mint-200 bg-white py-3">
+            </button>
+            <button type="button" onClick={scrollToFindings} className={tileClass}>
               <p className="text-[19px] font-extrabold text-ink-900">
                 {state.results.filter((r) => r.status === 'carrier').length}
               </p>
               <p className="mt-0.5 text-[11px] font-semibold leading-tight text-ink-400">
                 {t('rep.carrierCount')}
               </p>
-            </div>
-            <div className="rounded-control border border-mint-200 bg-white py-3">
+            </button>
+            <button type="button" onClick={scrollToFindings} className={tileClass}>
               <p className="text-[19px] font-extrabold text-ink-900">
                 {state.results.filter((r) => r.status === 'uncertain').length}
               </p>
               <p className="mt-0.5 text-[11px] font-semibold leading-tight text-ink-400">
                 {t('res.uncertain')}
               </p>
-            </div>
+            </button>
           </div>
         )}
 
         {/* Individual findings */}
-        <div className="mt-6">
+        <div className="mt-6" id="findings">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="section-title">{t('rep.summary')}</h3>
             {lastUpdated && (
