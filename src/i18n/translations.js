@@ -35,6 +35,7 @@ export const en = {
   'act.goToDashboard': 'Go to Dashboard',
   'act.tryAgain': 'Try Again',
   'act.skip': 'Skip',
+  'act.viewAll': 'View all',
 
   // --- Splash ------------------------------------------------------
   'splash.loading': 'Loading…',
@@ -94,6 +95,8 @@ export const en = {
   'auth.fullName': 'Full name',
   'auth.remember': 'Remember me',
   'auth.forgot': 'Forgot password?',
+  'auth.forgotNote':
+    'Password reset is not connected in this prototype — no email will be sent. In a real service, we would send you a reset link.',
   'auth.or': 'or',
   'auth.continueGoogle': 'Continue with Google',
   'auth.continueApple': 'Continue with Apple',
@@ -200,8 +203,13 @@ export const en = {
   'learn.educationOnly':
     'Educational content only. It is general information, not advice about your own health.',
   'learn.related': 'Related topics',
-  'learn.whyMatters': 'Why this matters',
-  'learn.whatYouCanDo': 'What you can do',
+  'learn.whatMean': 'What does this mean?',
+  'learn.remember': 'What should I remember?',
+  'learn.important': 'Important to know',
+  'learn.misunderstanding': 'Common misunderstanding',
+  'learn.example': 'Example',
+  'learn.screeningMean': 'What this means for screening',
+  'learn.questions': 'Questions you may want to ask a healthcare professional',
 
   // --- FAQ -------------------------------------------------------------
   'faq.title': 'Frequently Asked Questions',
@@ -232,7 +240,12 @@ export const en = {
     'Partner access starts with an explicit invitation. Nothing is shared until both of you agree.',
   'cc.invite': 'Invite a partner',
   'cc.inviteBody':
-    'Send an invitation code. Your partner must accept before anything is visible to them.',
+    'Invite your partner. Nothing is visible to them until you grant access — and you can withdraw it at any time.',
+  'cc.partnerEmail': "Partner's email",
+  'cc.partnerEmailHint':
+    'They need their own GeneClarity account. An invitation shares nothing on its own.',
+  'cc.noAccountFound': 'No GeneClarity account found with that email.',
+  'cc.inviteWorking': 'Inviting…',
   'cc.yourConsent': 'Your sharing consent',
   'cc.manageConsent': 'Manage what I share',
   'cc.statusNone': 'Nothing shared',
@@ -376,6 +389,69 @@ export const en = {
   'notice.notDiagnostic': 'Not a diagnosis',
   'notice.backHome': 'Back to start',
 
+  // --- My Screening Journey -------------------------------------------------------
+  'journey.title': 'My Screening Journey',
+  'journey.cardSub':
+    'Store your reports privately, understand your results, and prepare for professional guidance.',
+  'journey.subtitle':
+    'Keep your screening information secure, understand what it says, and know when to involve a professional.',
+  'journey.resultsCard': 'My Screening Results',
+  'journey.resultsSub':
+    'Upload screening reports to a private store that only you can access.',
+  'journey.understandCard': 'Understand My Results',
+  'journey.understandSub':
+    'Plain-language explanations of common screening terms and result labels.',
+  'journey.guidanceCard': 'Professional Guidance',
+  'journey.guidanceSub':
+    'What genetic counselling is, when it may help, and how to prepare your questions.',
+  'journey.privacyTitle': 'Private by default',
+  'journey.privacyBody':
+    'Your documents belong to you alone. Nothing is shared with a partner or relative automatically.',
+  'journey.sharingTitle': 'Sharing screening documents',
+  'journey.sharingBody':
+    'Sharing documents with a partner is not implemented in this prototype. It is a planned feature — it will only ever be built with explicit, revocable consent, and only after it can be tested for security.',
+  'journey.planned': 'Planned',
+  'journey.docsTitle': 'My Screening Results',
+  'journey.docsPrivacy':
+    'Documents are stored in a private bucket: only your account can list, open or delete them, through short-lived signed links — never public URLs.',
+  'journey.upload': 'Upload a document',
+  'journey.uploading': 'Uploading…',
+  'journey.formats': 'PDF, JPG or PNG · up to 10 MB',
+  'journey.uploaded': 'Document uploaded.',
+  'journey.emptyTitle': 'No documents yet',
+  'journey.emptyBody':
+    'Upload a screening report to keep it with your screening journey — private, and accessible only to you.',
+  'journey.viewSample': 'See a sample document',
+  'journey.open': 'Open',
+  'journey.download': 'Download',
+  'journey.delete': 'Delete',
+  'journey.deleteConfirm': 'Delete this document? The file is removed from storage.',
+  'journey.uploadedBy': 'Uploaded',
+  'journey.errType':
+    'Unsupported file type. Please upload a PDF, JPG or PNG file.',
+  'journey.errSize': 'This file is too large. The maximum size is 10 MB.',
+  'journey.errUpload': 'The upload could not be completed. Please try again.',
+  'journey.errGeneric': 'Something went wrong. Please try again.',
+  'journey.errDemo':
+    'Document upload needs the connected Supabase backend, which is not active in local demo mode.',
+  'journey.understandTitle': 'Understand My Results',
+  'journey.understandIntro':
+    'What common screening words mean, in everyday language. This explains general terminology — it does not read or interpret your uploaded documents.',
+  'journey.labelsTitle': 'Common result labels',
+  'journey.boundaryTitle': 'What this app will not do',
+  'journey.educationLink': 'Read in the Education Centre',
+  'journey.counsellingTitle': 'What is genetic counselling?',
+  'journey.guidanceTitle': 'Professional Guidance',
+  'journey.whenTitle': 'When professional guidance may be useful',
+  'journey.questionsTitle': 'Prepare questions to ask',
+  'journey.questionsSub':
+    'Tick the questions you want to take with you. Your selection stays on this device.',
+  'journey.selected': 'Selected: {n}',
+  'journey.sampleTitle': 'Sample document',
+  'journey.sampleHint':
+    'Documents you upload are stored separately, in your private area — this sample is built into the app for demonstration.',
+  'journey.backToDocs': 'Back to my documents',
+
   // --- Errors --------------------------------------------------------------------
   'err.title': 'This screen could not be found.',
   'err.body': 'The page you asked for does not exist in this prototype.',
@@ -410,6 +486,7 @@ export const ar = {
   'act.goToDashboard': 'الانتقال إلى اللوحة',
   'act.tryAgain': 'حاول مرة أخرى',
   'act.skip': 'تخطي',
+  'act.viewAll': 'عرض الكل',
 
   'splash.loading': 'جارٍ التحميل…',
   'splash.notice': 'نموذج تجريبي',
@@ -464,6 +541,8 @@ export const ar = {
   'auth.fullName': 'الاسم الكامل',
   'auth.remember': 'تذكرني',
   'auth.forgot': 'نسيت كلمة المرور؟',
+  'auth.forgotNote':
+    'استعادة كلمة المرور غير مفعّلة في هذا النموذج — لن يُرسل أي بريد إلكتروني. في الخدمة الحقيقية، سنرسل لك رابطًا لإعادة التعيين.',
   'auth.or': 'أو',
   'auth.continueGoogle': 'المتابعة عبر Google',
   'auth.continueApple': 'المتابعة عبر Apple',
@@ -563,8 +642,13 @@ export const ar = {
   'learn.educationOnly':
     'محتوى تعليمي فقط. معلومات عامة وليست نصيحة عن حالتك الصحية.',
   'learn.related': 'مواضيع ذات صلة',
-  'learn.whyMatters': 'لماذا يهم هذا',
-  'learn.whatYouCanDo': 'ما يمكنك فعله',
+  'learn.whatMean': 'ماذا يعني هذا؟',
+  'learn.remember': 'ما الذي يجب أن أتذكره؟',
+  'learn.important': 'مهم أن تعرف',
+  'learn.misunderstanding': 'سوء فهم شائع',
+  'learn.example': 'مثال',
+  'learn.screeningMean': 'ماذا يعني هذا للفحص',
+  'learn.questions': 'أسئلة قد ترغب في طرحها على مختص رعاية صحية',
 
   'faq.title': 'الأسئلة الشائعة',
   'faq.search': 'ابحث في الأسئلة…',
@@ -592,7 +676,13 @@ export const ar = {
   'cc.noPartnerBody':
     'يبدأ الوصول إلى الشريك بدعوة صريحة. لا تُشارك أي معلومات قبل موافقتكما.',
   'cc.invite': 'دعوة شريك',
-  'cc.inviteBody': 'أرسل رمز دعوة. يجب على شريكك القبول قبل ظهور أي شيء له.',
+  'cc.inviteBody':
+    'ادعُ شريكك. لا يظهر لهم أي شيء حتى تمنح الوصول — ويمكنك سحبه في أي وقت.',
+  'cc.partnerEmail': 'البريد الإلكتروني للشريك',
+  'cc.partnerEmailHint':
+    'يحتاج إلى حساب GeneClarity خاص به. الدعوة وحدها لا تشارك أي شيء.',
+  'cc.noAccountFound': 'لم يُعثر على حساب GeneClarity بهذا البريد الإلكتروني.',
+  'cc.inviteWorking': 'جارٍ الدعوة…',
   'cc.yourConsent': 'موافقتك على المشاركة',
   'cc.manageConsent': 'أدر ما أشاركه',
   'cc.statusNone': 'لا شيء مشترك',
@@ -719,6 +809,64 @@ export const ar = {
     'كل نتيجة واسم ورقم في هذا النموذج مثال أصلي أُنشئ للعرض. لا شيء هنا نتيجة فحص حقيقية.',
   'notice.notDiagnostic': 'ليس تشخيصًا',
   'notice.backHome': 'العودة إلى البداية',
+
+  // --- رحلتي للفحص ----------------------------------------------------------------
+  'journey.title': 'رحلتي للفحص',
+  'journey.cardSub':
+    'خزّن تقاريرك بخصوصية، وافهم نتائجك، واستعد للتوجيه المهني.',
+  'journey.subtitle':
+    'احتفظ بمعلومات فحصك بأمان، وافهم ما تقوله، واعرف متى تُشرك مختصًا.',
+  'journey.resultsCard': 'نتائج فحصي',
+  'journey.resultsSub': 'ارفع تقارير الفحص إلى مخزن خاص لا يستطيع أحد غيرك الوصول إليه.',
+  'journey.understandCard': 'افهم نتائجي',
+  'journey.understandSub': 'شروحات بلغة بسيطة لمصطلحات الفحص وعناوين النتائج الشائعة.',
+  'journey.guidanceCard': 'التوجيه المهني',
+  'journey.guidanceSub': 'ما هو المرشد الوراثي، ومتى قد يفيد، وكيف تجهّز أسئلتك.',
+  'journey.privacyTitle': 'خاصة افتراضيًا',
+  'journey.privacyBody':
+    'مستنداتك ملكك وحدك. لا يُشارك شيء مع شريك أو قريب تلقائيًا.',
+  'journey.sharingTitle': 'مشاركة مستندات الفحص',
+  'journey.sharingBody':
+    'مشاركة المستندات مع شريك غير مُنفّذة في هذا النموذج. إنها ميزة مخطط لها — لن تُبنى دائمًا إلا بموافقة صريحة قابلة للسحب، وبعد اختبارها للأمان فقط.',
+  'journey.planned': 'مخطط لها',
+  'journey.docsTitle': 'نتائج فحصي',
+  'journey.docsPrivacy':
+    'تُخزَّن المستندات في دلو خاص: حسابك وحده يستطيع عرضها أو فتحها أو حذفها، عبر روابط موقّعة قصيرة العمر — لا روابط عامة أبدًا.',
+  'journey.upload': 'ارفع مستندًا',
+  'journey.uploading': 'جارٍ الرفع…',
+  'journey.formats': 'PDF أو JPG أو PNG · حتى 10 ميغابايت',
+  'journey.uploaded': 'تم رفع المستند.',
+  'journey.emptyTitle': 'لا توجد مستندات بعد',
+  'journey.emptyBody':
+    'ارفع تقرير فحص للاحتفاظ به ضمن رحلتك — خاص، ولا يصل إليه أحد سواك.',
+  'journey.viewSample': 'اعرض مستندًا نموذجيًا',
+  'journey.open': 'فتح',
+  'journey.download': 'تنزيل',
+  'journey.delete': 'حذف',
+  'journey.deleteConfirm': 'هل تريد حذف هذا المستند؟ يُزال الملف من التخزين.',
+  'journey.uploadedBy': 'رُفع في',
+  'journey.errType': 'نوع ملف غير مدعوم. يرجى رفع ملف PDF أو JPG أو PNG.',
+  'journey.errSize': 'هذا الملف كبير جدًا. الحد الأقصى 10 ميغابايت.',
+  'journey.errUpload': 'تعذّر إكمال الرفع. يرجى المحاولة مرة أخرى.',
+  'journey.errGeneric': 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
+  'journey.errDemo':
+    'رفع المستندات يتطلب اتصال Supabase الخلفي، وهو غير مفعّل في الوضع المحلي.',
+  'journey.understandTitle': 'افهم نتائجي',
+  'journey.understandIntro':
+    'معنى كلمات الفحص الشائعة بلغة يومية. هذا يشرح مصطلحات عامة فقط — ولا يقرأ مستنداتك المرفوعة ولا يفسّرها.',
+  'journey.labelsTitle': 'عناوين النتائج الشائعة',
+  'journey.boundaryTitle': 'ما لن يفعله هذا التطبيق',
+  'journey.educationLink': 'اقرأ في مركز التعلم',
+  'journey.counsellingTitle': 'ما هو المرشد الوراثي؟',
+  'journey.guidanceTitle': 'التوجيه المهني',
+  'journey.whenTitle': 'متى قد يفيد التوجيه المهني',
+  'journey.questionsTitle': 'جهّز أسئلتك',
+  'journey.questionsSub': 'اختر الأسئلة التي تريد أخذها معك. اختيارك يبقى على هذا الجهاز.',
+  'journey.selected': 'المختارة: {n}',
+  'journey.sampleTitle': 'مستند نموذجي',
+  'journey.sampleHint':
+    'المستندات التي ترفعها تُخزَّن بشكل منفصل، في منطقتك الخاصة — أما هذا النموذج فهو مدمج في التطبيق للعرض.',
+  'journey.backToDocs': 'العودة إلى مستنداتي',
 
   'err.title': 'تعذّر العثور على هذه الشاشة.',
   'err.body': 'الصفحة المطلوبة غير موجودة في هذا النموذج.',

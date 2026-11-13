@@ -13,11 +13,12 @@ const STATUS_TITLE = {
 }
 
 // Each sample finding links to its matching educational topic so the
-// "Learn More" button lands somewhere relevant.
-const TOPIC_BY_RESULT = {
-  res_hbs: 'sickle-cell',
-  res_tay: 'tay-sachs',
-  res_cf: 'recessive',
+// "Learn More" button lands somewhere relevant. Keyed on `conditionId`
+// (not the record id) because synced ids carry an account suffix.
+const TOPIC_BY_CONDITION = {
+  'sickle-cell': 'sickle-cell',
+  'tay-sachs': 'carrier-status',
+  'cystic-fibrosis': 'screening-counselling',
 }
 
 /**
@@ -121,7 +122,7 @@ export default function ResultDetail() {
 
           {/* "Learn More" leads into the matching educational topic. */}
           <Link
-            to={`/learn/${TOPIC_BY_RESULT[result.id] || 'what-is-carrier'}`}
+            to={`/learn/${TOPIC_BY_CONDITION[result.conditionId] || 'carrier-status'}`}
             className="btn btn--secondary mt-4"
           >
             {t('act.learnMore')}

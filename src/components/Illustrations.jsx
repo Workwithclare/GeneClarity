@@ -243,3 +243,139 @@ export function SuccessMark({ size = 96, className = '' }) {
     </svg>
   )
 }
+
+/**
+ * Education Centre diagrams. Drawn as simple, language-neutral shapes so
+ * they can sit next to either language without needing translation.
+ */
+
+/** A cell with its nucleus and a few chromosomes inside. */
+export function CellsArt({ className = '', width = 300 }) {
+  const chromosome = (x, y) => (
+    <g key={`${x}-${y}`} stroke={TONES.deep} strokeWidth="5" strokeLinecap="round">
+      <path d={`M${x - 5} ${y - 7}l10 14`} />
+      <path d={`M${x - 5} ${y + 7}l10 -14`} />
+    </g>
+  )
+  return (
+    <svg
+      width={width}
+      height={width * 0.5}
+      viewBox="0 0 300 150"
+      className={className}
+      role="img"
+      aria-label="A cell containing a nucleus with chromosomes"
+    >
+      {/* neighbouring cells for context */}
+      <circle cx="40" cy="118" r="16" fill={TONES.wash} stroke={TONES.pale} strokeWidth="2" />
+      <circle cx="266" cy="34" r="14" fill={TONES.wash} stroke={TONES.pale} strokeWidth="2" />
+      {/* cell membrane */}
+      <circle cx="150" cy="75" r="64" fill={TONES.wash} stroke={TONES.light} strokeWidth="3" />
+      {/* nucleus */}
+      <circle cx="150" cy="75" r="34" fill={TONES.pale} stroke={TONES.mid} strokeWidth="2.5" />
+      {/* chromosomes inside the nucleus */}
+      {chromosome(138, 65)}
+      {chromosome(163, 65)}
+      {chromosome(138, 87)}
+      {chromosome(163, 87)}
+    </svg>
+  )
+}
+
+/** A simplified DNA double helix. */
+export function DnaArt({ className = '', width = 220 }) {
+  const rungs = [30, 48, 66, 84, 102, 120, 138]
+  return (
+    <svg
+      width={width}
+      height={width * 0.85}
+      viewBox="0 0 200 170"
+      className={className}
+      role="img"
+      aria-label="A DNA double helix"
+    >
+      {/* rungs (base pairs) drawn first so the strands sit on top */}
+      <g stroke={TONES.light} strokeWidth="4" strokeLinecap="round">
+        {rungs.map((y) => (
+          <line key={y} x1="74" y1={y} x2="126" y2={y} />
+        ))}
+      </g>
+      {/* the two strands */}
+      <g stroke={TONES.deep} strokeWidth="5" strokeLinecap="round" fill="none">
+        <path d="M100 14C62 38 138 62 100 86 62 110 138 134 100 158" />
+        <path d="M100 14C138 38 62 62 100 86 138 110 62 134 100 158" />
+      </g>
+    </svg>
+  )
+}
+
+/** Two parents each contributing one half, meeting in the child. */
+export function InheritanceArt({ className = '', width = 300 }) {
+  return (
+    <svg
+      width={width}
+      height={width * 0.55}
+      viewBox="0 0 300 165"
+      className={className}
+      role="img"
+      aria-label="One gene copy from each biological parent combining in the child"
+    >
+      {/* parent A — left half highlighted */}
+      <circle cx="70" cy="50" r="30" fill={TONES.pale} stroke={TONES.mid} strokeWidth="2.5" />
+      <path d="M70 20A30 30 0 0 0 70 80Z" fill={TONES.deep} />
+      {/* parent B — right half highlighted */}
+      <circle cx="230" cy="50" r="30" fill={TONES.pale} stroke={TONES.mid} strokeWidth="2.5" />
+      <path d="M230 20A30 30 0 0 1 230 80Z" fill={TONES.light} />
+      {/* contribution lines */}
+      <g stroke={TONES.mid} strokeWidth="3" strokeLinecap="round" strokeDasharray="2 8" fill="none">
+        <path d="M84 78C100 100 112 106 126 114" />
+        <path d="M216 78C200 100 188 106 174 114" />
+      </g>
+      {/* child — one half from each parent */}
+      <circle cx="150" cy="125" r="28" fill={TONES.pale} stroke={TONES.mid} strokeWidth="2.5" />
+      <path d="M150 97A28 28 0 0 0 150 153Z" fill={TONES.deep} />
+      <path d="M150 97A28 28 0 0 1 150 153Z" fill={TONES.light} />
+    </svg>
+  )
+}
+
+/** Four equally likely outcomes, one highlighted — the 25% picture. */
+export function ProbabilityArt({ className = '', width = 260 }) {
+  const cells = [
+    { x: 56, y: 14, shaded: true },
+    { x: 140, y: 14, shaded: false },
+    { x: 56, y: 98, shaded: false },
+    { x: 140, y: 98, shaded: false },
+  ]
+  return (
+    <svg
+      width={width}
+      height={width * 0.58}
+      viewBox="0 0 260 150"
+      className={className}
+      role="img"
+      aria-label="Four equally likely outcomes with one highlighted"
+    >
+      {cells.map((c) => (
+        <g key={`${c.x}-${c.y}`}>
+          <rect
+            x={c.x}
+            y={c.y}
+            width="64"
+            height="64"
+            rx="14"
+            fill={c.shaded ? TONES.deep : TONES.wash}
+            stroke={c.shaded ? TONES.deep : TONES.pale}
+            strokeWidth="2.5"
+          />
+          <circle
+            cx={c.x + 32}
+            cy={c.y + 32}
+            r="11"
+            fill={c.shaded ? '#FFFFFF' : TONES.pale}
+          />
+        </g>
+      ))}
+    </svg>
+  )
+}
