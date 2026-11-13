@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Screen, BottomNav } from '../components/Shell.jsx'
 import { AvatarArt } from '../components/Illustrations.jsx'
-import { Button, SectionTitle, SampleBanner, Pill } from '../components/UI.jsx'
+import { SectionTitle, SampleBanner, Pill } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
@@ -61,6 +61,30 @@ export default function Dashboard() {
         <div className="pt-1">
           <SampleBanner />
         </div>
+
+        {/* My Screening Journey — the feature hub (prominent entry) */}
+        <button
+          type="button"
+          onClick={() => navigate('/journey')}
+          className="mt-4 flex w-full items-center gap-3.5 rounded-card border border-brand-300 bg-brand-800 p-4 text-start shadow-card transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 animate-fade-up"
+        >
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white/12 text-white">
+            <Icon name="dna" size={24} />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[15px] font-extrabold text-white">
+              {t('journey.title')}
+            </span>
+            <span className="mt-0.5 block text-[12.5px] leading-snug text-brand-200">
+              {t('journey.cardSub')}
+            </span>
+          </span>
+          <Icon
+            name={lang === 'ar' ? 'chevronLeft' : 'chevronRight'}
+            size={20}
+            className="shrink-0 text-white"
+          />
+        </button>
 
         {/* Health journey card */}
         <button
@@ -146,8 +170,12 @@ export default function Dashboard() {
           />
         </button>
 
-        {/* Result count strip */}
-        <div className="mt-4 flex items-center justify-between rounded-card border border-mint-200 bg-white px-4 py-3.5">
+        {/* Result count strip — the whole strip opens the report */}
+        <button
+          type="button"
+          onClick={() => navigate('/report')}
+          className="mt-4 flex w-full items-center justify-between rounded-card border border-mint-200 bg-white px-4 py-3.5 text-start shadow-card transition-all hover:-translate-y-0.5 hover:shadow-button focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+        >
           <div>
             <p className="text-[12px] font-semibold text-ink-400">
               {t('rep.carrierCount')}
@@ -163,10 +191,11 @@ export default function Dashboard() {
               {state.results.length}
             </p>
           </div>
-          <Button variant="soft" size="sm" onClick={() => navigate('/report')}>
+          {/* Visual affordance only — the strip itself is the button. */}
+          <span className="btn btn--soft btn--sm pointer-events-none">
             {t('act.viewReport')}
-          </Button>
-        </div>
+          </span>
+        </button>
 
         <p className="mt-4 text-center text-[11.5px] leading-snug text-ink-300">
           {t('learn.educationOnly')}

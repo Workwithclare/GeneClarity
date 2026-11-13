@@ -27,15 +27,17 @@ src/
 │  └─ LanguageContext.jsx# lang state → localStorage + document.dir
 ├─ lib/
 │  ├─ supabase.js        # dual-mode client (null when env vars absent)
-│  └─ auth.js            # sign-up/in/out + session restore + error→key mapping
+│  ├─ auth.js            # sign-up/in/out + session restore + error→key mapping
+│  └─ documents.js       # My Screening Journey: upload/list/open/download/delete
 ├─ store/
 │  ├─ AppStore.jsx       # reducer: consent, settings, notifications, activity
 │  └─ useRequireAuth.js  # guard: redirects to /login when no user
 ├─ data/demoData.js      # synthetic results, topics, counsellors, activity
+├─ data/journeyContent.js# bilingual Understand/Guidance copy + synthetic sample
 ├─ components/           # Icon, Logo, Illustrations, Shell, UI, LanguageToggle
 ├─ screens/              # one component per screen
 └─ styles/index.css      # tokens + .btn/.card/.field + reduced-motion
-supabase/migrations/     # 0001_init.sql — schema + RLS policies
+supabase/migrations/     # 0001–0004 schema/RLS/sync · 0005 document storage
 ```
 
 ## State model (`AppStore.jsx`)
@@ -111,6 +113,40 @@ that fields are non-empty. This is stated on the screen itself.
 - **Project location** — the repo lives at `C:\Users\USER\GeneClarity`, outside
   OneDrive, because file-sync locks broke `node_modules` (EBUSY/EPERM).
 
+## Screening document storage (My Screening Journey)
+
+**Migration `0005_screening_documents.sql`** adds two things:
+
+1. **Private Storage bucket `screening-documents`** — `public = false`,
+   `file_size_limit = 10 MB`, `allowed_mime_types = [pdf, jpeg, png]`. The
+   limits are enforced *by the bucket*, server-side, not only by the UI.
+2. **`public.screening_documents`** — metadata only (file name, MIME type,
+   size, timestamp, storage path). No health content beyond the file name.
+
+**Access path** (`src/lib/documents.js`, backend mode only):
+
+- Every object is written to `<auth.uid()>/<doc id>.<ext>`.
+- Three storage policies (`select` / `insert` / `delete`) require the first
+  path folder to equal `auth.uid()` (plus an extension check on read/write);
+  one `for all` table policy requires `auth.uid() = user_id`. There is
+  deliberately **no partner-read policy**.
+- Open/download use **short-lived signed URLs (300 s TTL)** created per
+  request with the owner's session — no public URLs, no service-role key.
+- Delete removes the storage object first, then the metadata row; a failed
+  row insert triggers best-effort removal of the just-uploaded object so no
+  orphan file is left behind.
+- Documents are **screen-local state**: file bytes never touch
+  `localStorage` and the list is read fresh from the server on each visit.
+
+**Verified 13 Nov 2026 with two separate accounts** (test1 ↔ test2): upload,
+list, signed-URL open/download (HTTP 200 with correct bytes), delete
+(object + row), empty state, UI type/size rejection, and server-side
+rejections (text/plain MIME, 11 MB file, MIME-spoofed `.pdf` name) — plus
+5 blocked cross-account attacks (signed URL for the other user's file,
+direct object GET, upload into the other user's folder, REST row delete,
+folder listing). See `11_ASSUMPTIONS_LIMITATIONS_AND_RISKS.md` for the
+scope limits of that test.
+
 ## Backend status: what exists vs what is planned
 
 **Implemented (in this repository):**
@@ -119,16 +155,27 @@ that fields are non-empty. This is stated on the screen itself.
   vars are present; demo mode otherwise.
 - Auth helpers (`src/lib/auth.js`): sign-up, sign-in, sign-out, session
   restore, auth-state subscription, error→translation-key mapping — wired
-  into Login, Register, Profile (sign-out) and `AppStore`.
+  into Login, Register, Profile (sign-out) and `AppStore`. Exercised against
+  the live project with two separate accounts (13 Nov 2026).
 - Database schema with Row Level Security (`supabase/migrations/0001_init.sql`):
   `profiles` (auto-created by trigger), `results`, `notifications`,
   `activity` (append-only), `consents` (granular, revocable), `settings` —
   owner-only policies everywhere; partner reads require an active consent
   grant via `has_consent()`.
+- Private document storage for My Screening Journey
+  (`supabase/migrations/0005_screening_documents.sql` + `src/lib/documents.js`)
+  — bucket limits, owner-only storage policies, signed URLs; **tested with
+  two accounts** (see the section above).
 - `.env.example` + `.env.local` template (gitignored).
 
 **Planned (not yet wired):**
 
+- Sharing of screening documents with a partner — deliberately **not
+  implemented**; the UI shows it as a planned feature only. It would require
+  explicit, revocable consent plus its own security test before being built.
+- AI interpretation of uploaded documents — out of scope for this prototype.
+  If ever added it must be a separate, consent-gated feature with clinical
+  validation and professional oversight (see `07_MEDICAL_SAFETY`).
 - Client-side read/write of results, notifications, activity and settings to
   the database (currently the UI still reads/writes localStorage in both
   modes).

@@ -69,6 +69,21 @@ it looks.
 - No claims of clinical validation, regulatory clearance, medical-device status,
   partnerships, or endorsements.
 
+## 9. Uploaded documents are stored, never interpreted
+
+- The app **does not read, classify, diagnose or medically interpret** the
+  content of a document a user uploads — `JourneyDocuments.jsx` handles bytes
+  and metadata only (name, type, size, date). No conclusion, risk statement,
+  or reproductive recommendation is ever derived from an upload.
+- "Understand My Results" explains **general terminology only** and states
+  this boundary on-screen, together with the future-feature guardrail.
+- If document interpretation is ever added, it must be a **separate feature**
+  requiring the user's **explicit consent**, **clinical validation**, and
+  **professional oversight** — it is not part of this prototype and no code
+  path for it exists today.
+- The built-in sample at `/journey/sample` is original synthetic content,
+  clearly labelled, and is never presented as the user's own result.
+
 ---
 
 ## Where the rules are enforced in code
@@ -81,6 +96,7 @@ it looks.
 | Uncertainty honesty | `ResultDetail.jsx` — dedicated "what this does not mean" section |
 | Consent before sharing | `AppStore` reducer — no share state exists until `GRANT_PARTNER` |
 | Educational framing | `ConditionDetail.jsx` — educational banner at top of every topic |
+| Uploads never interpreted | `documents.js` / `JourneyDocuments.jsx` — storage functions only; no content-reading code path; boundary stated in `journeyContent.js` |
 
 ## Review status
 

@@ -31,17 +31,35 @@ softened.
 - **Dual-mode authentication.** In demo mode (no `.env.local`) login validates
   non-empty fields only and the "account" is a local object — anyone with the
   device has the demo account. In backend mode real sign-up/sign-in runs
-  against Supabase Authentication, but **has not yet been exercised against a
-  live project** (credentials pending) — treat it as implemented, untested.
+  against Supabase Authentication and **has been exercised against the live
+  project** with three test accounts (sign-in, sign-out, session restore and
+  the auth-gated redirect verified by manual/scripted browser testing — not a
+  penetration test). Email confirmation is currently off on the project (see
+  the notifications limitation below).
 - **Server persistence only partially wired.** Accounts authenticate via
   Supabase in backend mode, but results/consent/notifications/settings still
   read and write `localStorage` in both modes; the database schema + RLS
   policies exist (`supabase/migrations/0001_init.sql`) but the UI does not yet
   call them. In demo mode: per-browser storage, clearing browser data resets
   everything, no cross-device sync.
-- **RLS policies are written, not audited.** Owner-only + consent-gated
-  partner reads are declared in SQL, but no penetration test or adversarial
-  review has been run against them.
+- **RLS policies are written, not audited** (with one scoped exception).
+  Owner-only + consent-gated partner reads are declared in SQL, but no
+  penetration test or adversarial review has been run against them — except
+  the **screening-document policies** (table + storage, `0005`), which were
+  exercised adversarially with two accounts on 13 Nov 2026; see Evidence.
+  That was a functional two-account test, not a penetration test.
+- **Document storage limitations.** Signed URLs live 300 s and are created
+  per request; deletion is best-effort with no retry queue (a storage delete
+  that succeeds followed by a failed row delete leaves the row visible while
+  the file is already gone — recoverable by deleting again, which the UI
+  supports). Upload/list failures surface as a friendly error; there is no
+  offline queue. Sharing of documents is **not implemented** and only shown
+  as a planned feature. Uploaded documents are stored but **never read or
+  interpreted** by the app.
+- **No automated test suite for the document flow.** Upload, signed-URL
+  open/download, delete, validation and two-account isolation were verified
+  by scripted browser testing (13 Nov 2026) — manually driven, not a CI test
+  that reruns itself.
 - **No real notifications.** The inbox shows synthetic in-app items; no email,
   SMS, or push is sent. Supabase email confirmation is currently **disabled**
   on the project so sign-up works instantly during development and demos —
@@ -66,11 +84,27 @@ softened.
 - **No accessibility audit.** Semantic markup and keyboard focus are in place,
   but no WCAG audit or screen-reader testing has been performed; no compliance
   claim is made.
-- **No security testing.** No penetration test or threat modelling exercise
-  has been conducted. A dependency audit (`npm audit`) was run and its 4
-  pre-existing findings are declared above. In demo mode the app sends no data
-  anywhere; in backend mode access is constrained by RLS — but neither
-  statement is a test result.
+- **No security testing — one functional exception.** No penetration test or
+  threat modelling exercise has been conducted, and none is claimed. A
+  dependency audit (`npm audit`) was run and its 4 pre-existing findings are
+  declared above. In demo mode the app sends no data anywhere; in backend
+  mode access is constrained by RLS — for the **document feature only**, that
+  statement was turned into an actual test on 13 Nov 2026:
+  - two separate accounts (test1, test2) signed in sequentially on the same
+    build; test2 saw an **empty list and 0 rows** while test1 had 3 documents;
+  - five cross-account attacks as test2 against test1's data were all
+    blocked: createSignedUrl for test1's path ("Object not found"), direct
+    object GET (HTTP 400), upload into test1's folder (RLS violation), REST
+    row DELETE (**0 rows deleted**), folder listing (empty);
+  - reverse direction (test1 → test2's file): signed URL denied, GET 400;
+  - positive controls passed: each account could list, open (HTTP 200,
+    correct bytes) and download its own file, and delete removed **both**
+    the storage object (subsequent signed URL: "Object not found") and the
+    metadata row;
+  - server-side bucket rules rejected a text/plain file, an 11 MB file, and
+    a MIME-spoofed `.pdf` name, while accepting a valid PNG.
+  This covers the document feature only. Other tables, auth flows, and the
+  hosting layer were **not** adversarially tested.
 - **No clinical validation.** Nothing has been validated against real screening
   outcomes, and the prototype is not a medical device.
 

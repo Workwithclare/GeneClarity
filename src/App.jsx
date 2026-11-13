@@ -9,6 +9,11 @@ import Consent from './screens/Consent.jsx'
 import Login from './screens/Login.jsx'
 import Register from './screens/Register.jsx'
 import Dashboard from './screens/Dashboard.jsx'
+import Journey from './screens/Journey.jsx'
+import JourneyDocuments from './screens/JourneyDocuments.jsx'
+import JourneyUnderstand from './screens/JourneyUnderstand.jsx'
+import JourneyGuidance from './screens/JourneyGuidance.jsx'
+import JourneySample from './screens/JourneySample.jsx'
 import Report from './screens/Report.jsx'
 import ResultDetail from './screens/ResultDetail.jsx'
 import Learn from './screens/Learn.jsx'
@@ -64,6 +69,11 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/journey" element={<Journey />} />
+        <Route path="/journey/documents" element={<JourneyDocuments />} />
+        <Route path="/journey/understand" element={<JourneyUnderstand />} />
+        <Route path="/journey/guidance" element={<JourneyGuidance />} />
+        <Route path="/journey/sample" element={<JourneySample />} />
         <Route path="/report" element={<Report />} />
         <Route path="/report/:resultId" element={<ResultDetail />} />
         <Route path="/learn" element={<Learn />} />

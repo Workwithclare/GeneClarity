@@ -155,6 +155,7 @@ const paths = {
     </>
   ),
   download: <path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M4.5 19.5h15" />,
+  upload: <path d="M12 19V8M7.5 12.5L12 8l4.5 4.5M4.5 4.5h15" />,
   share: (
     <>
       <circle cx="17.5" cy="6" r="2.5" />

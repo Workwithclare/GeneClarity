@@ -69,7 +69,7 @@ Level Security policies in the SQL file, not by hiding the key.
 
 ## What is in the prototype
 
-22 screens covering the full journey, all reachable through the in-app
+27 screens covering the full journey, all reachable through the in-app
 navigation (no server-side routing needed — the app uses hash routes):
 
 | Area | Screens |
@@ -77,6 +77,7 @@ navigation (no server-side routing needed — the app uses hash routes):
 | Entry | Splash, Welcome, Onboarding (3 steps), Privacy & consent |
 | Accounts | Registration, "You're all set" completion, Login (with a one-tap sample account) |
 | Core | Dashboard, Genetic report, Key insight detail (plain-language results) |
+| My Screening Journey | Journey hub, Private document store (upload/open/download/delete), Understand my results, Professional guidance, Synthetic sample document |
 | Learning | Learn library, Condition/topic detail |
 | Couple | CoupleConnect, Partner-sharing consent (grant / revoke) |
 | Support | Genetic counselling access |
@@ -155,6 +156,12 @@ These are enforced throughout the code and copy:
    records consent events, not result contents.
 7. **Export is real and local** — the privacy screen downloads this browser's
    stored demo state as JSON; it is never uploaded anywhere.
+8. **Screening documents are private by default.** Uploaded reports go only to
+   a private Supabase Storage bucket under the owner's user folder
+   (owner-only RLS policies); there are no public URLs and no service-role
+   key in the repository. Documents are never shared automatically with a
+   partner or relative — sharing is shown as a planned feature only — and the
+   app never reads or interprets an uploaded document.
 
 ---
 
@@ -203,7 +210,7 @@ All challenge documentation is in [`docs/`](docs/):
 | --- | --- |
 | `01_PROJECT_OVERVIEW.md` | What GeneClarity is and who it serves |
 | `02_DESIGN_SYSTEM.md` | Colours, type, spacing, components |
-| `03_SCREEN_INVENTORY.md` | All 22 screens and their purpose |
+| `03_SCREEN_INVENTORY.md` | All 27 screens and their purpose |
 | `04_USER_JOURNEYS.md` | Key flows end to end |
 | `05_TECHNICAL_ARCHITECTURE.md` | Stack, routing, state, build |
 | `06_ACCESSIBILITY_AND_I18N.md` | A11y and Arabic RTL approach |
@@ -218,15 +225,24 @@ All challenge documentation is in [`docs/`](docs/):
 
 ## Status
 
-- **Implemented:** full 22-screen prototype, EN/AR, build passing; optional
-  Supabase backend (Auth + PostgreSQL schema with RLS) in dual-mode.
-- **Tested:** production build, browser walkthrough of all screens,
-  zero console errors, RTL verification.
-- **Planned (not built):** server-side data sync wiring, partner consent
-  enforced end-to-end against a live project, AI features, real counselling
+- **Implemented:** full 27-screen prototype (including the My Screening
+  Journey feature), EN/AR, build passing; optional Supabase backend
+  (Auth + PostgreSQL schema with RLS + private document Storage bucket) in
+  dual-mode. Server-side data sync for results/consent/notifications/settings
+  is implemented (`src/lib/db.js`) with verification still in progress.
+- **Tested:** production build, browser walkthrough of all screens, zero
+  console errors, RTL verification; document feature verified end-to-end with
+  **two separate accounts** on 13 Nov 2026 (upload / list / signed-URL open
+  and download / delete, empty state, client- and server-side type and size
+  rejection, and 5 blocked cross-account access attempts) — a functional
+  two-account test, not a penetration test.
+- **Planned (not built):** sharing of screening documents (shown as planned
+  only), partner consent enforced end-to-end against a live project, AI
+  features (any document interpretation would require separate explicit
+  consent, clinical validation and professional oversight), real counselling
   directory integration.
-- **Not claimed:** clinical validation, security testing, user-impact metrics,
-  partnerships.
+- **Not claimed:** clinical validation, penetration testing/security
+  auditing, user-impact metrics, partnerships.
 
 ---
 

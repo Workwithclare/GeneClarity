@@ -1,6 +1,6 @@
 # 03 — Screen Inventory
 
-All 22 screens, their routes, and their purpose. Routes are hash-based
+All 27 screens, their routes, and their purpose. Routes are hash-based
 (`#/…`) so the build works on any static host.
 
 | # | Route | Screen | File | Purpose |
@@ -16,7 +16,7 @@ All 22 screens, their routes, and their purpose. Routes are hash-based
 | 9 | `/report` | Genetic Report | `Report.jsx` | List of 3 synthetic findings; print via browser dialogue |
 | 10 | `/report/:id` | Key Insight detail | `ResultDetail.jsx` | **Core safety screen**: plain-language explanation, "what this means / does not mean", uncertainty handling, learn-more link, counselling prompt |
 | 11 | `/learn` | Learn | `Learn.jsx` | Filterable education library (basics / conditions / counselling) |
-| 12 | `/learn/:id` | Topic detail | `ConditionDetail.jsx` | Educational article with "not advice about your own health" banner and related links |
+| 12 | `/learn/:id` | Lesson detail | `ConditionDetail.jsx` | Structured lesson: "What does this mean?" plain explanation, optional diagram and info sections, "What should I remember?" summary, "not advice about your own health" banner and related links |
 | 13 | `/couple` | CoupleConnect | `CoupleConnect.jsx` | How sharing works, consent status, invite flow entry |
 | 14 | `/couple/consent` | Partner Sharing Consent | `PartnerConsent.jsx` | Granular toggles (summary / full report / notifications), grant & revoke |
 | 15 | `/support` | Help & Support | `Support.jsx` | Contact rows (FAQ entry, contact, live chat) with illustration, then genetic counselling access: why it helps, illustrative directory, escalation card |
@@ -26,7 +26,12 @@ All 22 screens, their routes, and their purpose. Routes are hash-based
 | 19 | `/settings/privacy` | Privacy & Security | `PrivacySettings.jsx` | Visibility/research/auto-lock toggles, partner access card, **real local JSON export**, erase notice, privacy log |
 | 20 | `/notifications` | Notifications | `Notifications.jsx` | Unread/All filters, mark read (single & all), local only |
 | 21 | `/activity` | Activity History | `Activity.jsx` | Audit timeline: sign-in, consent granted/revoked, report viewed, settings changes |
-| 22 | `*` | Not Found | `NotFound.jsx` | 404 with routes back to dashboard/home |
+| 22 | `/journey` | My Screening Journey | `Journey.jsx` | Feature hub: results / understand / guidance cards, "private by default" statement, sharing shown as a **planned** feature only |
+| 23 | `/journey/documents` | My Screening Results | `JourneyDocuments.jsx` | Private document store: upload (PDF/JPG/PNG ≤ 10 MB), list with name/date/type, open & download via short-lived signed URLs, delete with confirmation, empty state. Auth required; documents never leave the owner's private bucket |
+| 24 | `/journey/understand` | Understand My Results | `JourneyUnderstand.jsx` | Plain-language terminology: screening ≠ diagnosis, carrier ≠ disease, common result labels, "what this app will not do" + future-AI guardrail, links into the Education Centre. Never reads or interprets an uploaded document |
+| 25 | `/journey/guidance` | Professional Guidance | `JourneyGuidance.jsx` | What genetic counselling is, when guidance may be useful, tickable question bank (stays on device). No invented providers, appointments or partnerships |
+| 26 | `/journey/sample` | Sample document | `JourneySample.jsx` | Original **synthetic** screening report rendered in-app, labelled "Demo sample", visually separated from user uploads; makes no claim about any real person |
+| 27 | `*` | Not Found | `NotFound.jsx` | 404 with routes back to dashboard/home |
 
 ## Cross-cutting elements
 

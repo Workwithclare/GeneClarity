@@ -18,9 +18,11 @@ for demonstration, defined in a single file:
 | --- | --- | --- |
 | Demo user profile ("Chioma", fictional) | `src/data/demoData.js` | Written for this project; entirely fictional |
 | 3 screening findings (HBB carrier, Tay–Sachs negative, CFTR uncertain) | `src/data/demoData.js` | Original synthetic examples; not modelled on any real patient or real report |
-| 6 educational topics | `src/data/demoData.js` | Original general-education text written for this project |
+| 8 educational topics | `src/data/demoData.js` | Original general-education text written for this project |
 | 3 counsellor listings | `src/data/demoData.js` | Fictional placeholders, labelled illustrative in the UI |
 | 3 notifications, 3 activity entries | `src/data/demoData.js` | Fictional |
+| Understand/Guidance content (concepts, result labels, question bank) | `src/data/journeyContent.js` | Original general-education text written for this project; explains terminology only, never a specific person's results |
+| Synthetic screening sample document | `src/data/journeyContent.js` → shown at `/journey/sample` | **Original fictional content** ("Sample Person", "Demo Laboratory", reference GC-DEMO-0001); rendered in-app, labelled "Demo sample", not modelled on any real report |
 
 The file itself carries an origin declaration comment at the top so future
 contributors keep the chain of custody.
@@ -33,12 +35,29 @@ contributors keep the chain of custody.
   are present in the repository, in fixtures, or in screenshots.
 - The sample email (`chioma@example.com`) is a reserved-for-examples domain
   (`example.com`, IANA-documented for documentation use).
+- **Uploaded documents** (`/journey/documents`) are files the user
+  themselves chooses to upload; they are never supplied by the team. All
+  demonstration content shown in the app (report findings, the sample
+  document at `/journey/sample`) is original synthetic material created for
+  this project — no real genetic report is used as demo data anywhere.
 
 ## 3. Educational content
 
 - All educational text in `demoData.js` is **original writing for this
   prototype**, describing well-established general genetics (autosomal
   recessive inheritance, carrier concepts, what counsellors do).
+- The **8 lesson topics** are: cells & chromosomes; DNA & genes; inheritance
+  from parents to children; inherited conditions; sickle cell; carrier status;
+  inherited disease probabilities; screening & professional counselling.
+- The facts described are textbook-level and consistent with mainstream public
+  health information (e.g. WHO, NIH/MedlinePlus, NHS guidance on carrier
+  screening and sickle cell) — but this consistency is a **statement of
+  authoring intent, not a documented verification**: the team did not perform a
+  source-by-source comparison or a clinical review.
+- Each lesson uses a fixed simple structure — *"What does this mean?"* plain
+  explanation, optional example / important-to-know / common-misunderstanding /
+  screening / questions sections, and a *"What should I remember?"* summary.
+  The lesson diagrams are **original SVGs drawn for this project**.
 - It is **not copied** from clinical guidelines, textbooks, patient
   organisations, or websites.
 - It is **not represented** as guideline-concordant clinical content, and every
@@ -87,8 +106,13 @@ contributors keep the chain of custody.
   written to **`localStorage` in the user's own browser** (always, in both
   modes — this is also the demo mode's only store).
 - In backend mode (configured `.env.local`), sign-up/sign-in credentials go to
-  the team's own Supabase Auth service; nothing else is transmitted yet,
-  because data sync is not wired.
+  the team's own Supabase Auth service, and the sync layer in `src/lib/db.js`
+  mirrors app rows to the team's own Postgres tables (best-effort, owner-only
+  RLS; full sync verification is still in progress — see `11`).
+- **Uploaded documents** in backend mode go to the team's own private Supabase
+  Storage bucket (`screening-documents`) under the owner's folder — nothing
+  else, no third-party services. In demo mode no upload happens at all; the
+  screen says so explicitly (`journey.errDemo`).
 - In demo mode nothing is transmitted at all — there is no server to transmit
   to.
 - "Export my data" downloads a local JSON `Blob` — a real download, never

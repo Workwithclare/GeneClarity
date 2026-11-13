@@ -20,7 +20,7 @@ Four representative end-to-end flows as implemented in the prototype.
    under a "Demonstration data" banner.
 9. **Key Insight detail** → reads what the result means in plain language, what
    it does *not* mean, and is prompted towards counselling.
-10. **Learn** → explores "What does carrier mean?" and related topics.
+10. **Learn** → explores "Understanding carrier status" and related topics.
 
 **Safety beats along the way:** consent gate at step 4; sample banners on 8–9;
 uncertain result never states a risk number as fact; no decision-making
@@ -78,6 +78,33 @@ a pointer to qualified humans.
 
 ---
 
+## Journey 5 — My Screening Journey (store → understand → prepare)
+
+1. From the Dashboard's **My Screening Journey** card, opens the hub
+   (`/journey`) with the three steps and the "private by default" statement.
+2. **My Screening Results** — uploads a screening report (PDF/JPG/PNG,
+   ≤ 10 MB). The file goes to a private bucket under their own user folder;
+   the list shows name, upload date and file type, with Open / Download
+   (short-lived signed URLs) and Delete (confirm → file + row removed).
+   With nothing uploaded yet, a clear empty state offers the built-in
+   **sample document** instead.
+3. **Understand My Results** — reads plain-language explanations
+   (screening ≠ diagnosis, carrier ≠ disease) and common result labels,
+   then continues into the Education Centre for depth. The app states it
+   does **not** read or interpret their uploaded documents.
+4. **Professional Guidance** — learns what genetic counselling is and when
+   it may help, ticks questions to take to a professional (the selection
+   stays on the device).
+5. Sharing remains a **planned** feature — the journey never exposes the
+   documents to anyone else.
+
+**Safety beats:** upload without interpretation; storage without exposure;
+preparation without prescribing — the user stays in control of private
+genetic information, and professional guidance is the endpoint, not an app
+decision.
+
+---
+
 ## What no journey contains (by design)
 
 - No diagnosis, prognosis, or probability stated as certainty.
@@ -85,4 +112,7 @@ a pointer to qualified humans.
   reproductive directive.
 - No automatic partner access, no silent sharing, no "your partner already
   sees this".
-- No real personal data, no transmission to any server, no third-party analytics.
+- No real personal data, no third-party analytics or tracking. In demo mode
+  nothing leaves the browser at all; in backend mode data goes only to the
+  team's own Supabase project (auth, synced rows, private document bucket),
+  constrained by RLS.
