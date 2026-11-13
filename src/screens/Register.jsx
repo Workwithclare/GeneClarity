@@ -76,7 +76,9 @@ export default function Register() {
       })
       setBusy(false)
       if (result.ok) {
-        dispatch({ type: 'SIGN_IN', user: result.user })
+        // Optimistic set; the session loader logs the single official
+        // audit entry after the server data lands.
+        dispatch({ type: 'SET_USER', user: result.user })
         navigate('/done', { replace: true })
         return
       }

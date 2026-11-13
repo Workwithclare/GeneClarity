@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Screen, AppBar } from '../components/Shell.jsx'
-import { Button, SafetyNote, Pill, SectionTitle, SampleBanner } from '../components/UI.jsx'
+import { Button, SafetyNote, Pill, SectionTitle, SampleBanner, TextField } from '../components/UI.jsx'
 import { CoupleIllustration } from '../components/Illustrations.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
+import { supabaseEnabled } from '../lib/supabase.js'
+import { resolvePartner } from '../lib/db.js'
 
 const STATUS_META = {
   none: { labelKey: 'cc.statusNone', tone: 'neutral' },
@@ -32,6 +34,11 @@ export default function CoupleConnect() {
   const { state, dispatch } = useStore()
   const user = useRequireAuth()
   const [confirming, setConfirming] = useState(false)
+  // Backend mode: invite a real account by email. Demo mode keeps the
+  // one-tap invite (the "partner" is fictional there).
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteBusy, setInviteBusy] = useState(false)
+  const [inviteError, setInviteError] = useState(null)
 
   if (!user) return null
 
@@ -40,8 +47,32 @@ export default function CoupleConnect() {
   const partnerName = partner.name || t('cc.demoPartner')
   const sharedCount = Object.values(partner.shares).filter(Boolean).length
 
-  const handleInvite = () => {
-    dispatch({ type: 'INVITE_PARTNER', name: t('cc.demoPartner') })
+  const handleInvite = async () => {
+    if (!supabaseEnabled) {
+      dispatch({ type: 'INVITE_PARTNER', name: t('cc.demoPartner') })
+      navigate('/couple/consent')
+      return
+    }
+    const email = inviteEmail.trim()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setInviteError(t('auth.errEmailShape'))
+      return
+    }
+    setInviteBusy(true)
+    setInviteError(null)
+    // Resolves to a real account or null — nothing is shared by an
+    // invitation; it only records intent until the owner grants scopes.
+    const found = await resolvePartner(email)
+    setInviteBusy(false)
+    if (!found) {
+      setInviteError(t('cc.noAccountFound'))
+      return
+    }
+    dispatch({
+      type: 'INVITE_PARTNER',
+      name: found.name,
+      partnerId: found.partnerId,
+    })
     navigate('/couple/consent')
   }
 
@@ -111,8 +142,35 @@ export default function CoupleConnect() {
                 <p className="text-[13px] font-semibold text-ink-500">
                   {t('cc.inviteBody')}
                 </p>
-                <Button size="lg" className="mt-3" icon="userPlus" onClick={handleInvite}>
-                  {t('cc.invite')}
+                {supabaseEnabled && (
+                  <div className="mx-auto mt-3 max-w-xs">
+                    <TextField
+                      id="invite-email"
+                      label={t('cc.partnerEmail')}
+                      type="email"
+                      icon="mail"
+                      autoComplete="email"
+                      placeholder="name@example.com"
+                      value={inviteEmail}
+                      error={inviteError}
+                      onChange={(e) => {
+                        setInviteEmail(e.target.value)
+                        if (inviteError) setInviteError(null)
+                      }}
+                    />
+                    <p className="mt-1.5 text-[11.5px] leading-snug text-ink-400">
+                      {t('cc.partnerEmailHint')}
+                    </p>
+                  </div>
+                )}
+                <Button
+                  size="lg"
+                  className="mt-3"
+                  icon="userPlus"
+                  disabled={inviteBusy}
+                  onClick={handleInvite}
+                >
+                  {inviteBusy ? t('cc.inviteWorking') : t('cc.invite')}
                 </Button>
               </div>
             </div>
@@ -147,9 +205,14 @@ export default function CoupleConnect() {
             <div className="rounded-card border border-brand-200 bg-mint-100 p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="grid h-11 w-11 place-items-center rounded-full bg-brand-700 text-[13px] font-extrabold text-white">
+                  <button
+                    type="button"
+                    onClick={() => navigate('/couple/consent')}
+                    aria-label={t('cc.manageConsent')}
+                    className="grid h-11 w-11 place-items-center rounded-full bg-brand-700 text-[13px] font-extrabold text-white transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                  >
                     {partnerName.slice(0, 2).toUpperCase()}
-                  </span>
+                  </button>
                   <div>
                     <p className="text-[15px] font-extrabold text-ink-900">
                       {partnerName}

@@ -31,6 +31,7 @@ export default function Login() {
   const [remember, setRemember] = useState(true)
   const [errors, setErrors] = useState({})
   const [socialNote, setSocialNote] = useState(false)
+  const [forgotNote, setForgotNote] = useState(false)
   const [busy, setBusy] = useState(false)
   const [formNote, setFormNote] = useState(null)
 
@@ -72,7 +73,9 @@ export default function Login() {
       const result = await signInWithBackend(email, password)
       setBusy(false)
       if (result.ok) {
-        dispatch({ type: 'SIGN_IN', user: result.user })
+        // Optimistic set; the session loader logs the single official
+        // audit entry after the server data lands.
+        dispatch({ type: 'SET_USER', user: result.user })
         navigate('/dashboard', { replace: true })
         return
       }
@@ -182,6 +185,7 @@ export default function Login() {
 
             <button
               type="button"
+              onClick={() => setForgotNote(true)}
               className="text-[13.5px] font-bold text-brand-700 hover:text-brand-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 rounded"
             >
               {t('auth.forgot')}
@@ -201,6 +205,12 @@ export default function Login() {
             {busy ? t('auth.working') : t('act.signIn')}
           </Button>
         </form>
+
+        {forgotNote && (
+          <p className="mt-3 text-center text-[12px] leading-snug text-ink-400 animate-fade-up">
+            {t('auth.forgotNote')}
+          </p>
+        )}
 
         {/* "or" divider + social sign-in, as in the reference design.
             These buttons are visual only: nothing is connected, and the
