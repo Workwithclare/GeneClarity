@@ -33,6 +33,7 @@ Thumbs.db
 # Local scratch / notes (not part of the submission)
 scratch/
 *.local
+JUDGE_NOTES.md
 
 # Local test fixtures (synthetic files used for upload testing only)
 .tmp-test/

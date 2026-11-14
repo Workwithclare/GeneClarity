@@ -45,9 +45,10 @@ real database; without it, it falls back to the original localStorage demo, so
 nothing ever breaks.
 
 1. Create a free project at <https://supabase.com> (no paid tier needed).
-2. In the project's **SQL Editor**, paste and run
-   `supabase/migrations/0001_init.sql` (creates the tables + Row Level
-   Security policies).
+2. In the project's **SQL Editor**, paste and run each migration in
+   `supabase/migrations/` **in order** (`0001` → `0005`). They create the
+   tables, the Row Level Security policies, the sync/invite helpers, and the
+   private document-storage bucket.
 3. Copy `.env.example` to `.env.local` and fill in the two values from
    **Project Settings → API**:
 
@@ -107,15 +108,19 @@ GeneClarity/
 │  │  └─ LanguageContext.jsx  # Language state, persists to localStorage
 │  ├─ lib/
 │  │  ├─ supabase.js          # Dual-mode client (null when not configured)
-│  │  └─ auth.js              # Sign-up/in/out helpers + error→key mapping
+│  │  ├─ auth.js              # Sign-up/in/out helpers + error→key mapping
+│  │  ├─ db.js                # Local-first server sync layer
+│  │  └─ documents.js         # Journey uploads: list/open/download/delete
 │  ├─ store/
 │  │  ├─ AppStore.jsx         # Reducer for consent, settings, activity log
 │  │  └─ useRequireAuth.js    # Route guard
-│  ├─ data/demoData.js        # All synthetic demo data + origin declarations
+│  ├─ data/
+│  │  ├─ demoData.js          # All synthetic demo data + origin declarations
+│  │  └─ journeyContent.js    # Bilingual Understand/Guidance + sample report
 │  ├─ components/             # Icon, Logo, Illustrations, Shell, UI primitives
 │  ├─ screens/                # One file per screen
 │  └─ styles/index.css        # Design system: tokens, .btn, .card, .field
-├─ supabase/migrations/       # SQL schema + Row Level Security policies
+├─ supabase/migrations/       # SQL schema + RLS (0001 → 0005)
 └─ docs/                      # Challenge documentation (see below)
 ```
 
@@ -193,8 +198,8 @@ This project distinguishes four states everywhere in its documentation:
 | State | Meaning |
 | --- | --- |
 | **Implemented** | Written and present in the codebase |
-| **Tested** | Manually verified (build passes, browser walkthrough, console clean, RTL checked) |
-| **Planned** | Designed but deliberately not built yet (e.g. backend) |
+| **Tested** | Manually verified (build passes, browser walkthrough, console clean, RTL checked; the document feature additionally passed a two-account isolation test) |
+| **Planned** | Designed but deliberately not built yet (e.g. document sharing, AI features) |
 | **Proposed** | A suggestion for future work — no commitment, no claim |
 
 No claim is made of clinical validation, security audits, user research,
