@@ -48,11 +48,11 @@ function ScrollToTop() {
  * makes screen readers announce content in the right language.
  */
 function DocumentDirection() {
-  const { lang } = useLanguage()
+  const { lang, dir } = useLanguage()
   useEffect(() => {
     document.documentElement.lang = lang
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
-  }, [lang])
+    document.documentElement.dir = dir
+  }, [lang, dir])
   return null
 }
 

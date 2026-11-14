@@ -1,13 +1,22 @@
 /**
- * GeneClarity bilingual string catalogue.
+ * GeneClarity string catalogue.
  *
- * Both languages live side by side in one file so it is obvious to a
- * reviewer that every user-facing string is translated. Keys are flat
- * and grouped by screen prefix (e.g. `dash.` = dashboard).
+ * The English and Arabic catalogues live here; the other languages live
+ * in sibling files (`fr.js`, `es.js`, `sw.js`, `ha.js`) and are imported
+ * below, so every user-facing string for every language is still visible
+ * in this one directory. Keys are flat and grouped by screen prefix
+ * (e.g. `dash.` = dashboard).
  *
- * Arabic text was written for this project and follows the same
- * plain-language register as the English copy.
+ * All non-English text was written for this project and follows the
+ * same plain-language register as the English copy. The French, Spanish,
+ * Swahili and Hausa catalogues are provisional translations pending
+ * professional review — see docs/06_ACCESSIBILITY_AND_I18N.md.
  */
+
+import { fr } from './fr.js'
+import { es } from './es.js'
+import { sw } from './sw.js'
+import { ha } from './ha.js'
 
 export const en = {
   // --- Brand -------------------------------------------------------
@@ -694,6 +703,7 @@ export const ar = {
     'سيفقد شريكك فورًا الوصول إلى أي شيء مشترك. يحتفظ بحسابه الخاص.',
   'cc.whatPartnerSees': 'ما سيراه شريكي',
   'cc.seesConsent': 'الفئات التي تفعّلها فقط. لا شيء آخر.',
+  'cc.seesNoChart': 'تقريرك الكامل لا يُعرض افتراضيًا أبدًا.',
   'cc.ruleTitle': 'كيف تعمل المشاركة',
   'cc.rule1': 'يملك كل شخص حسابًا خاصًا منفصلًا.',
   'cc.rule2': 'لا تتم أي مشاركة قبل موافقتكما.',
@@ -872,4 +882,18 @@ export const ar = {
   'err.body': 'الصفحة المطلوبة غير موجودة في هذا النموذج.',
 }
 
-export const catalogs = { en, ar }
+export const catalogs = { en, ar, fr, es, sw, ha }
+
+/**
+ * Language metadata for the picker. `dir` drives layout direction —
+ * only Arabic is right-to-left among the six. `native` is the name
+ * each language uses for itself.
+ */
+export const languages = [
+  { code: 'en', native: 'English', dir: 'ltr' },
+  { code: 'ar', native: 'العربية', dir: 'rtl' },
+  { code: 'fr', native: 'Français', dir: 'ltr' },
+  { code: 'es', native: 'Español', dir: 'ltr' },
+  { code: 'sw', native: 'Kiswahili', dir: 'ltr' },
+  { code: 'ha', native: 'Hausa', dir: 'ltr' },
+]

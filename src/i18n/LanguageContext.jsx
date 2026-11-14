@@ -1,8 +1,10 @@
 import { createContext, useContext, useCallback, useEffect, useMemo, useState } from 'react'
-import { catalogs } from './translations.js'
+import { catalogs, languages } from './translations.js'
 
 const STORAGE_KEY = 'geneclarity.language'
 const LanguageContext = createContext(null)
+
+const languageCodes = Object.keys(catalogs)
 
 /**
  * Provides the active language plus a `t()` translation function.
@@ -10,12 +12,16 @@ const LanguageContext = createContext(null)
  * The choice is persisted to localStorage so a returning visitor keeps
  * their language. We deliberately read it once on first render rather
  * than on every mount, to avoid a flash of the wrong language.
+ *
+ * The saved value is validated against the catalogue list: a removed or
+ * misspelled language falls back to English instead of rendering raw
+ * keys.
  */
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY)
-      if (saved === 'en' || saved === 'ar') return saved
+      if (saved && languageCodes.includes(saved)) return saved
     } catch {
       /* storage may be unavailable (private browsing) — fall back to English */
     }
@@ -30,10 +36,6 @@ export function LanguageProvider({ children }) {
     }
   }, [lang])
 
-  const toggle = useCallback(() => {
-    setLang((current) => (current === 'en' ? 'ar' : 'en'))
-  }, [])
-
   const t = useCallback(
     (key) => {
       const catalog = catalogs[lang] || catalogs.en
@@ -43,9 +45,13 @@ export function LanguageProvider({ children }) {
     [lang],
   )
 
+  // Layout direction comes from the language metadata — only Arabic is
+  // right-to-left among the supported languages.
+  const dir = languages.find((l) => l.code === lang)?.dir || 'ltr'
+
   const value = useMemo(
-    () => ({ lang, setLang, toggle, t, isRTL: lang === 'ar' }),
-    [lang, toggle, t],
+    () => ({ lang, setLang, languages, dir, isRTL: dir === 'rtl', t }),
+    [lang, dir, t],
   )
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
