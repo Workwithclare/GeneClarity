@@ -48,7 +48,8 @@
 
 - The prototype builds successfully (`npm.cmd run build`, exit 0).
 - All 22 screens render with zero console errors in a real browser (manual QA
-  sweep, English and Arabic).
+  sweep, English and Arabic; a six-language UI sweep followed on 14 Nov 2026
+  — FR/ES/SW/HA checked on six key screens, zero raw keys, zero errors).
 - RTL behaviour was verified programmatically (`dir`, font, element positions).
 - The consent flow works end to end in-browser: grant → active → revoke →
   logged.

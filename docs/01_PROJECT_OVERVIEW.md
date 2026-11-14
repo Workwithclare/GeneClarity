@@ -52,8 +52,8 @@ child together. Screening information that reaches people is frequently:
 ## Technology at a glance
 
 Vite + React 18 + Tailwind CSS, hash-based routing, all state in browser
-`localStorage`, bilingual EN/AR with full RTL. No backend, no cloud services,
-no paid APIs. See `05_TECHNICAL_ARCHITECTURE.md`.
+`localStorage`, six languages (EN, AR, FR, ES, SW, HA) with full RTL. No
+backend, no cloud services, no paid APIs. See `05_TECHNICAL_ARCHITECTURE.md`.
 
 ## Design reference
 

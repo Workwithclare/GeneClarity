@@ -11,7 +11,7 @@ softened.
 | --- | --- | --- |
 | A1 | The challenge permits an optional Supabase backend alongside the demo mode (the original constraint set said no backend during the prototype phase — the team explicitly chose to add one, and this documentation was updated to match) | The backend switches off by deleting `.env.local`: the app falls back to the localStorage demo with no code change |
 | A2 | The supplied reference image is the intended visual identity for the entry | Design may need re-alignment |
-| A3 | English + Arabic covers the intended audience | Further languages/localisation required |
+| A3 | Six languages (English, Arabic, French, Spanish, Swahili, Hausa) cover the intended audience | Further languages/localisation required; the four new translations are provisional |
 | A4 | Mobile-first layout suits how judges will view it (browser + phone) | Desktop layout would need attention |
 | A5 | Static hosting (free tier) is acceptable for the demo | A hosting budget/hosting approval would be needed |
 | A6 | Synthetic demo data is acceptable in place of real screening data (organisers supplied none, and using real patient data would be inappropriate) | None — this is also a governance requirement |
@@ -22,7 +22,14 @@ softened.
 - **No clinical review.** No genetic counsellor or physician has reviewed the
   copy. Content is general education written by the team.
 - **No professional translation.** Arabic was written for this prototype but
-  not reviewed by a certified translator or native-speaker reviewer.
+  not reviewed by a certified translator or native-speaker reviewer. The
+  French, Spanish, Swahili and Hausa catalogues (added 14 Nov 2026, 344 keys
+  each) are **provisional translations pending professional review**, written
+  with AI assistance for this prototype. In those four languages the UI is
+  fully translated, but **long-form content** (Learn articles, Understand /
+  Guidance sections, sample report, result summaries, activity and
+  notification entries) exists only in English/Arabic and displays in English
+  by design — a uniform, declared fallback rather than a partial mix.
 - **Educational content is illustrative**, not a substitute for guidelines.
 - **Counsellor listings are fictional placeholders** — there is no real
   referral directory, and contacting them is impossible by design.
@@ -139,6 +146,14 @@ softened.
   This covers the document feature, the consent path and settings. Other
   tables (profiles, notifications policies), auth flows, and the
   hosting layer were **not** adversarially tested.
+- **Six-language UI sweep (14 Nov 2026):** each of French, Spanish, Swahili
+  and Hausa was loaded and checked on six key screens (dashboard, journey,
+  learn, report, FAQs, settings): correct `<html lang>` and `dir="ltr"`,
+  **zero raw translation keys** on screen, zero console errors; switching
+  via the settings dropdown persisted across reload; an invalid saved
+  language value fell back to English; Hausa hooked glyphs (ɓ ɗ ƙ ƴ)
+  rendered correctly. This is a rendering check, **not** a translation
+  quality review.
 - **No clinical validation.** Nothing has been validated against real screening
   outcomes, and the prototype is not a medical device.
 
@@ -148,7 +163,7 @@ softened.
 | --- | --- | --- | --- | --- |
 | R1 | A reader mistakes the demo for a real medical product | Medium | High | "Demonstration prototype" on splash; sample banners on all result screens; safety notes throughout |
 | R2 | Synthetic data is mistaken for real evidence of impact | Medium | High | Four-state labelling (implemented/tested/planned/proposed) in every doc; explicit "no impact measured" statements |
-| R3 | Arabic copy errors damage trust with Arabic-speaking judges/users | Medium | Medium | Honest limitation declared (A3 above); RTL mechanics themselves verified |
+| R3 | Copy errors in any non-English language damage trust with those judges/users | Medium | Medium | Honest limitation declared (A3 above): the four new catalogues are provisional pending professional review; RTL mechanics themselves verified |
 | R4 | Consent flow demonstrated incorrectly during the live demo | Low | High | Step-by-step script in `12_DEMONSTRATION_AND_SUBMISSION_PLAN.md` |
 | R5 | Someone connects the repo to OneDrive again → `npm` breaks | Medium | Medium | Repo lives at `C:\Users\USER\GeneClarity`; documented in README and `05_` |
 | R6 | Backend scope grows past what can be demoed reliably | Medium | High | Backend is dual-mode: deleting `.env.local` returns the app to the fully-tested localStorage demo; only auth is wired so far, data sync stays *planned* until tested |
@@ -166,7 +181,8 @@ softened.
 ## If this continued (proposed, no commitment)
 
 1. Clinical review of all content by a qualified genetic counsellor.
-2. Professional Arabic translation review.
+2. Professional translation review — Arabic first, then the provisional
+   French, Spanish, Swahili and Hausa catalogues.
 3. Usability testing with screening-eligible adults (then: real metrics).
 4. WCAG 2.2 AA audit with assistive-technology testing.
 5. Finish backend verification: the consent flow is now tested end-to-end

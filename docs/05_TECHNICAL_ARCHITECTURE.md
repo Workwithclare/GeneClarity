@@ -33,7 +33,7 @@ src/
 │  ├─ AppStore.jsx       # reducer: consent, settings, notifications, activity
 │  └─ useRequireAuth.js  # guard: redirects to /login when no user
 ├─ data/demoData.js      # synthetic results, topics, counsellors, activity
-├─ data/journeyContent.js# bilingual Understand/Guidance copy + synthetic sample
+├─ data/journeyContent.js# EN/AR Understand/Guidance copy + synthetic sample
 ├─ components/           # Icon, Logo, Illustrations, Shell, UI, LanguageToggle
 ├─ screens/              # one component per screen
 └─ styles/index.css      # tokens + .btn/.card/.field + reduced-motion

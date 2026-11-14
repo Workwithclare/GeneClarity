@@ -36,7 +36,7 @@ Each beat maps to a challenge theme. **Bold** = say it out loud.
 
 | Time | Screen(s) | What to show | Say |
 | --- | --- | --- | --- |
-| 0:00 | Splash → Welcome | Brand, tagline, language toggle | **"GeneClarity: understanding and reducing inherited disease risk. It ships in English and Arabic with real RTL."** |
+| 0:00 | Splash → Welcome | Brand, tagline, language toggle | **"GeneClarity: understanding and reducing inherited disease risk. It ships in six languages — English, Arabic, French, Spanish, Swahili, Hausa — with real RTL."** |
 | 0:20 | Onboarding → Consent | Consent gate before any account | **"You cannot get past this screen without actively accepting — no pre-ticked boxes."** |
 | 0:40 | Login → "Use sample account" | One-tap fictional account | **"No real account is created; this is synthetic demo data."** |
 | 1:00 | Dashboard | Journey card, quick actions | Point out the bottom nav and clean mobile layout |

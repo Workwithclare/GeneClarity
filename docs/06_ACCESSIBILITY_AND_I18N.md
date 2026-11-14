@@ -30,13 +30,48 @@
 
 ### Design
 
-- **Single catalogue**: `src/i18n/translations.js` exports EN and AR maps with
-  identical key sets. Components call `t('key')`; they never hardcode copy.
+- **Single catalogue family**: `src/i18n/translations.js` exports the EN and AR
+  maps and imports four sibling catalogues — `fr.js`, `es.js`, `sw.js`,
+  `ha.js` — into `catalogs` (`{ en, ar, fr, es, sw, ha }`). All six have
+  **identical 344-key sets** (parity checked mechanically). Components call
+  `t('key')`; they never hardcode copy.
+- **Language metadata**: the same file exports a `languages` array (code,
+  native name, `dir`) that drives both the picker and layout direction.
 - **Context**: `LanguageContext.jsx` holds `lang`, exposes `t()` (falls back to
-  English if a key is missing), and persists the choice to
-  `localStorage['geneclarity.language']`.
-- **Document sync**: `App.jsx` keeps `<html lang>` and `<html dir>` in step with
-  the selection — `en → dir="ltr"`, `ar → dir="rtl"`.
+  English if a key is missing — a raw key is never shown), validates the
+  persisted choice against the catalogue list (an unknown value falls back to
+  English), and persists to `localStorage['geneclarity.language']`.
+- **Picker**: `LanguageToggle.jsx` is a dropdown (variants `inline` for the
+  welcome screen, `chip` for the settings row) listing all six languages with
+  a checkmark on the active one; it closes on outside click and Escape.
+- **Document sync**: `App.jsx` keeps `<html lang>` and `<html dir>` in step
+  with the selection using the metadata's `dir` — `ar → rtl`, the other five
+  → `ltr`.
+
+### Languages
+
+| Code | Language | Status |
+| --- | --- | --- |
+| `en` | English | Source catalogue |
+| `ar` | العربية (Arabic) | Written for this project; RTL verified; not professionally reviewed |
+| `fr` | Français (French) | **Provisional**, pending professional review |
+| `es` | Español (Spanish) | **Provisional**, pending professional review |
+| `sw` | Kiswahili (Swahili) | **Provisional**, pending professional review |
+| `ha` | Hausa | **Provisional**, pending professional review |
+
+All non-English translations were written with AI assistance for this
+prototype and follow the same plain-language, safety-first register as the
+English copy (no diagnosis, no prescription, no life advice). **None has been
+reviewed by a certified translator or native speaker.**
+
+**Content-layer fallback.** The 344 keys cover the application's interface
+(buttons, headings, labels, consent, FAQ, glossary, settings…). Long-form
+*content* — Learn articles, Understand/Guidance sections, the sample report,
+result summaries, activity/notification entries, counsellor listings — exists
+only as English/Arabic pairs in `src/data/*.js` and the content screens, and
+displays in **English** for the four new languages (the existing
+`lang === 'ar' ? ar : en` pattern). The fallback is uniform across those
+languages, so a reader never sees a half-translated screen.
 
 ### RTL strategy
 
@@ -59,7 +94,9 @@ RTL; menu rows mirror likewise.
   Fonts in `index.html` with `display=swap`.
 - The `font-sans` token swaps to Cairo when `lang="ar"`.
 
-### What was verified (manual browser QA, English + Arabic)
+### What was verified (manual browser QA)
+
+**English + Arabic:**
 
 - `dir="rtl"` and `lang="ar"` set on `<html>`; font computed style = Cairo.
 - Back button renders at the right edge in RTL (measured position).
@@ -70,10 +107,24 @@ RTL; menu rows mirror likewise.
   either language.
 - Zero console errors across the full route sweep.
 
-### Known limitation
+**French, Spanish, Swahili, Hausa (14 Nov 2026):**
 
-- Arabic copy was written for this prototype and reviewed for meaning, but **no
-  professional translation or native-speaker review has been commissioned**.
-  This is recorded as a limitation in `11_ASSUMPTIONS_LIMITATIONS_AND_RISKS.md`.
-- Dates/numbers use `toLocaleString('ar' | 'en-GB')` — browser-provided
-  formatting, not a custom localisation layer.
+- Each language checked on six key screens (dashboard, journey, learn, report,
+  FAQs, settings): correct `<html lang>` + `dir="ltr"`, **zero raw translation
+  keys** rendered, zero console errors.
+- Switching via the settings dropdown updates the document attributes and
+  persists across reload; an invalid saved value (`xx`) falls back to English.
+- Hausa hooked glyphs (ɓ ɗ ƙ ƴ) render correctly (Plus Jakarta Sans with
+  system-font fallback); screenshots reviewed.
+- This is a **rendering check only — not a translation quality review.**
+
+### Known limitations
+
+- No professional translation review has been commissioned for **any**
+  non-English language (Arabic, and the four provisional catalogues). This is
+  recorded as a limitation in `11_ASSUMPTIONS_LIMITATIONS_AND_RISKS.md`.
+- Long-form content stays English in the four new languages (see the
+  content-layer fallback note above).
+- Dates/numbers use `toLocaleString(...)` with browser-provided formatting
+  (locale mapped `ar → 'ar'`, otherwise `'en-GB'`) — not a custom
+  localisation layer.

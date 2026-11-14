@@ -83,12 +83,15 @@ navigation (no server-side routing needed — the app uses hash routes):
 | Couple | CoupleConnect, Partner-sharing consent (grant / revoke) |
 | Support | Genetic counselling access |
 | Account | Profile, Settings, Privacy & security, Notifications, Activity history |
-| System | English / Arabic selection, 404 page |
+| System | Six-language selection (EN / AR / FR / ES / SW / HA), 404 page |
 
-**Bilingual:** full English and Arabic catalogues. Selecting Arabic switches the
-whole document to `dir="rtl"` and the typeface to Cairo; layout follows with
-logical CSS properties (`start`/`end`), so back buttons, chevrons and timeline
-spines flip correctly.
+**Languages:** full catalogues for English, Arabic, French, Spanish, Swahili
+and Hausa (344 keys each), picked from a dropdown in Settings. Selecting
+Arabic switches the whole document to `dir="rtl"` and the typeface to Cairo;
+layout follows with logical CSS properties (`start`/`end`), so back buttons,
+chevrons and timeline spines flip correctly. The four newer catalogues are
+**provisional translations pending professional review**, and long-form
+articles stay in English there (declared in `docs/06`).
 
 ---
 
@@ -104,7 +107,8 @@ GeneClarity/
 ├─ src/
 │  ├─ App.jsx                 # Routes + scroll/language-dir side effects
 │  ├─ i18n/
-│  │  ├─ translations.js      # Single source of truth for ALL copy (EN + AR)
+│  │  ├─ translations.js      # EN + AR catalogues, imports fr/es/sw/ha, languages metadata
+│  │  ├─ fr.js / es.js / sw.js / ha.js   # Provisional catalogues (344 keys each)
 │  │  └─ LanguageContext.jsx  # Language state, persists to localStorage
 │  ├─ lib/
 │  │  ├─ supabase.js          # Dual-mode client (null when not configured)
@@ -116,7 +120,7 @@ GeneClarity/
 │  │  └─ useRequireAuth.js    # Route guard
 │  ├─ data/
 │  │  ├─ demoData.js          # All synthetic demo data + origin declarations
-│  │  └─ journeyContent.js    # Bilingual Understand/Guidance + sample report
+│  │  └─ journeyContent.js    # EN/AR Understand/Guidance + sample report
 │  ├─ components/             # Icon, Logo, Illustrations, Shell, UI primitives
 │  ├─ screens/                # One file per screen
 │  └─ styles/index.css        # Design system: tokens, .btn, .card, .field
@@ -135,8 +139,9 @@ GeneClarity/
   original localStorage demo — same screens, same flows, nothing breaks. No
   Firebase, no Google AI Studio, no paid services either way. AI features are
   still *planned*, not built (`docs/09`–`docs/11`).
-- **All copy lives in `src/i18n/translations.js`** — no hardcoded English in
-  components, which is what makes full Arabic RTL possible.
+- **All interface copy lives in `src/i18n/`** (six catalogues behind one
+  `t()` function) — no hardcoded English in components, which is what makes
+  full Arabic RTL and the six-language picker possible.
 
 ---
 
@@ -218,7 +223,7 @@ All challenge documentation is in [`docs/`](docs/):
 | `03_SCREEN_INVENTORY.md` | All 27 screens and their purpose |
 | `04_USER_JOURNEYS.md` | Key flows end to end |
 | `05_TECHNICAL_ARCHITECTURE.md` | Stack, routing, state, build |
-| `06_ACCESSIBILITY_AND_I18N.md` | A11y and Arabic RTL approach |
+| `06_ACCESSIBILITY_AND_I18N.md` | A11y, six-language i18n and Arabic RTL approach |
 | `07_MEDICAL_SAFETY_AND_CONTENT_RULES.md` | The safety rules above, in detail |
 | `08_PRIVACY_AND_CONSENT_MODEL.md` | Accounts, sharing, revocation |
 | `09_CHALLENGE_ALIGNMENT_AND_IMPACT.md` | Fit with the challenge goals |
