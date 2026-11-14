@@ -242,8 +242,10 @@ All challenge documentation is in [`docs/`](docs/):
   rejection, and 5 blocked cross-account access attempts); partner-consent
   flow verified end-to-end with **two separate accounts** on 14 Nov 2026
   (invite → grant → scope enforcement in the database → revoke → state
-  survives reload → row delete on clear, zero console errors). Both are
-  functional two-account tests, not penetration tests.
+  survives reload → row delete on clear, zero console errors); settings
+  sync verified the same day (switch → server row, server row → browser
+  after reload, owner-only RLS, values restored). All are functional tests,
+  not penetration tests.
 - **Planned (not built):** sharing of screening documents (shown as planned
   only), AI features (any document interpretation would require separate
   explicit consent, clinical validation and professional oversight), real

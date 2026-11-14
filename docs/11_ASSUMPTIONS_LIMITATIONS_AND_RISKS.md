@@ -40,9 +40,12 @@ softened.
   Supabase in backend mode, `localStorage` remains the primary store and
   changes are mirrored to the server through the local-first sync layer
   (`src/lib/db.js`) — results, consent, notifications and settings all push;
-  the **partner-consent path** of that sync is now verified end-to-end (see
-  Evidence), the rest is not yet fully verified. In demo mode: per-browser
-  storage, clearing browser data resets everything, no cross-device sync.
+  the **partner-consent path** and **settings** (push, pull, owner-only RLS)
+  are now verified end-to-end (see Evidence), the rest is not yet fully
+  verified. Known race: a change made during the first moments of a page
+  load can be overwritten by the incoming initial server pull (declared in
+  Evidence). In demo mode: per-browser storage, clearing browser data
+  resets everything, no cross-device sync.
 - **RLS policies are written, not audited** (with two scoped exceptions).
   Owner-only + consent-gated partner reads are declared in SQL, but no
   penetration test or adversarial review has been run against them — except
@@ -87,12 +90,13 @@ softened.
 - **No accessibility audit.** Semantic markup and keyboard focus are in place,
   but no WCAG audit or screen-reader testing has been performed; no compliance
   claim is made.
-- **No security testing — two functional exceptions.** No penetration test or
+- **No security testing — three functional checks.** No penetration test or
   threat modelling exercise has been conducted, and none is claimed. A
   dependency audit (`npm audit`) was run and its 4 pre-existing findings are
   declared above. In demo mode the app sends no data anywhere; in backend
-  mode access is constrained by RLS — for the **document feature** and the
-  **partner-consent flow**, those statements were turned into actual tests:
+  mode access is constrained by RLS — for the **document feature**, the
+  **partner-consent flow** and the **settings table**, those statements were
+  turned into actual tests:
   - two separate accounts (test1, test2) signed in sequentially on the same
     build; test2 saw an **empty list and 0 rows** while test1 had 3 documents;
   - five cross-account attacks as test2 against test1's data were all
@@ -123,8 +127,17 @@ softened.
     and revoke;
   - cancelling the connection deleted the row (0 rows remain) and reset the
     UI to a clean state; zero console errors throughout.
-  This covers the document feature and the consent path. Other tables
-  (profiles, settings, notifications policies), auth flows, and the
+  **Settings sync, tested (14 Nov 2026):** flipping a switch on
+  `/settings/privacy` updated the `settings` row server-side (fresh
+  `updated_at`); editing the row server-side and reloading made the browser
+  adopt the server value (pull confirmed); the other test account could
+  read **only its own row** (RLS owner-only); values were restored to their
+  originals afterwards. One race was observed: a change made during the
+  first moments of a page load — while the initial server pull is still in
+  flight — can be overwritten by that incoming load (harmless in normal
+  use, declared rather than hidden).
+  This covers the document feature, the consent path and settings. Other
+  tables (profiles, notifications policies), auth flows, and the
   hosting layer were **not** adversarially tested.
 - **No clinical validation.** Nothing has been validated against real screening
   outcomes, and the prototype is not a medical device.

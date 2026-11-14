@@ -180,8 +180,9 @@ scope limits of that test.
   If ever added it must be a separate, consent-gated feature with clinical
   validation and professional oversight (see `07_MEDICAL_SAFETY`).
 - Full verification of the sync layer for results, notifications, activity
-  and settings (the mirror writes are implemented in `src/lib/db.js`; only
-  the partner-consent path has been verified end-to-end so far).
+  (the mirror writes are implemented in `src/lib/db.js`; the
+  partner-consent path and settings push/pull/RLS have been verified
+  end-to-end, the rest has not).
 - Server-side AI explanation functions — provider decision pending (Google AI
   Studio remains forbidden by the challenge constraints).
 
