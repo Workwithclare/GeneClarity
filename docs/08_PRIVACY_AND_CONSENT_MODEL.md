@@ -98,25 +98,36 @@ Rules as implemented in `AppStore.jsx`:
 - **Erase** — the erase action opens an honest confirmation: in this prototype
   there is no server copy to erase, only this browser's local state.
 
-## Backend mapping (schema implemented; some UI paths pending)
+## Backend mapping (schema implemented; partner-consent UI tested end-to-end)
 
 The Supabase project exists (credentials gitignored in `.env.local`);
 `supabase/migrations/0001–0005` implement:
 
-- `consent_grants(user_id, partner_id, scope, granted_at, revoked_at)` —
-  revocation is a timestamp, not a delete, preserving an honest audit trail.
+- `consents(owner_id, partner_id, share_summary, share_full_report,
+  share_notifications, granted_at, revoked_at)` — revocation is a timestamp,
+  not a delete, preserving an honest audit trail.
 - Results readable only by their owner (`RLS`), partner access granted through
-  `has_consent()` requiring an unrevoked row.
+  `has_consent()` requiring an unrevoked row with the matching share flag.
 - Document storage with owner-only policies (`0005`) — **live and tested**
   with two accounts on 13 Nov 2026.
 
-Still pending: the partner-consent UI does not yet call these tables
-end-to-end, and no AI processing exists in any form.
+The partner-consent UI calls these tables end-to-end: invite → grant →
+revoke → clear (`src/lib/db.js` mirrors each state change to `consents`),
+**verified with two accounts on 14 Nov 2026** (see Verification status).
+No AI processing exists in any form.
 
 ## Verification status
 
 - Manually tested in-browser: grant → status becomes active → revoke → status
   returns to none; activity log records both.
+- **Partner-consent flow tested end-to-end with two accounts (14 Nov 2026):**
+  invite by email created a pending row with all shares off; granting two
+  categories made the partner's token able to read exactly the owner's 3
+  results (`has_consent`) while keeping its own; turning "Full report" off
+  cut that read to 0 rows immediately (scope enforced in the database);
+  revoking set `revoked_at` and dropped access to 0 at once, surviving a
+  reload from the server; cancelling deleted the row entirely. A functional
+  two-account test, **not** a penetration test.
 - **Document isolation tested with two separate accounts (13 Nov 2026):**
   test2 saw an empty list and zero rows while test1 had 3 documents; five
   cross-account attack attempts were blocked (signed URL for the other user's
@@ -126,4 +137,5 @@ end-to-end, and no AI processing exists in any form.
   penetration test.
 - **Not tested:** penetration testing, formal privacy audit, DPIA — none have
   been performed and none are claimed. RLS policies on the *other* tables
-  remain written-but-not-adversarially-tested (see `11`).
+  (profiles, settings, notifications) remain written-but-not-adversarially-
+  tested (see `11`).

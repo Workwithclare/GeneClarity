@@ -37,17 +37,20 @@ softened.
   penetration test). Email confirmation is currently off on the project (see
   the notifications limitation below).
 - **Server persistence only partially wired.** Accounts authenticate via
-  Supabase in backend mode, but results/consent/notifications/settings still
-  read and write `localStorage` in both modes; the database schema + RLS
-  policies exist (`supabase/migrations/0001_init.sql`) but the UI does not yet
-  call them. In demo mode: per-browser storage, clearing browser data resets
-  everything, no cross-device sync.
-- **RLS policies are written, not audited** (with one scoped exception).
+  Supabase in backend mode, `localStorage` remains the primary store and
+  changes are mirrored to the server through the local-first sync layer
+  (`src/lib/db.js`) — results, consent, notifications and settings all push;
+  the **partner-consent path** of that sync is now verified end-to-end (see
+  Evidence), the rest is not yet fully verified. In demo mode: per-browser
+  storage, clearing browser data resets everything, no cross-device sync.
+- **RLS policies are written, not audited** (with two scoped exceptions).
   Owner-only + consent-gated partner reads are declared in SQL, but no
   penetration test or adversarial review has been run against them — except
-  the **screening-document policies** (table + storage, `0005`), which were
-  exercised adversarially with two accounts on 13 Nov 2026; see Evidence.
-  That was a functional two-account test, not a penetration test.
+  the **screening-document policies** (table + storage, `0005`, exercised
+  adversarially with two accounts on 13 Nov 2026) and the **partner-consent
+  path** (`consents` + `has_consent()` reads on `results`, exercised
+  end-to-end with two accounts on 14 Nov 2026); see Evidence. Both were
+  functional two-account tests, not penetration tests.
 - **Document storage limitations.** Signed URLs live 300 s and are created
   per request; deletion is best-effort with no retry queue (a storage delete
   that succeeds followed by a failed row delete leaves the row visible while
@@ -84,12 +87,12 @@ softened.
 - **No accessibility audit.** Semantic markup and keyboard focus are in place,
   but no WCAG audit or screen-reader testing has been performed; no compliance
   claim is made.
-- **No security testing — one functional exception.** No penetration test or
+- **No security testing — two functional exceptions.** No penetration test or
   threat modelling exercise has been conducted, and none is claimed. A
   dependency audit (`npm audit`) was run and its 4 pre-existing findings are
   declared above. In demo mode the app sends no data anywhere; in backend
-  mode access is constrained by RLS — for the **document feature only**, that
-  statement was turned into an actual test on 13 Nov 2026:
+  mode access is constrained by RLS — for the **document feature** and the
+  **partner-consent flow**, those statements were turned into actual tests:
   - two separate accounts (test1, test2) signed in sequentially on the same
     build; test2 saw an **empty list and 0 rows** while test1 had 3 documents;
   - five cross-account attacks as test2 against test1's data were all
@@ -103,7 +106,25 @@ softened.
     metadata row;
   - server-side bucket rules rejected a text/plain file, an 11 MB file, and
     a MIME-spoofed `.pdf` name, while accepting a valid PNG.
-  This covers the document feature only. Other tables, auth flows, and the
+  **Partner-consent flow, tested end-to-end with two accounts (14 Nov 2026):**
+  - invite by email resolved the second real account and wrote a pending
+    `consents` row with all share flags false ("nothing shared by an
+    invitation");
+  - granting two categories updated the row (`share_summary`,
+    `share_full_report`, `granted_at`) and the partner's token could then
+    read exactly the owner's 3 result rows via `has_consent('full_report')`
+    while keeping access to its own 3;
+  - switching "Full report" off cut the partner's read to **0 rows**
+    immediately, and restoring it brought the 3 rows back (scope enforced
+    by the database, not the UI);
+  - revoking set `revoked_at` (timestamp, row kept for audit) and dropped
+    the partner's read to **0** at once; the state survived a full page
+    reload, restored from the server, and the activity log recorded grant
+    and revoke;
+  - cancelling the connection deleted the row (0 rows remain) and reset the
+    UI to a clean state; zero console errors throughout.
+  This covers the document feature and the consent path. Other tables
+  (profiles, settings, notifications policies), auth flows, and the
   hosting layer were **not** adversarially tested.
 - **No clinical validation.** Nothing has been validated against real screening
   outcomes, and the prototype is not a medical device.
@@ -135,5 +156,6 @@ softened.
 2. Professional Arabic translation review.
 3. Usability testing with screening-eligible adults (then: real metrics).
 4. WCAG 2.2 AA audit with assistive-technology testing.
-5. Finish the backend: wire the UI to the existing RLS schema, test the
-   consent flow end-to-end against a live project, then a security review.
+5. Finish backend verification: the consent flow is now tested end-to-end
+   (14 Nov 2026) — remaining are the results/notifications/settings sync
+   paths and then a professional security review.

@@ -239,13 +239,15 @@ All challenge documentation is in [`docs/`](docs/):
   console errors, RTL verification; document feature verified end-to-end with
   **two separate accounts** on 13 Nov 2026 (upload / list / signed-URL open
   and download / delete, empty state, client- and server-side type and size
-  rejection, and 5 blocked cross-account access attempts) — a functional
-  two-account test, not a penetration test.
+  rejection, and 5 blocked cross-account access attempts); partner-consent
+  flow verified end-to-end with **two separate accounts** on 14 Nov 2026
+  (invite → grant → scope enforcement in the database → revoke → state
+  survives reload → row delete on clear, zero console errors). Both are
+  functional two-account tests, not penetration tests.
 - **Planned (not built):** sharing of screening documents (shown as planned
-  only), partner consent enforced end-to-end against a live project, AI
-  features (any document interpretation would require separate explicit
-  consent, clinical validation and professional oversight), real counselling
-  directory integration.
+  only), AI features (any document interpretation would require separate
+  explicit consent, clinical validation and professional oversight), real
+  counselling directory integration.
 - **Not claimed:** clinical validation, penetration testing/security
   auditing, user-impact metrics, partnerships.
 

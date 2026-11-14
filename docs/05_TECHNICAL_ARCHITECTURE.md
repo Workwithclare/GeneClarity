@@ -166,6 +166,9 @@ scope limits of that test.
   (`supabase/migrations/0005_screening_documents.sql` + `src/lib/documents.js`)
   — bucket limits, owner-only storage policies, signed URLs; **tested with
   two accounts** (see the section above).
+- Partner-consent flow wired end-to-end (`consents` via `src/lib/db.js`:
+  invite → grant → revoke → clear) — **tested with two accounts** on
+  14 Nov 2026, including `has_consent()` partner reads and scope enforcement.
 - `.env.example` + `.env.local` template (gitignored).
 
 **Planned (not yet wired):**
@@ -176,11 +179,9 @@ scope limits of that test.
 - AI interpretation of uploaded documents — out of scope for this prototype.
   If ever added it must be a separate, consent-gated feature with clinical
   validation and professional oversight (see `07_MEDICAL_SAFETY`).
-- Client-side read/write of results, notifications, activity and settings to
-  the database (currently the UI still reads/writes localStorage in both
-  modes).
-- Partner-consent flow enforced end-to-end against a live project (schema and
-  policies exist; the UI does not yet call them).
+- Full verification of the sync layer for results, notifications, activity
+  and settings (the mirror writes are implemented in `src/lib/db.js`; only
+  the partner-consent path has been verified end-to-end so far).
 - Server-side AI explanation functions — provider decision pending (Google AI
   Studio remains forbidden by the challenge constraints).
 
