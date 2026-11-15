@@ -12,15 +12,14 @@ export default function Welcome() {
 
   return (
     <div className="screen relative overflow-hidden bg-white">
-      {/* Soft brand wash behind the illustration */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[62%]"
-        style={{
-          background:
-            'linear-gradient(180deg, #F4FBF7 0%, #E6F5EF 55%, rgba(255,255,255,0) 100%)',
-        }}
-        aria-hidden="true"
-      />
+      {/* Soft organic brand blobs behind the illustration — the reference
+          art uses rounded mint shapes rather than a flat gradient. */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <span className="absolute -left-24 -top-28 h-72 w-72 rounded-full bg-brand-100" />
+        <span className="absolute -right-28 top-24 h-80 w-80 rounded-full bg-mint-100" />
+        <span className="absolute -right-16 top-64 h-56 w-56 rounded-full bg-brand-50" />
+        <span className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-mint-100 to-transparent" />
+      </div>
 
       {/* Language switch, top-right as in the reference */}
       <div className="relative z-10 flex justify-end px-5 pt-5">

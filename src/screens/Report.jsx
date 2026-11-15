@@ -47,36 +47,39 @@ export default function Report() {
       <AppBar title={t('rep.title')} onBack={() => navigate('/dashboard')} />
 
       <main className="flex-1 overflow-y-auto px-5 pb-4 pt-5">
-        {/* Ready state, as in the reference */}
-        <div className="flex flex-col items-center text-center animate-scale-in">
-          <SuccessMark size={88} />
-          <h2 className="mt-4 text-[22px] font-extrabold text-ink-900">
-            {t('rep.allSet')}
-          </h2>
-          <p className="mt-1 text-[14px] text-ink-400">{t('rep.ready')}</p>
-        </div>
+        {/* Ready state — check, heading, both actions and the note all
+            sit inside one pale panel, exactly as in the reference art. */}
+        <div className="rounded-card bg-panel-100 p-5 animate-scale-in">
+          <div className="flex flex-col items-center text-center">
+            <SuccessMark size={76} confetti={false} />
+            <h2 className="mt-4 text-[22px] font-extrabold text-ink-900">
+              {t('rep.allSet')}
+            </h2>
+            <p className="mt-1 text-[14px] text-ink-500">{t('rep.ready')}</p>
+          </div>
 
-        <div className="mt-5 flex flex-col gap-2.5">
-          <Button
-            size="lg"
-            onClick={() => navigate(`/report/${state.results[0]?.id ?? ''}`)}
-            disabled={!hasResults}
-          >
-            {t('act.viewReport')}
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            icon="download"
-            onClick={() => window.print()}
-            disabled={!hasResults}
-          >
-            {t('act.downloadPdf')}
-          </Button>
-        </div>
+          <div className="mt-5 flex flex-col gap-2.5">
+            <Button
+              size="lg"
+              onClick={() => navigate(`/report/${state.results[0]?.id ?? ''}`)}
+              disabled={!hasResults}
+            >
+              {t('act.viewReport')}
+            </Button>
+            <Button
+              variant="secondary"
+              size="lg"
+              icon="download"
+              onClick={() => window.print()}
+              disabled={!hasResults}
+            >
+              {t('act.downloadPdf')}
+            </Button>
+          </div>
 
-        <div className="mt-5">
-          <SafetyNote text={t('rep.note')} tone="info" />
+          <div className="mt-4">
+            <SafetyNote text={t('rep.note')} tone="info" />
+          </div>
         </div>
 
         <div className="mt-4">

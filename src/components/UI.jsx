@@ -132,19 +132,28 @@ export function SectionTitle({ children, action }) {
  * Accessible switch. Uses a real checkbox under the hood so keyboard
  * and screen-reader behaviour comes for free.
  */
-export function Switch({ checked, onChange, label, description, id }) {
+export function Switch({ checked, onChange, label, description, id, icon }) {
   return (
     <label
       htmlFor={id}
-      className="flex cursor-pointer items-start justify-between gap-4 py-3"
+      className="flex cursor-pointer items-center justify-between gap-4 py-3"
     >
-      <span className="min-w-0">
-        <span className="block text-[15px] font-bold text-ink-900">{label}</span>
-        {description && (
-          <span className="mt-0.5 block text-[13px] leading-snug text-ink-400">
-            {description}
+      <span className="flex min-w-0 items-center gap-3.5">
+        {/* Optional leading icon — the settings rows carry one so the
+            switch row lines up with the navigation rows beneath it. */}
+        {icon && (
+          <span className="grid h-8 w-8 shrink-0 place-items-center text-ink-500">
+            <Icon name={icon} size={19} />
           </span>
         )}
+        <span className="min-w-0">
+          <span className="block text-[15px] font-bold text-ink-900">{label}</span>
+          {description && (
+            <span className="mt-0.5 block text-[13px] leading-snug text-ink-400">
+              {description}
+            </span>
+          )}
+        </span>
       </span>
       <span className="relative mt-0.5 inline-flex shrink-0">
         <input
@@ -199,6 +208,7 @@ export function Tick({ checked, onChange, children, id, error }) {
 export function TextField({
   id,
   label,
+  hideLabel = false,
   type = 'text',
   error,
   icon,
@@ -209,13 +219,13 @@ export function TextField({
   return (
     <div>
       {label && (
-        <label htmlFor={id} className="label">
+        <label htmlFor={id} className={hideLabel ? 'sr-only' : 'label'}>
           {label}
         </label>
       )}
       <div className="relative">
         {icon && (
-          <span className="pointer-events-none absolute inset-y-0 start-3.5 flex items-center text-ink-300">
+          <span className="pointer-events-none absolute inset-y-0 start-3.5 flex items-center text-brand-700">
             <Icon name={icon} size={18} />
           </span>
         )}

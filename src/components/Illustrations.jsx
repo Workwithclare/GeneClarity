@@ -205,7 +205,7 @@ export function AvatarArt({ size = 96, className = '' }) {
 }
 
 /** Report-ready success mark used on the report and completion screens. */
-export function SuccessMark({ size = 96, className = '' }) {
+export function SuccessMark({ size = 96, className = '', confetti = true }) {
   return (
     <svg
       width={size}
@@ -215,8 +215,8 @@ export function SuccessMark({ size = 96, className = '' }) {
       role="img"
       aria-label="Complete"
     >
-      <circle cx="48" cy="48" r="44" fill={TONES.mid} />
-      <circle cx="48" cy="48" r="44" fill="none" stroke={TONES.light} strokeWidth="3" opacity="0.5" />
+      <circle cx="48" cy="48" r="38" fill={TONES.mid} />
+      <circle cx="48" cy="48" r="38" fill="none" stroke={TONES.light} strokeWidth="3" opacity="0.5" />
       <path
         d="M31 49l12 12 23-25"
         stroke="#fff"
@@ -225,21 +225,28 @@ export function SuccessMark({ size = 96, className = '' }) {
         strokeLinejoin="round"
         fill="none"
       />
-      {/* celebration confetti — green and gold, as in the reference */}
-      <g stroke={TONES.light} strokeWidth="4" strokeLinecap="round">
-        <path d="M82 20l6-6M14 76l-6 6M48 6V1M48 95v-5" />
-      </g>
-      <g stroke="#F5C842" strokeWidth="4" strokeLinecap="round">
-        <path d="M14 20l-6-6M82 76l6 6" />
-      </g>
-      <g fill="#F5C842">
-        <circle cx="9" cy="48" r="3" />
-        <circle cx="87" cy="48" r="3" />
-      </g>
-      <g fill={TONES.light}>
-        <circle cx="24" cy="12" r="2.5" />
-        <circle cx="72" cy="84" r="2.5" />
-      </g>
+      {/* celebration confetti — short green and gold dashes floating
+          *outside* the circle, as in the reference completion art.
+          The report screen passes confetti={false}: its reference art
+          shows a plain check with no celebration marks. */}
+      {confetti && (
+        <>
+          <g stroke={TONES.light} strokeWidth="4" strokeLinecap="round">
+            <path d="M81 15l6-6M15 81l-6 6M48 7V2M89 48h5" />
+          </g>
+          <g stroke="#F5C842" strokeWidth="4" strokeLinecap="round">
+            <path d="M15 15l-6-6M81 81l6 6M48 89v5M7 48H2" />
+          </g>
+          <g fill="#F5C842">
+            <circle cx="30" cy="6" r="3" />
+            <circle cx="66" cy="90" r="3" />
+          </g>
+          <g fill={TONES.light}>
+            <circle cx="90" cy="30" r="2.5" />
+            <circle cx="6" cy="66" r="2.5" />
+          </g>
+        </>
+      )}
     </svg>
   )
 }

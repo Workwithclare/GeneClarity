@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Button, TextField, Tick } from '../components/UI.jsx'
-import LanguageToggle from '../components/LanguageToggle.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
 import { supabaseEnabled } from '../lib/supabase.js'
@@ -125,7 +124,8 @@ export default function Register() {
   if (awaitingConfirm) {
     return (
       <div className="screen bg-white">
-        <header className="flex items-center justify-between px-4 pt-5">
+        {/* Header: back arrow only, matching the reference art */}
+        <header className="px-4 pt-5">
           <button
             type="button"
             onClick={() => navigate('/login')}
@@ -134,8 +134,6 @@ export default function Register() {
           >
             <Icon name="chevronLeft" size={22} />
           </button>
-          <LanguageToggle />
-          <span className="min-w-10" />
         </header>
 
         <div className="flex flex-1 flex-col justify-center px-6 pb-16 text-center">
@@ -162,7 +160,8 @@ export default function Register() {
 
   return (
     <div className="screen bg-white">
-      <header className="flex items-center justify-between px-4 pt-5">
+      {/* Header: back arrow only, matching the reference art */}
+      <header className="px-4 pt-5">
         <button
           type="button"
           onClick={() => navigate('/login')}
@@ -171,8 +170,6 @@ export default function Register() {
         >
           <Icon name="chevronLeft" size={22} />
         </button>
-        <LanguageToggle />
-        <span className="min-w-10" />
       </header>
 
       <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-8">
@@ -190,9 +187,10 @@ export default function Register() {
           <TextField
             id="reg-name"
             label={t('auth.fullName')}
+            hideLabel
             icon="user"
             autoComplete="name"
-            placeholder="Chioma Clare"
+            placeholder={t('auth.fullName')}
             value={form.fullName}
             error={errors.fullName}
             onChange={setField('fullName')}
@@ -201,10 +199,11 @@ export default function Register() {
           <TextField
             id="reg-email"
             label={t('auth.email')}
+            hideLabel
             type="email"
             icon="mail"
             autoComplete="email"
-            placeholder="name@example.com"
+            placeholder={t('auth.email')}
             value={form.email}
             error={errors.email}
             onChange={setField('email')}
@@ -213,10 +212,11 @@ export default function Register() {
           <TextField
             id="reg-password"
             label={t('auth.password')}
+            hideLabel
             type={reveal ? 'text' : 'password'}
             icon="lock"
             autoComplete="new-password"
-            placeholder="••••••••"
+            placeholder={t('auth.password')}
             value={form.password}
             error={errors.password}
             canReveal
@@ -236,10 +236,11 @@ export default function Register() {
           <TextField
             id="reg-confirm"
             label={t('auth.confirmPassword')}
+            hideLabel
             type={reveal ? 'text' : 'password'}
             icon="lock"
             autoComplete="new-password"
-            placeholder="••••••••"
+            placeholder={t('auth.confirmPassword')}
             value={form.confirmPassword}
             error={errors.confirmPassword}
             onChange={setField('confirmPassword')}

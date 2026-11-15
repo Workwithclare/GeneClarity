@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { SuccessMark } from '../components/Illustrations.jsx'
-import { Button, Pill } from '../components/UI.jsx'
+import { Button } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 
 /**
@@ -30,10 +30,6 @@ export default function Done() {
             {t('act.goToDashboard')}
           </Button>
         </div>
-
-        <p className="mt-6">
-          <Pill tone="sample">{t('nav.demo')}</Pill>
-        </p>
       </div>
     </div>
   )

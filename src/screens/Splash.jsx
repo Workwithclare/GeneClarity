@@ -72,14 +72,37 @@ export default function Splash() {
         </div>
       </div>
 
-      {/* Deep-green organic wave at the bottom — drawn as an SVG path so
-          the crest curves like the reference art rather than a dome. */}
+      {/* Faint DNA helix watermark on the right, as in the reference art */}
       <svg
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-60 w-full"
-        viewBox="0 0 448 240"
+        className="pointer-events-none absolute -right-6 top-16 h-[420px] w-56 text-brand-200/60"
+        viewBox="0 0 120 420"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="7"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <path d="M30 0c0 45 60 45 60 90s-60 45-60 90 60 45 60 90-60 45-60 90 60 45 60 60" />
+        <path d="M90 0c0 45-60 45-60 90s60 45 60 90-60 45-60 90 60 45 60 90-60 45-60 60" />
+        <path d="M38 45h44M30 135h60M38 225h44M30 315h60M38 395h44" strokeWidth="5" />
+      </svg>
+
+      {/* Light mint crest wave sitting behind the deep-green wave —
+          two stacked paths so the crest reads like the reference art. */}
+      <svg
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 w-full"
+        viewBox="0 0 448 256"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
+        <path
+          d="M0 96C90 52 180 120 264 88c70-27 130-33 184-13v181H0V96Z"
+          fill="#C9EBDD"
+        />
+        <path
+          d="M0 128C90 84 180 152 264 120c70-27 130-33 184-13v149H0V128Z"
+          fill="url(#gcWave)"
+        />
         <defs>
           <linearGradient id="gcWave" x1="0" y1="0" x2="1" y2="1">
             <stop stopColor="#22856B" />
@@ -87,14 +110,10 @@ export default function Splash() {
             <stop offset="1" stopColor="#0F4F46" />
           </linearGradient>
         </defs>
-        <path
-          d="M0 64C90 20 180 88 264 56c70-27 130-33 184-13v197H0V64Z"
-          fill="url(#gcWave)"
-        />
       </svg>
 
       {/* Loading indicator, sitting inside the wave */}
-      <div className="absolute inset-x-0 bottom-0 z-10 flex h-60 flex-col items-center justify-end gap-3 pb-14 animate-fade-in">
+      <div className="absolute inset-x-0 bottom-0 z-10 flex h-52 flex-col items-center justify-end gap-3 pb-14 animate-fade-in">
         <span
           className="h-7 w-7 rounded-full border-[3px] border-white/25 border-t-white animate-spin-slow"
           aria-hidden="true"

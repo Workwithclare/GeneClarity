@@ -53,16 +53,17 @@ html[lang='ar'] .arabic-tight {
      staying responsive: on desktop it centres as a card, on mobile it
      fills the viewport. */
   .screen {
-    @apply relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-mint-50;
+    @apply relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-white;
   }
 
   .screen--white {
     @apply bg-white;
   }
 
-  /* --- Buttons ------------------------------------------------------ */
+  /* --- Buttons ------------------------------------------------------
+     Fully rounded pills, as in every reference screen. */
   .btn {
-    @apply inline-flex w-full items-center justify-center gap-2 rounded-control px-5 text-[15px] font-bold
+    @apply inline-flex w-full items-center justify-center gap-2 rounded-full px-5 text-[15px] font-bold
            transition-all duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300
            disabled:cursor-not-allowed disabled:opacity-55;
   }
@@ -81,6 +82,11 @@ html[lang='ar'] .arabic-tight {
 
   .btn--soft {
     @apply bg-brand-100 text-brand-800 hover:bg-brand-200;
+  }
+
+  /* Neutral grey social sign-in button (Google / Apple), as in the reference. */
+  .btn--social {
+    @apply border border-transparent bg-[#F4F5F7] text-ink-900 hover:bg-ink-100;
   }
 
   .btn--danger {

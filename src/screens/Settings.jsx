@@ -34,10 +34,11 @@ export default function Settings() {
       <AppBar title={t('set.title')} onBack={() => navigate('/profile')} />
 
       <main className="flex-1 overflow-y-auto px-5 pb-8 pt-4">
-        <div className="divide-y divide-ink-100 overflow-hidden rounded-card border border-mint-200 bg-white shadow-card">
+        {/* Separate rounded rows, as in the reference art */}
+        <div className="space-y-2.5">
           {/* Language — the row carries the toggle itself */}
-          <div className="flex items-center gap-3.5 px-4 py-3.5">
-            <span className="grid h-8 w-8 shrink-0 place-items-center text-ink-500">
+          <div className="flex items-center gap-3.5 rounded-card border border-mint-200 bg-white px-4 py-3.5 shadow-card">
+            <span className="grid h-8 w-8 shrink-0 place-items-center text-brand-700">
               <Icon name="globe" size={19} />
             </span>
             <span className="flex-1 text-[14.5px] font-bold text-ink-900">
@@ -47,7 +48,7 @@ export default function Settings() {
           </div>
 
           {/* Notifications — one master switch, as in the reference */}
-          <div className="px-4">
+          <div className="rounded-card border border-mint-200 bg-white px-4 shadow-card">
             <Switch
               id="set-notifications"
               checked={Boolean(state.settings.notifyNotifications)}
@@ -55,6 +56,7 @@ export default function Settings() {
                 dispatch({ type: 'SET_SETTING', key: 'notifyNotifications', value })
               }
               label={t('set.notifications')}
+              icon="bell"
             />
           </div>
 
@@ -64,9 +66,9 @@ export default function Settings() {
               key={row.labelKey}
               type="button"
               onClick={() => navigate(row.to)}
-              className="menu-row focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+              className="menu-row rounded-card border border-mint-200 bg-white shadow-card focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center text-ink-500">
+              <span className="grid h-8 w-8 shrink-0 place-items-center text-brand-700">
                 <Icon name={row.icon} size={19} />
               </span>
               <span className="flex-1 text-[14.5px] font-bold text-ink-900">

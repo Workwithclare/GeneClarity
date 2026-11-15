@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Button, TextField, SafetyNote } from '../components/UI.jsx'
-import LanguageToggle from '../components/LanguageToggle.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore, demoUser } from '../store/AppStore.jsx'
 import { supabaseEnabled } from '../lib/supabase.js'
@@ -101,7 +100,8 @@ export default function Login() {
 
   return (
     <div className="screen bg-white">
-      <header className="flex items-center justify-between px-4 pt-5">
+      {/* Header: back arrow only, matching the reference art */}
+      <header className="px-4 pt-5">
         <button
           type="button"
           onClick={() => navigate('/welcome')}
@@ -110,13 +110,13 @@ export default function Login() {
         >
           <Icon name="chevronLeft" size={22} />
         </button>
-        <LanguageToggle />
-        <span className="min-w-10" />
       </header>
 
       <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-8">
         <div className="mt-4 text-center">
-          <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-brand-700 text-white shadow-button">
+          {/* Round teal badge with the brand leaf — the reference art uses
+              a lighter teal than the button so it reads as an emblem. */}
+          <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-500 text-white shadow-button">
             <Icon name="leaf" size={30} strokeWidth={1.8} />
           </span>
           <h1 className="mt-4 text-[25px] font-extrabold text-ink-900">
@@ -129,10 +129,11 @@ export default function Login() {
           <TextField
             id="login-email"
             label={t('auth.email')}
+            hideLabel
             type="email"
             icon="mail"
             autoComplete="email"
-            placeholder="name@example.com"
+            placeholder={t('auth.email')}
             value={email}
             error={errors.email}
             onChange={(e) => setEmail(e.target.value)}
@@ -141,10 +142,11 @@ export default function Login() {
           <TextField
             id="login-password"
             label={t('auth.password')}
+            hideLabel
             type={reveal ? 'text' : 'password'}
             icon="lock"
             autoComplete="current-password"
-            placeholder="••••••••"
+            placeholder={t('auth.password')}
             value={password}
             error={errors.password}
             canReveal
@@ -225,7 +227,7 @@ export default function Login() {
           <button
             type="button"
             onClick={() => setSocialNote(true)}
-            className="btn btn--secondary"
+            className="btn btn--social"
           >
             <Icon name="google" size={18} />
             {t('auth.continueGoogle')}
@@ -233,7 +235,7 @@ export default function Login() {
           <button
             type="button"
             onClick={() => setSocialNote(true)}
-            className="btn btn--secondary"
+            className="btn btn--social"
           >
             <Icon name="apple" size={18} />
             {t('auth.continueApple')}

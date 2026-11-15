@@ -69,8 +69,10 @@ export default function Support() {
                 onClick={row.onClick}
                 className="flex w-full items-center gap-3.5 px-4 py-4 pe-4 text-start transition-colors hover:bg-mint-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-mint-100 text-brand-700">
-                  <Icon name={row.icon} size={18} />
+                {/* Plain outline glyph — the reference art uses bare dark
+                    icons here rather than coloured chips. */}
+                <span className="grid h-9 w-9 shrink-0 place-items-center text-ink-700">
+                  <Icon name={row.icon} size={20} />
                 </span>
                 <span className="text-[14.5px] font-bold text-ink-900">
                   {t(row.labelKey)}

@@ -89,7 +89,7 @@ export default function ResultDetail() {
         </div>
 
         {/* Headline finding — icon, status name, plain sentence, as in
-            the reference "Key Insights" card. */}
+            the reference "Key Insights" card (no pills inside it). */}
         <section className="mt-4 rounded-card border border-brand-200 bg-mint-100 p-5 text-center animate-fade-up">
           <span className="mx-auto flex justify-center text-brand-700">
             <Icon name="dna" size={46} strokeWidth={1.6} />
@@ -100,16 +100,11 @@ export default function ResultDetail() {
           <p className="mt-1.5 text-[15px] font-semibold leading-snug text-ink-700">
             {summary}
           </p>
-          <div className="mt-3 flex flex-wrap justify-center gap-2">
-            <Pill tone="neutral">
-              {result.gene} · {result.trait}
-            </Pill>
-            <Pill tone="sample">{t('rep.sampleTag')}</Pill>
-          </div>
         </section>
 
-        {/* Plain-language explanation */}
-        <section className="mt-4 rounded-card border border-mint-200 bg-white p-5 shadow-card animate-fade-up">
+        {/* Plain-language explanation — plain on the page background,
+            with a pill-shaped Learn More button, as in the reference. */}
+        <section className="mt-5 animate-fade-up">
           <h2 className="text-[16px] font-extrabold text-ink-900">
             {t('res.whatThisMeans')}
           </h2>
@@ -120,10 +115,11 @@ export default function ResultDetail() {
             <p className="mt-2 text-[14.5px] leading-relaxed text-ink-700">{forYou}</p>
           </div>
 
-          {/* "Learn More" leads into the matching educational topic. */}
+          {/* "Learn More" leads into the matching educational topic —
+              a soft mint pill, as in the reference art. */}
           <Link
             to={`/learn/${TOPIC_BY_CONDITION[result.conditionId] || 'carrier-status'}`}
-            className="btn btn--secondary mt-4"
+            className="btn btn--soft mt-4 w-auto rounded-full px-6"
           >
             {t('act.learnMore')}
             <Icon name="arrowRight" size={18} />

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
-import { Screen, AppBar, BottomNav } from '../components/Shell.jsx'
+import { Screen, BottomNav } from '../components/Shell.jsx'
 import { AvatarArt } from '../components/Illustrations.jsx'
-import { Button, Pill } from '../components/UI.jsx'
+import { Button } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
@@ -40,24 +40,22 @@ export default function Profile() {
   const chevron = lang === 'ar' ? 'chevronLeft' : 'chevronRight'
 
   return (
-    <Screen>
-      {/* Profile is a root tab: no back chevron, only the settings gear. */}
-      <AppBar
-        title={t('prof.title')}
-        hideBack
-        right={
-          <button
-            type="button"
-            onClick={() => navigate('/settings')}
-            aria-label={t('set.title')}
-            className="grid h-10 w-10 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
-          >
-            <Icon name="settings" size={21} />
-          </button>
-        }
-      />
+    <Screen white>
+      {/* No title bar — the reference art shows only the settings gear
+          floating at the top right. Notifications and Activity History
+          stay in the list because the challenge requires both. */}
+      <header className="flex justify-end px-4 pt-5">
+        <button
+          type="button"
+          onClick={() => navigate('/settings')}
+          aria-label={t('set.title')}
+          className="grid h-10 w-10 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+        >
+          <Icon name="settings" size={22} />
+        </button>
+      </header>
 
-      <main className="flex-1 overflow-y-auto px-5 pb-4 pt-5">
+      <main className="flex-1 overflow-y-auto px-5 pb-4 pt-3">
         {/* Identity */}
         <div className="flex flex-col items-center text-center animate-fade-up">
           <button
@@ -74,23 +72,16 @@ export default function Profile() {
           </h1>
           {/* Email is only ever shown to its own owner — never in a shared view. */}
           <p className="text-[13.5px] text-ink-400">{user.email}</p>
-
-          <div className="mt-3 flex flex-wrap justify-center gap-2">
-            <Pill tone="ok">
-              {t('prof.memberSince')} {user.joinedAt}
-            </Pill>
-            <Pill tone="sample">{t('nav.demo')}</Pill>
-          </div>
         </div>
 
-        {/* Menu */}
-        <div className="mt-6 divide-y divide-ink-100 overflow-hidden rounded-card border border-mint-200 bg-white shadow-card">
+        {/* Menu — separate rounded rows, as in the reference art */}
+        <div className="mt-6 space-y-2.5">
           {rows.map((row) => (
             <button
               key={row.labelKey}
               type="button"
               onClick={() => navigate(row.to)}
-              className="menu-row focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+              className="menu-row rounded-card border border-mint-200 bg-white shadow-card focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
             >
               <span className="grid h-8 w-8 shrink-0 place-items-center text-brand-700">
                 <Icon name={row.icon} size={19} />
@@ -107,16 +98,19 @@ export default function Profile() {
             </button>
           ))}
 
-          {/* Log out — always last, visually separated */}
+          {/* Log out — styled like the other rows, as in the reference art */}
           <button
             type="button"
             onClick={() => setConfirmOut(true)}
-            className="menu-row text-danger-500 hover:bg-danger-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+            className="menu-row rounded-card border border-mint-200 bg-white shadow-card hover:bg-danger-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
           >
-            <span className="grid h-8 w-8 shrink-0 place-items-center">
+            <span className="grid h-8 w-8 shrink-0 place-items-center text-brand-700">
               <Icon name="logout" size={19} />
             </span>
-            <span className="flex-1 text-[14.5px] font-bold">{t('act.signOut')}</span>
+            <span className="flex-1 text-[14.5px] font-bold text-ink-900">
+              {t('act.signOut')}
+            </span>
+            <Icon name={chevron} size={18} className="shrink-0 text-ink-300" />
           </button>
         </div>
 

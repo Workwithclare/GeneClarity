@@ -10,6 +10,7 @@ export default {
     'btn--ghost',
     'btn--soft',
     'btn--danger',
+    'btn--social',
     'btn--sm',
     'btn--lg',
     'screen--white',
@@ -69,6 +70,17 @@ export default {
         note: {
           100: '#EAF3FB',
           700: '#3E6E8E',
+        },
+        // Pale tile tints sampled from the dashboard's Quick Access art.
+        tile: {
+          grey: '#F5F6F8',
+          blush: '#FAF4F2',
+          mint: '#EFF8F5',
+          lilac: '#FCF8FA',
+        },
+        // Cool blue-grey panel behind the report's ready state.
+        panel: {
+          100: '#EFF4F8',
         },
         danger: {
           100: '#FDECEA',

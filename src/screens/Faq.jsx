@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
-import { Screen, AppBar } from '../components/Shell.jsx'
+import { Screen } from '../components/Shell.jsx'
 import { Button, SafetyNote, EmptyState } from '../components/UI.jsx'
 import { CounsellorIllustration } from '../components/Illustrations.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
@@ -36,11 +36,29 @@ export default function Faq() {
 
   return (
     <Screen>
-      <AppBar title={t('faq.title')} onBack={() => navigate('/dashboard')} />
+      {/* Back arrow only — the title sits in the page body below, as in
+          the reference art. */}
+      <header className="px-4 pt-5">
+        <button
+          type="button"
+          onClick={() => navigate('/dashboard')}
+          aria-label={t('act.back')}
+          className="grid h-10 w-10 place-items-center rounded-full text-ink-700 transition-colors hover:bg-mint-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+        >
+          <Icon name="chevronLeft" size={22} />
+        </button>
+      </header>
 
       <main className="flex-1 overflow-y-auto px-5 pb-8 pt-4">
+        {/* Title block sits below the back arrow, as in the reference art */}
+        <div className="text-center animate-fade-up">
+          <h1 className="text-[22px] font-extrabold leading-snug text-ink-900">
+            {t('faq.title')}
+          </h1>
+        </div>
+
         {/* Search */}
-        <div className="relative animate-fade-up">
+        <div className="relative mt-4 animate-fade-up">
           <span className="pointer-events-none absolute inset-y-0 start-3.5 flex items-center text-ink-300">
             <Icon name="search" size={17} />
           </span>
@@ -50,7 +68,7 @@ export default function Faq() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('faq.search')}
             aria-label={t('faq.search')}
-            className="field ps-11"
+            className="field border-transparent bg-ink-50 ps-11"
           />
         </div>
 

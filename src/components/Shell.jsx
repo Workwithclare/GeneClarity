@@ -20,7 +20,7 @@ export function Screen({ children, className = '', white = false }) {
  * optional right-hand slot. `dir` is respected so the chevron mirrors
  * correctly in Arabic.
  */
-export function AppBar({ title, onBack, right, subtitle, border = true, hideBack = false }) {
+export function AppBar({ title, onBack, right, subtitle, border = false, hideBack = false }) {
   const navigate = useNavigate()
   const { isRTL } = useLanguage()
   const handleBack = onBack || (() => navigate(-1))
@@ -46,12 +46,14 @@ export function AppBar({ title, onBack, right, subtitle, border = true, hideBack
         </button>
       )}
 
+      {/* Titles wrap onto two lines like the reference art (e.g. "Your
+          Genetic Report"), so they are not truncated. */}
       <div className="min-w-0 flex-1 text-center">
         {title && (
-          <h1 className="truncate text-base font-extrabold text-ink-900">{title}</h1>
+          <h1 className="text-base font-extrabold leading-snug text-ink-900">{title}</h1>
         )}
         {subtitle && (
-          <p className="truncate text-xs font-medium text-ink-400">{subtitle}</p>
+          <p className="text-xs font-medium leading-snug text-ink-400">{subtitle}</p>
         )}
       </div>
 

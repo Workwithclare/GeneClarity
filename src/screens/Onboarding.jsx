@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { Button } from '../components/UI.jsx'
-import LanguageToggle from '../components/LanguageToggle.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useStore } from '../store/AppStore.jsx'
 
@@ -63,9 +62,15 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="screen bg-white">
-      {/* Header: back, language, progress */}
-      <header className="flex items-center justify-between px-4 pt-5">
+    <div className="screen relative overflow-hidden bg-white">
+      {/* Faint mint blob at the right edge, as in the reference art */}
+      <span
+        className="pointer-events-none absolute -right-20 top-1/3 h-56 w-56 rounded-full bg-mint-100"
+        aria-hidden="true"
+      />
+
+      {/* Header: back arrow only, matching the reference art */}
+      <header className="relative z-10 px-4 pt-5">
         <button
           type="button"
           onClick={() => (index === 0 ? navigate('/welcome') : setIndex((i) => i - 1))}
@@ -74,15 +79,9 @@ export default function Onboarding() {
         >
           <Icon name={lang === 'ar' ? 'chevronRight' : 'chevronLeft'} size={22} />
         </button>
-
-        <LanguageToggle />
-
-        <span className="min-w-10 text-end text-[12.5px] font-bold text-ink-300">
-          {t('onb.step')} {index + 1} {t('onb.of')} {STEPS.length}
-        </span>
       </header>
 
-      <div className="flex flex-1 flex-col px-6 pt-6" key={index}>
+      <div className="relative z-10 flex flex-1 flex-col px-6 pt-6" key={index}>
         {/* Step icon — a plain green glyph, as in the reference */}
         <div className="mx-auto text-brand-700 animate-scale-in" key={`icon-${index}`}>
           <Icon name={step.icon} size={56} strokeWidth={1.5} />
@@ -97,7 +96,8 @@ export default function Onboarding() {
           </p>
         </div>
 
-        {/* Feature list */}
+        {/* Feature list — solid teal chips with white glyphs, as in the
+            reference art (no pale circle behind them). */}
         <ul className="mt-7 space-y-3.5">
           {step.items.map((item, i) => (
             <li
@@ -105,8 +105,8 @@ export default function Onboarding() {
               className="flex items-center gap-3.5 animate-fade-up"
               style={{ animationDelay: `${80 + i * 70}ms` }}
             >
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-100 text-brand-700">
-                <Icon name={item.icon} size={20} />
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-700 text-white shadow-sm">
+                <Icon name={item.icon} size={20} strokeWidth={2} />
               </span>
               <span className="text-[15px] font-semibold leading-snug text-ink-700">
                 {t(item.labelKey)}
@@ -116,8 +116,13 @@ export default function Onboarding() {
         </ul>
 
         <div className="mt-auto pb-8 pt-8">
-          {/* Page dots — tappable, so the user can jump between steps */}
-          <div className="mb-5 flex justify-center gap-2">
+          <Button size="lg" iconEnd="arrowRight" onClick={handleNext}>
+            {t('act.next')}
+          </Button>
+
+          {/* Page dots sit below the Next button, as in the reference art.
+              They are tappable, so the user can jump between steps. */}
+          <div className="mt-5 flex justify-center gap-2">
             {STEPS.map((s, i) => (
               <button
                 key={s.titleKey}
@@ -132,10 +137,6 @@ export default function Onboarding() {
             ))}
           </div>
 
-          <Button size="lg" iconEnd="arrowRight" onClick={handleNext}>
-            {t('act.next')}
-          </Button>
-
           {!isLast && (
             <button
               type="button"
@@ -143,7 +144,7 @@ export default function Onboarding() {
                 dispatch({ type: 'COMPLETE_ONBOARDING' })
                 navigate('/consent')
               }}
-              className="btn btn--ghost mt-2"
+              className="btn btn--ghost mt-3"
             >
               {t('act.skip')}
             </button>
