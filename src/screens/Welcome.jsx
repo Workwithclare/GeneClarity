@@ -63,11 +63,18 @@ export default function Welcome() {
   }
 
   return (
-    <div className="screen relative overflow-hidden bg-white">
-      {/* Centre the artwork and cap it at the visible viewport height
-          so it fills the screen as closely as its ratio allows. */}
-      <div className="flex h-[100dvh] w-full items-center justify-center">
-        <div className="welcome-art relative">
+    <div
+      // 100dvh (not the shell's 100vh) so mobile browser chrome can't
+      // leave a white strip under the artwork.
+      className="screen relative overflow-hidden bg-white"
+      style={{ minHeight: '100dvh' }}
+    >
+      {/* Frame: fills the screen box. The artwork inside either fills
+          its width at the natural ratio (fallback) or is enlarged and
+          clipped to cover the frame edge-to-edge (cover mode) — see
+          .welcome-frame / .welcome-art in index.css. */}
+      <div className="welcome-frame flex min-h-[100dvh] w-full items-start justify-center">
+        <div className="welcome-art">
           <img
             src="/assets/welcome-onboarding.png"
             alt="GeneClarity. Know more. Plan better. Get clear, simple insights about your genetic health. A family of three."

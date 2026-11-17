@@ -60,24 +60,60 @@ html[lang='ar'] .arabic-tight {
     @apply bg-white;
   }
 
-  /* --- Welcome artwork frame ----------------------------------------
-     The supplied onboarding image is 226 × 490 (ratio 0.4612 ≈ 9:19.5,
-     the standard phone screen ratio): the mock's 9:41 status bar was
-     cropped off the top, then the artwork's own background was
-     extended 20px top and bottom so the frame matches a phone screen
-     and fills it edge-to-edge like every other screen — no white
-     bands above or below.
-     This sizes the wrapper to that exact ratio, as large as fits, so
-     the <img> inside needs no object-fit tricks and cannot distort.
-     The wrapper and the picture are therefore the same box, which is
-     what lets the transparent hit areas line up with the buttons
-     drawn into the artwork at any viewport size.
-     `vh` first as a fallback, then `dvh` where supported so mobile
-     browser chrome doesn't push the art past the visible area. */
+  /* --- Welcome screen frame & artwork ------------------------------
+     Reference viewport: 390 × 844 (9:19.5). The artwork is
+     226 × 490 — the same ratio — so on a reference phone it maps
+     1:1 onto the screen.
+
+     FALLBACK (default): the artwork fills the frame's width at its
+     natural ratio and the page scrolls if it is taller. Used when
+     the screen box is far from 9:19.5 (old 16:9 phones, very short
+     or very tall desktop windows) — no white side gaps, nothing cut.
+
+     COVER (phone-shaped boxes): the artwork box is enlarged past the
+     frame and centred, so the picture fills the frame edge to edge
+     and the overflow is clipped — object-fit: cover behaviour, but
+     the buttons stay pinned to the artwork box so their measured
+     percentages never drift off the buttons drawn into the picture.
+
+     Safe cover range is aspect 0.392–0.546: every modern iPhone
+     (9:19.5, 9:19) and Android (20:9, 19.5:9, 18:9) falls inside it.
+     `vh` first as a fallback, then `dvh` where supported. */
+  .welcome-frame {
+    position: relative;
+    overflow: hidden;
+  }
+
   .welcome-art {
-    width: min(100%, calc(100vh * 226 / 490));
-    width: min(100%, calc(100dvh * 226 / 490));
-    aspect-ratio: 226 / 490;
+    position: relative;
+    width: 100%;
+  }
+
+  .welcome-art > img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 448px) and (min-aspect-ratio: 98/250) and (max-aspect-ratio: 1365/2500),
+         (min-width: 449px) and (min-height: 820px) and (max-height: 1142px) {
+    .welcome-frame {
+      height: 100vh;
+      height: 100dvh;
+    }
+    .welcome-art {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: max(100%, calc(100vh * 226 / 490));
+      width: max(100%, calc(100dvh * 226 / 490));
+      height: max(100%, calc(min(100vw, 448px) * 490 / 226));
+    }
+    .welcome-art > img {
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   /* --- Buttons ------------------------------------------------------
