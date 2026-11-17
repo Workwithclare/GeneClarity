@@ -14,8 +14,10 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
  *
  * The visual is the exact image supplied for approval — logo, family
  * illustration, headline, colours and the two buttons are all baked
- * into `public/assets/welcome-onboarding.png` (226 × 476). Nothing is
- * redrawn, re-created or approximated here; the file is the design.
+ * into `public/assets/welcome-onboarding.png` (226 × 450). The only
+ * edit made to the file was cropping the mock-up's 9:41 status bar
+ * off the top, as requested. Nothing else is redrawn, re-created or
+ * approximated here; the file is the design.
  *
  * Because "Get Started", "Sign In" and "EN | العربية" are pixels in
  * that picture rather than DOM nodes, they are made tappable with
@@ -33,8 +35,6 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
  *     the real menu and really changes the app language).
  *   • The "EN | العربية" label is likewise part of the picture; only
  *     the tap target over it is functional.
- *   • The 9:41 status bar is part of the supplied artwork and is
- *     reproduced because the image must be used unmodified.
  * ─────────────────────────────────────────────────────────────────
  *
  * The medical-safety line the old screen printed under the buttons is
@@ -45,15 +45,17 @@ export default function Welcome() {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
-  // Hit-area geometry, measured pixel-by-pixel against the 226 × 476
-  // source image and converted to percentages of that box.
-  //   Get Started pill : x 19–209, y 391–425
-  //   Sign In label    : x 97–130, y 443–453 (expanded to a tap size)
-  //   Language label   : x 160–204, y 44–53  (expanded to a tap size)
+  // Hit-area geometry, measured pixel-by-pixel against the 226 × 450
+  // source image and converted to percentages of that box, then padded
+  // to a comfortable tap size (the raw text boxes are far smaller
+  // than the recommended 44px touch target).
+  //   Get Started pill : x 19–209, y 365–399
+  //   Sign In label    : x 97–130, y 417–427 (expanded to a tap size)
+  //   Language label   : x 108–204, y 15–45  (expanded to a tap size)
   const HIT = {
-    getStarted: { left: '8.41%', top: '82.14%', width: '84.07%', height: '7.15%' },
-    signIn: { left: '35%', top: '91.5%', width: '30%', height: '6%' },
-    language: { left: '65%', top: '6.5%', width: '28%', height: '7%' },
+    getStarted: { left: '8.41%', top: '81.11%', width: '84.51%', height: '7.78%' },
+    signIn: { left: '34%', top: '90.4%', width: '32%', height: '7%' },
+    language: { left: '50%', top: '2.8%', width: '38%', height: '8%' },
   }
 
   return (
