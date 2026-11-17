@@ -101,7 +101,7 @@ Rules as implemented in `AppStore.jsx`:
 ## Backend mapping (schema implemented; partner-consent UI tested end-to-end)
 
 The Supabase project exists (credentials gitignored in `.env.local`);
-`supabase/migrations/0001–0005` implement:
+`supabase/migrations/0001–0006` implement:
 
 - `consents(owner_id, partner_id, share_summary, share_full_report,
   share_notifications, granted_at, revoked_at)` — revocation is a timestamp,

@@ -478,6 +478,32 @@ export const sw = {
     'Nyaraka unazopakia zinahifadhiwa pembeni, kwenye nafasi yako ya kibinafsi; mfano huu umeingizwa kwenye programu kwa ajili ya onyesho.',
   'journey.backToDocs': 'Rudi kwenye nyaraka zangu',
 
+  // --- Angalia kabla ya kuandaa ---
+  'journey.previewTitle': 'Angalia kabla ya kuandaa',
+  'journey.previewSub': 'Angalia faili, baadaye uthibitishie.',
+  'journey.confirmUpload': 'Uthibitishie kuandaa',
+  'journey.cancelUpload': 'Ondoa',
+  'journey.replaceFile': 'Chagua faili nyingine',
+
+  // --- Mafutanga yangu (Mwalamu wa jinetiki) ---
+  'journey.apptTitle': 'Mafutanga yangu',
+  'journey.apptSub': 'Ombi zako la mwalamu na hali yao.',
+  'journey.apptNone': 'Hakuna mafutanga sasa',
+  'journey.apptNoneBody':
+    'Uliompaa mwalamu wa jinetiki, futanga yako itaangalia hapa na tarehe na saa na hali. Hakuna kitu kinatolewa kabla mtaalamu aweka.',
+  'journey.apptStatusPending': 'Inasubiri',
+  'journey.apptStatusConfirmed': 'Imethibitishwa',
+  'journey.apptStatusCompleted': 'Imekwisha',
+  'journey.apptStatusCancelled': 'Imebatiliwa',
+  'journey.apptDetails': 'Tazama taarifa',
+  'journey.apptRequested': 'Iliombwa',
+
+  // --- Muda ya msingi (kikasha cha arifa) ------------------------
+  'time.now': 'Hivi sasa',
+  'time.min': 'dakika {n} zilizopita',
+  'time.hr': 'saa {n} zilizopita',
+  'time.day': 'siku {n} zilizopita',
+
   // --- Makosa ---------------------------------------------------------------------------------------
   'err.title': 'Skrini hii haipatikani.',
   'err.body': 'Ukurasa ulioombwa haupo hii mfano.',

@@ -476,6 +476,32 @@ export const es = {
     'Los documentos que sube se guardan aparte, en su espacio privado; este ejemplo está integrado en la aplicación para fines de demostración.',
   'journey.backToDocs': 'Volver a mis documentos',
 
+  // --- Vista previa antes de subir ---
+  'journey.previewTitle': 'Vista previa antes de subir',
+  'journey.previewSub': 'Revisa el archivo, luego confirma la subida.',
+  'journey.confirmUpload': 'Confirmar subida',
+  'journey.cancelUpload': 'Cancelar',
+  'journey.replaceFile': 'Elegir otro archivo',
+
+  // --- Mis citas (Asesoramiento genético) ---
+  'journey.apptTitle': 'Mis citas',
+  'journey.apptSub': 'Tus solicitudes de consulta y su estado.',
+  'journey.apptNone': 'Sin citas por ahora',
+  'journey.apptNoneBody':
+    'Cuando solicites asesoramiento genético, tu cita aparecerá aquí con su fecha, hora y estado. Nada se reserva hasta que un profesional lo confirme.',
+  'journey.apptStatusPending': 'Pendiente',
+  'journey.apptStatusConfirmed': 'Confirmada',
+  'journey.apptStatusCompleted': 'Completada',
+  'journey.apptStatusCancelled': 'Cancelada',
+  'journey.apptDetails': 'Ver detalles',
+  'journey.apptRequested': 'Solicitada',
+
+  // --- Tiempo relativo (bandeja de notificaciones) ----------------
+  'time.now': 'Ahora mismo',
+  'time.min': 'hace {n} min',
+  'time.hr': 'hace {n} h',
+  'time.day': 'hace {n} d',
+
   // --- Errores ---------------------------------------------------------------------------------------
   'err.title': 'No se encuentra esta pantalla.',
   'err.body': 'La página solicitada no existe en este prototipo.',

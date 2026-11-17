@@ -30,17 +30,47 @@
 
 ### Design
 
-- **Single catalogue family**: `src/i18n/translations.js` exports the EN and AR
-  maps and imports four sibling catalogues — `fr.js`, `es.js`, `sw.js`,
-  `ha.js` — into `catalogs` (`{ en, ar, fr, es, sw, ha }`). All six have
-  **identical 344-key sets** (parity checked mechanically). Components call
-  `t('key')`; they never hardcode copy.
+- **Two catalogue families, one directory** (`src/i18n/`):
+  - **UI chrome** — `translations.js` exports the EN and AR maps and imports
+    four sibling catalogues — `fr.js`, `es.js`, `sw.js`, `ha.js` — into
+    `catalogs` (`{ en, ar, fr, es, sw, ha }`). All six have **identical
+    348-key sets** (parity checked mechanically). Components call `t('key')`;
+    they never hardcode copy.
+  - **Long-form content** — `content.js` exports `contentEn`/`contentAr` plus
+    four siblings (`content_fr.js` … `content_ha.js`) into `contentCatalogs`.
+    All six have **identical 171-key sets**. These keys are tied to data
+    records by id: `content.result.{conditionId}.*`, `content.learn.{id}.*`,
+    `content.understand.{id}.*`, `content.notify.{id}.*`,
+    `content.act.*` (activity audit entries, with `{n}`/`{key}`/`{value}`
+    params), `content.sample.*`, `content.counsellor.{id}.*` and the
+    positional lists `content.useful.N` / `content.question.N`. Array
+    content uses indexed keys (`…mean.0`, `…mean.1`, …) whose count is
+    derived from the English catalogue.
 - **Language metadata**: the same file exports a `languages` array (code,
   native name, `dir`) that drives both the picker and layout direction.
-- **Context**: `LanguageContext.jsx` holds `lang`, exposes `t()` (falls back to
-  English if a key is missing — a raw key is never shown), validates the
-  persisted choice against the catalogue list (an unknown value falls back to
-  English), and persists to `localStorage['geneclarity.language']`.
+- **Context**: `LanguageContext.jsx` holds `lang` and exposes:
+  `t(key, params)` for UI chrome (falls back to English, then to the raw
+  key — a label never disappears, `{name}` placeholders are substituted);
+  `tc(key, params)` for content (returns `undefined` when a key exists
+  nowhere, so optional lesson sections simply don't render); `tList(key)`
+  for indexed content lists; and `locale` (the BCP-47 locale used by
+  `Intl`/`toLocaleString`). It validates the persisted choice against the
+  catalogue list (an unknown value falls back to English) and persists to
+  `localStorage['geneclarity.language']`.
+- **Data records hold keys, not sentences**: `src/data/demoData.js` and
+  `src/data/journeyContent.js` keep only structure (ids, icons, tones,
+  genes); every sentence is read from the content catalogue at render time.
+  Activity entries additionally store `detail_key`/`detail_params`
+  (migration `0006`) so one audit row reads correctly in all six
+  languages — the `detail_en`/`detail_ar` columns are kept as a
+  server-side audit copy. Rows saved **before** this change (old
+  `localStorage` state, pre-0006 database rows) still carry finished
+  EN/AR text and render from it as a legacy fallback.
+- **Parity is mechanical**: `npm run i18n:check` (`scripts/i18n-parity.mjs`)
+  fails if any language misses or adds a key in either family, uses
+  different `{placeholder}` names than English, or if the language
+  metadata (picker list, BCP-47 locale map, `dir`) falls out of step with
+  the catalogues.
 - **Picker**: `LanguageToggle.jsx` is a dropdown (variants `inline` for the
   welcome screen, `chip` for the settings row) listing all six languages with
   a checkmark on the active one; it closes on outside click and Escape.
@@ -64,14 +94,12 @@ prototype and follow the same plain-language, safety-first register as the
 English copy (no diagnosis, no prescription, no life advice). **None has been
 reviewed by a certified translator or native speaker.**
 
-**Content-layer fallback.** The 344 keys cover the application's interface
-(buttons, headings, labels, consent, FAQ, glossary, settings…). Long-form
-*content* — Learn articles, Understand/Guidance sections, the sample report,
-result summaries, activity/notification entries, counsellor listings — exists
-only as English/Arabic pairs in `src/data/*.js` and the content screens, and
-displays in **English** for the four new languages (the existing
-`lang === 'ar' ? ar : en` pattern). The fallback is uniform across those
-languages, so a reader never sees a half-translated screen.
+**Content coverage.** The 348 UI keys cover the application's interface
+(buttons, headings, labels, consent, FAQ, glossary, settings…). The 171
+content keys cover everything long-form: Learn articles, Understand /
+Guidance sections, the sample report, result summaries, activity and
+notification entries, counsellor listings. Both families are translated in
+all six languages, so no screen mixes languages.
 
 ### RTL strategy
 
@@ -118,13 +146,36 @@ RTL; menu rows mirror likewise.
   system-font fallback); screenshots reviewed.
 - This is a **rendering check only — not a translation quality review.**
 
+**New features — upload preview & My Appointments (17 Nov 2026):**
+
+- Signed in with the test account and exercised the real Supabase backend.
+  After migrations `0005` + `0006` were applied, `GET /rest/v1/activity`
+  returned **200/201** (it had been 400 before `0006`); all other REST calls
+  (`profiles`, `settings`, `results`, `notifications`, `consents`) returned 200.
+- **My Screening Results** (`#/journey/documents`): picking a file now shows
+  the preview card instead of uploading immediately — verified the
+  *Preview before upload* heading, file name, type label (PDF), size, image
+  thumbnail for images / file icon for PDFs, and the three actions
+  (*Confirm upload*, *Cancel*, *Choose a different file*). The `capture`
+  attribute is present on the file input for mobile cameras.
+- **Professional Guidance** (`#/journey/guidance`): all three sections render
+  in order — *What is genetic counselling?*, **My Appointments** (honest empty
+  state, "Nothing is booked until a professional confirms it"), *Prepare
+  questions to ask*.
+- New keys checked in **French** (preview card + appointments) and **Arabic**
+  (`dir="rtl"`, appointments section): correct copy, **zero raw keys**.
+- Zero console errors across the checks above.
+
 ### Known limitations
 
 - No professional translation review has been commissioned for **any**
-  non-English language (Arabic, and the four provisional catalogues). This is
-  recorded as a limitation in `11_ASSUMPTIONS_LIMITATIONS_AND_RISKS.md`.
-- Long-form content stays English in the four new languages (see the
-  content-layer fallback note above).
-- Dates/numbers use `toLocaleString(...)` with browser-provided formatting
-  (locale mapped `ar → 'ar'`, otherwise `'en-GB'`) — not a custom
-  localisation layer.
+  non-English language (Arabic, and the four provisional catalogues — both
+  the UI and the content families). This is recorded as a limitation in
+  `11_ASSUMPTIONS_LIMITATIONS_AND_RISKS.md`.
+- Rows written **before** the content pass (old `localStorage` state,
+  database rows predating migration `0006`) keep their original EN/AR text
+  as a legacy fallback until rewritten; they are not retro-translated.
+- Dates/numbers use `toLocaleString(...)` / `Intl.DateTimeFormat` with the
+  per-language locale map (`en → en-GB`, `ar → ar`, `fr → fr-FR`,
+  `es → es-ES`, `sw → sw-KE`, `ha → ha-NG`) — browser-provided formatting,
+  not a custom localisation layer.

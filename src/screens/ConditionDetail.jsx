@@ -75,7 +75,7 @@ function InfoCard({ icon, title, text, list }) {
 export default function ConditionDetail() {
   const { conditionId } = useParams()
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, tList, lang } = useLanguage()
   const user = useRequireAuth()
 
   const topic = learnTopics.find((x) => x.id === conditionId)
@@ -104,17 +104,16 @@ export default function ConditionDetail() {
     )
   }
 
-  const isAr = lang === 'ar'
-  const title = isAr ? topic.titleAr : topic.titleEn
-  const mean = isAr ? topic.meanAr : topic.meanEn
-  const remember = isAr ? topic.rememberAr : topic.rememberEn
-  const example = isAr ? topic.exampleAr : topic.exampleEn
-  const important = isAr ? topic.importantAr : topic.importantEn
-  const misunderstanding = isAr
-    ? topic.misunderstandingAr
-    : topic.misunderstandingEn
-  const screening = isAr ? topic.screeningAr : topic.screeningEn
-  const questions = isAr ? topic.questionsAr : topic.questionsEn
+  // Lesson copy lives in the content catalogue, keyed by topic id —
+  // optional sections resolve to undefined and simply don't render.
+  const title = tc(`content.learn.${topic.id}.title`)
+  const mean = tList(`content.learn.${topic.id}.mean`)
+  const remember = tList(`content.learn.${topic.id}.remember`)
+  const example = tc(`content.learn.${topic.id}.example`)
+  const important = tc(`content.learn.${topic.id}.important`)
+  const misunderstanding = tc(`content.learn.${topic.id}.misunderstanding`)
+  const screening = tc(`content.learn.${topic.id}.screening`)
+  const questions = tList(`content.learn.${topic.id}.questions`)
   const Art = topic.art ? ART[topic.art] : null
 
   return (
@@ -187,7 +186,7 @@ export default function ConditionDetail() {
             text={screening}
           />
         )}
-        {questions && (
+        {questions.length > 0 && (
           <InfoCard
             icon="help"
             title={t('learn.questions')}
@@ -232,10 +231,10 @@ export default function ConditionDetail() {
                     className="flex items-center justify-between gap-3 rounded-control border border-mint-200 bg-white px-4 py-3.5 transition-colors hover:border-brand-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
                   >
                     <span className="text-[14.5px] font-bold text-ink-900">
-                      {isAr ? r.titleAr : r.titleEn}
+                      {tc(`content.learn.${r.id}.title`)}
                     </span>
                     <Icon
-                      name={isAr ? 'chevronLeft' : 'chevronRight'}
+                      name={lang === 'ar' ? 'chevronLeft' : 'chevronRight'}
                       size={18}
                       className="shrink-0 text-ink-300"
                     />

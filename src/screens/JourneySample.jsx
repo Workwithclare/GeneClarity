@@ -21,7 +21,7 @@ import { sampleReport } from '../data/journeyContent.js'
  */
 export default function JourneySample() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc } = useLanguage()
   const user = useRequireAuth()
 
   if (!user) return null
@@ -36,7 +36,7 @@ export default function JourneySample() {
       <main className="flex-1 overflow-y-auto px-5 pb-8 pt-4">
         {/* The distinction user uploads vs this built-in sample */}
         <div className="flex items-center gap-2 animate-fade-up">
-          <Pill tone="sample">{lang === 'ar' ? s.badgeAr : s.badgeEn}</Pill>
+          <Pill tone="sample">{tc('content.sample.badge')}</Pill>
           <span className="text-[12.5px] text-ink-400">{t('journey.sampleHint')}</span>
         </div>
 
@@ -46,7 +46,7 @@ export default function JourneySample() {
               <Icon name="alert" size={17} />
             </span>
             <p className="text-[12.5px] leading-snug text-caution-600">
-              {lang === 'ar' ? s.noteAr : s.noteEn}
+              {tc('content.sample.note')}
             </p>
           </div>
         </div>
@@ -56,10 +56,10 @@ export default function JourneySample() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-[11.5px] font-bold uppercase tracking-wide text-ink-300">
-                {lang === 'ar' ? s.badgeAr : s.badgeEn}
+                {tc('content.sample.badge')}
               </p>
               <h1 className="mt-1 text-[19px] font-extrabold leading-tight text-ink-900">
-                {lang === 'ar' ? s.titleAr : s.titleEn}
+                {tc('content.sample.title')}
               </h1>
             </div>
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-mint-100 text-brand-700">
@@ -68,13 +68,13 @@ export default function JourneySample() {
           </div>
 
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-ink-100 pt-4">
-            {s.fields.map((f) => (
-              <div key={f.labelEn}>
+            {s.fields.map((fieldId) => (
+              <div key={fieldId}>
                 <dt className="text-[11.5px] text-ink-300">
-                  {lang === 'ar' ? f.labelAr : f.labelEn}
+                  {tc(`content.sample.field.${fieldId}.label`)}
                 </dt>
                 <dd className="text-[13px] font-bold text-ink-900">
-                  {lang === 'ar' ? f.valueAr : f.valueEn}
+                  {tc(`content.sample.field.${fieldId}.value`)}
                 </dd>
               </div>
             ))}
@@ -91,11 +91,11 @@ export default function JourneySample() {
                     {row.gene}
                   </span>
                   <Pill tone={statusTone[row.status] || 'neutral'}>
-                    {lang === 'ar' ? row.findingAr : row.findingEn}
+                    {tc(`content.sample.row.${row.gene}.finding`)}
                   </Pill>
                 </div>
                 <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-500">
-                  {lang === 'ar' ? row.plainAr : row.plainEn}
+                  {tc(`content.sample.row.${row.gene}.plain`)}
                 </p>
               </div>
             ))}
@@ -103,7 +103,7 @@ export default function JourneySample() {
 
           <div className="mt-4 border-t border-ink-100 pt-3">
             <p className="text-[11.5px] leading-relaxed text-ink-400">
-              {lang === 'ar' ? s.footerAr : s.footerEn}
+              {tc('content.sample.footer')}
             </p>
           </div>
         </article>

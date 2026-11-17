@@ -450,6 +450,32 @@ export const fr = {
     'Les documents que vous téléversez sont stockés à part, dans votre espace privé — cet exemple est intégré à l’application à des fins de démonstration.',
   'journey.backToDocs': 'Retour à mes documents',
 
+  // --- Aperçu avant envoi ---
+  'journey.previewTitle': 'Aperçu avant envoi',
+  'journey.previewSub': 'Vérifiez le fichier, puis confirmez l\'envoi.',
+  'journey.confirmUpload': 'Confirmer l\'envoi',
+  'journey.cancelUpload': 'Annuler',
+  'journey.replaceFile': 'Choisir un autre fichier',
+
+  // --- Mes rendez-vous (Conseil génétique) ---
+  'journey.apptTitle': 'Mes rendez-vous',
+  'journey.apptSub': 'Vos demandes de consultation et leur état.',
+  'journey.apptNone': 'Aucun rendez-vous pour l\'instant',
+  'journey.apptNoneBody':
+    'Lorsque vous demandez un conseil génétique, votre rendez-vous apparaîtra ici avec sa date, son heure et son statut. Rien n\'est réservé tant qu\'un professionnel ne l\'a pas confirmé.',
+  'journey.apptStatusPending': 'En attente',
+  'journey.apptStatusConfirmed': 'Confirmé',
+  'journey.apptStatusCompleted': 'Terminé',
+  'journey.apptStatusCancelled': 'Annulé',
+  'journey.apptDetails': 'Voir les détails',
+  'journey.apptRequested': 'Demandé',
+
+  // --- Relative time (notifications inbox) ------------------------
+  'time.now': "À l'instant",
+  'time.min': 'il y a {n} min',
+  'time.hr': 'il y a {n} h',
+  'time.day': 'il y a {n} j',
+
   // --- Erreurs ---------------------------------------------------------------------------------------
   'err.title': 'Cet écran est introuvable.',
   'err.body': 'La page demandée n’existe pas dans ce prototype.',

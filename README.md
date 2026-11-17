@@ -46,9 +46,10 @@ nothing ever breaks.
 
 1. Create a free project at <https://supabase.com> (no paid tier needed).
 2. In the project's **SQL Editor**, paste and run each migration in
-   `supabase/migrations/` **in order** (`0001` → `0005`). They create the
-   tables, the Row Level Security policies, the sync/invite helpers, and the
-   private document-storage bucket.
+   `supabase/migrations/` **in order** (`0001` → `0006`). They create the
+   tables, the Row Level Security policies, the sync/invite helpers, the
+   private document-storage bucket, and the activity translation-key
+   columns.
 3. Copy `.env.example` to `.env.local` and fill in the two values from
    **Project Settings → API**:
 
@@ -86,12 +87,14 @@ navigation (no server-side routing needed — the app uses hash routes):
 | System | Six-language selection (EN / AR / FR / ES / SW / HA), 404 page |
 
 **Languages:** full catalogues for English, Arabic, French, Spanish, Swahili
-and Hausa (344 keys each), picked from a dropdown in Settings. Selecting
+and Hausa — 348 UI keys **plus** 171 long-form content keys each (Learn
+articles, journey sections, sample report, result summaries, activity and
+notification text), picked from a dropdown in Settings. Selecting
 Arabic switches the whole document to `dir="rtl"` and the typeface to Cairo;
 layout follows with logical CSS properties (`start`/`end`), so back buttons,
 chevrons and timeline spines flip correctly. The four newer catalogues are
-**provisional translations pending professional review**, and long-form
-articles stay in English there (declared in `docs/06`).
+**provisional translations pending professional review** (declared in
+`docs/06`).
 
 ---
 
@@ -107,9 +110,11 @@ GeneClarity/
 ├─ src/
 │  ├─ App.jsx                 # Routes + scroll/language-dir side effects
 │  ├─ i18n/
-│  │  ├─ translations.js      # EN + AR catalogues, imports fr/es/sw/ha, languages metadata
-│  │  ├─ fr.js / es.js / sw.js / ha.js   # Provisional catalogues (344 keys each)
-│  │  └─ LanguageContext.jsx  # Language state, persists to localStorage
+│  │  ├─ translations.js      # EN + AR UI catalogues, imports fr/es/sw/ha, languages metadata
+│  │  ├─ content.js           # EN + AR long-form content catalogue (content_* siblings)
+│  │  ├─ fr.js / es.js / sw.js / ha.js   # Provisional UI catalogues (348 keys each)
+│  │  ├─ content_fr/es/sw/ha.js           # Provisional content catalogues (171 keys each)
+│  │  └─ LanguageContext.jsx  # Language state + t()/tc()/tList()/locale, persists to localStorage
 │  ├─ lib/
 │  │  ├─ supabase.js          # Dual-mode client (null when not configured)
 │  │  ├─ auth.js              # Sign-up/in/out helpers + error→key mapping
@@ -119,12 +124,12 @@ GeneClarity/
 │  │  ├─ AppStore.jsx         # Reducer for consent, settings, activity log
 │  │  └─ useRequireAuth.js    # Route guard
 │  ├─ data/
-│  │  ├─ demoData.js          # All synthetic demo data + origin declarations
-│  │  └─ journeyContent.js    # EN/AR Understand/Guidance + sample report
+│  │  ├─ demoData.js          # Synthetic demo data structure + origin declarations
+│  │  └─ journeyContent.js    # Understand/Guidance structure + sample report
 │  ├─ components/             # Icon, Logo, Illustrations, Shell, UI primitives
 │  ├─ screens/                # One file per screen
 │  └─ styles/index.css        # Design system: tokens, .btn, .card, .field
-├─ supabase/migrations/       # SQL schema + RLS (0001 → 0005)
+├─ supabase/migrations/       # SQL schema + RLS (0001 → 0006)
 └─ docs/                      # Challenge documentation (see below)
 ```
 
@@ -139,9 +144,11 @@ GeneClarity/
   original localStorage demo — same screens, same flows, nothing breaks. No
   Firebase, no Google AI Studio, no paid services either way. AI features are
   still *planned*, not built (`docs/09`–`docs/11`).
-- **All interface copy lives in `src/i18n/`** (six catalogues behind one
-  `t()` function) — no hardcoded English in components, which is what makes
-  full Arabic RTL and the six-language picker possible.
+- **All interface and body copy lives in `src/i18n/`** (six UI catalogues
+  behind `t()`, six content catalogues behind `tc()`/`tList()`) — no
+  hardcoded English in components, which is what makes full Arabic RTL and
+  the six-language picker possible. `npm run i18n:check` proves all six
+  languages ship identical key sets.
 
 ---
 
@@ -236,7 +243,8 @@ All challenge documentation is in [`docs/`](docs/):
 ## Status
 
 - **Implemented:** full 27-screen prototype (including the My Screening
-  Journey feature), EN/AR, build passing; optional Supabase backend
+  Journey feature), six languages (EN / AR / FR / ES / SW / HA) for both UI
+  and long-form content, build passing; optional Supabase backend
   (Auth + PostgreSQL schema with RLS + private document Storage bucket) in
   dual-mode. Server-side data sync for results/consent/notifications/settings
   is implemented (`src/lib/db.js`) with verification still in progress.

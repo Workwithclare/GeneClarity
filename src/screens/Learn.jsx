@@ -6,6 +6,7 @@ import { SafetyNote, EmptyState, Pill } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
 import { learnTopics } from '../data/demoData.js'
+import { contentEn } from '../i18n/content.js'
 
 const CATEGORIES = [
   { key: 'all', labelKey: 'learn.all' },
@@ -21,28 +22,33 @@ const CATEGORIES = [
  */
 export default function Learn() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, lang } = useLanguage()
   const user = useRequireAuth()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
 
+  // Search runs over the current language AND the English source, so
+  // a query written in either still finds the lesson.
   const topics = useMemo(() => {
     const q = query.trim().toLowerCase()
     return learnTopics.filter((topic) => {
       const inCategory = category === 'all' || topic.category === category
       if (!inCategory) return false
       if (!q) return true
+      const titleKey = `content.learn.${topic.id}.title`
+      const excerptKey = `content.learn.${topic.id}.excerpt`
       const haystack = [
-        topic.titleEn,
-        topic.titleAr,
-        topic.excerptEn,
-        topic.excerptAr,
+        tc(titleKey),
+        tc(excerptKey),
+        contentEn[titleKey],
+        contentEn[excerptKey],
       ]
+        .filter(Boolean)
         .join(' ')
         .toLowerCase()
       return haystack.includes(q)
     })
-  }, [query, category])
+  }, [query, category, lang, tc])
 
   if (!user) return null
 
@@ -118,10 +124,10 @@ export default function Learn() {
 
                   <span className="min-w-0 flex-1">
                     <span className="block text-[15px] font-extrabold leading-snug text-ink-900">
-                      {lang === 'ar' ? topic.titleAr : topic.titleEn}
+                      {tc(`content.learn.${topic.id}.title`)}
                     </span>
                     <span className="mt-1 block text-[13px] leading-relaxed text-ink-400">
-                      {lang === 'ar' ? topic.excerptAr : topic.excerptEn}
+                      {tc(`content.learn.${topic.id}.excerpt`)}
                     </span>
                     <span className="mt-2 flex items-center gap-2">
                       <Pill tone="neutral">

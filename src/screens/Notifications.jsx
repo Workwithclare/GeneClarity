@@ -14,15 +14,15 @@ const TYPE_META = {
   partner: { icon: 'users', tone: 'bg-caution-100 text-caution-600', to: '/couple' },
 }
 
-function timeAgo(iso, isAr) {
+function timeAgo(iso, t) {
   const diffMs = Date.now() - new Date(iso).getTime()
   const mins = Math.floor(diffMs / 60000)
-  if (mins < 1) return isAr ? 'الآن' : 'Just now'
-  if (mins < 60) return isAr ? `قبل ${mins} دقيقة` : `${mins}m ago`
+  if (mins < 1) return t('time.now')
+  if (mins < 60) return t('time.min', { n: mins })
   const hours = Math.floor(mins / 60)
-  if (hours < 24) return isAr ? `قبل ${hours} ساعة` : `${hours}h ago`
+  if (hours < 24) return t('time.hr', { n: hours })
   const days = Math.floor(hours / 24)
-  if (days < 7) return isAr ? `قبل ${days} يوم` : `${days}d ago`
+  if (days < 7) return t('time.day', { n: days })
   return iso.slice(0, 10)
 }
 
@@ -32,7 +32,7 @@ function timeAgo(iso, isAr) {
  */
 export default function Notifications() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, lang } = useLanguage()
   const { state, dispatch } = useStore()
   const user = useRequireAuth()
   const [showAll, setShowAll] = useState(false)
@@ -42,6 +42,16 @@ export default function Notifications() {
   const isAr = lang === 'ar'
   const items = showAll ? state.notifications : state.notifications.filter((n) => !n.read)
   const unreadCount = state.notifications.filter((n) => !n.read).length
+
+  // New-shape notifications carry a stable `contentId`; rows saved
+  // before the content catalogue existed still hold finished EN/AR
+  // text, which we keep rendering as-is (legacy fallback).
+  const notifyText = (n, field) =>
+    n.contentId
+      ? tc(`content.notify.${n.contentId}.${field}`)
+      : isAr
+        ? n[`${field}Ar`]
+        : n[`${field}En`]
 
   // Tapping a card opens the screen it refers to and clears its unread
   // flag — the notification is the shortcut, the destination is real.
@@ -130,7 +140,7 @@ export default function Notifications() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <p className="text-[14.5px] font-extrabold leading-snug text-ink-900">
-                          {isAr ? n.titleAr : n.titleEn}
+                          {notifyText(n, 'title')}
                         </p>
                         {!n.read && (
                           <span
@@ -140,11 +150,11 @@ export default function Notifications() {
                         )}
                       </div>
                       <p className="mt-1 text-[13px] leading-relaxed text-ink-500">
-                        {isAr ? n.bodyAr : n.bodyEn}
+                        {notifyText(n, 'body')}
                       </p>
                       <div className="mt-2 flex items-center justify-between gap-2">
                         <span className="text-[11.5px] font-semibold text-ink-300">
-                          {timeAgo(n.at, isAr)}
+                          {timeAgo(n.at, t)}
                         </span>
                         {!n.read && (
                           <button

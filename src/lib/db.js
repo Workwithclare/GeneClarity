@@ -4,6 +4,7 @@ import {
   demoNotifications,
   demoActivity,
 } from '../data/demoData.js'
+import { contentEn, contentAr, interpolate } from '../i18n/content.js'
 
 /**
  * Server-side data sync — active ONLY in backend mode.
@@ -77,12 +78,23 @@ const notificationToRow = (userId, n) => ({
   payload: { ...n },
 })
 
+/**
+ * Activity rows carry BOTH forms: `detail_key`/`detail_params` (what
+ * the app renders, translated per language — migration 0006) and the
+ * finished `detail_en`/`detail_ar` audit text derived from the
+ * content catalogue at write time. Entries from before the content
+ * layer already hold their legacy `detailEn`/`detailAr`, which win.
+ */
 const activityToRow = (userId, a) => ({
   id: a.id,
   user_id: userId,
   kind: a.kind,
-  detail_en: a.detailEn || '',
-  detail_ar: a.detailAr || '',
+  detail_en:
+    a.detailEn ?? interpolate(contentEn[a.detailKey] ?? '', a.detailParams),
+  detail_ar:
+    a.detailAr ?? interpolate(contentAr[a.detailKey] ?? '', a.detailParams),
+  detail_key: a.detailKey ?? null,
+  detail_params: a.detailParams ?? null,
   created_at: a.at,
 })
 
@@ -209,6 +221,11 @@ export async function loadServerData(user) {
         id: a.id,
         kind: a.kind,
         at: a.created_at,
+        // New rows carry a content key; rows written before migration
+        // 0006 only have the legacy audit columns, which the Activity
+        // screen still renders as a fallback.
+        detailKey: a.detail_key || undefined,
+        detailParams: a.detail_params || undefined,
         detailEn: a.detail_en,
         detailAr: a.detail_ar,
       }))

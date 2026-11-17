@@ -23,13 +23,17 @@ softened.
   copy. Content is general education written by the team.
 - **No professional translation.** Arabic was written for this prototype but
   not reviewed by a certified translator or native-speaker reviewer. The
-  French, Spanish, Swahili and Hausa catalogues (added 14 Nov 2026, 344 keys
-  each) are **provisional translations pending professional review**, written
-  with AI assistance for this prototype. In those four languages the UI is
-  fully translated, but **long-form content** (Learn articles, Understand /
-  Guidance sections, sample report, result summaries, activity and
-  notification entries) exists only in English/Arabic and displays in English
-  by design — a uniform, declared fallback rather than a partial mix.
+  French, Spanish, Swahili and Hausa UI catalogues (added 14 Nov 2026, 348
+  keys each) and their **content catalogues** (long-form copy added 16 Nov
+  2026, 171 keys each — Learn articles, Understand / Guidance sections,
+  sample report, result summaries, activity and notification entries) are
+  **provisional translations pending professional review**, written with AI
+  assistance for this prototype. All six languages now render the full UI
+  and the full content; nothing has been reviewed by a native speaker or
+  certified translator in any non-English language. Rows saved before this
+  change (old localStorage state, database rows written before migration
+  0006) keep their original English/Arabic text as a legacy fallback until
+  the app rewrites them.
 - **Educational content is illustrative**, not a substitute for guidelines.
 - **Counsellor listings are fictional placeholders** — there is no real
   referral directory, and contacting them is impossible by design.

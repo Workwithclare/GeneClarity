@@ -36,7 +36,7 @@ const MAX_SIZE_LABEL = '10 MB'
 
 export default function JourneyDocuments() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, locale } = useLanguage()
   const user = useRequireAuth()
 
   const [docs, setDocs] = useState([])
@@ -45,6 +45,8 @@ export default function JourneyDocuments() {
   const [notice, setNotice] = useState(null) // success key or null
   const [busyId, setBusyId] = useState(null) // doc id with an action running
   const [uploading, setUploading] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null) // file awaiting confirmation
+  const [previewUrl, setPreviewUrl] = useState(null) // object URL for image preview
   const fileRef = useRef(null)
 
   useEffect(() => {
@@ -64,21 +66,54 @@ export default function JourneyDocuments() {
     }
   }, [])
 
+  // Revoke the object URL when it changes or the component unmounts.
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl)
+    }
+  }, [previewUrl])
+
   const handlePick = async (event) => {
     const file = event.target.files?.[0]
     event.target.value = '' // allow re-picking the same file
     if (!file || !user) return
     setNotice(null)
     setError(null)
+    setSelectedFile(file)
+    // Build a local preview URL for images; PDFs show a file icon instead.
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file)
+      setPreviewUrl(url)
+    } else {
+      setPreviewUrl(null)
+    }
+  }
+
+  const handleConfirmUpload = async () => {
+    if (!selectedFile || !user) return
     setUploading(true)
-    const { doc, error: err } = await uploadDocument(user.id, file)
+    setError(null)
+    const { doc, error: err } = await uploadDocument(user.id, selectedFile)
     setUploading(false)
+    setSelectedFile(null)
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl)
+      setPreviewUrl(null)
+    }
     if (err) {
       setError(err)
       return
     }
     setNotice('journey.uploaded')
     setDocs((prev) => [doc, ...prev])
+  }
+
+  const handleCancelUpload = () => {
+    setSelectedFile(null)
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl)
+      setPreviewUrl(null)
+    }
   }
 
   const run = async (doc, action) => {
@@ -101,7 +136,7 @@ export default function JourneyDocuments() {
 
   const formatDate = (iso) => {
     try {
-      return new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en-GB', {
+      return new Intl.DateTimeFormat(locale, {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
@@ -132,6 +167,7 @@ export default function JourneyDocuments() {
             type="file"
             className="sr-only"
             accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+            capture
             onChange={handlePick}
             aria-label={t('journey.upload')}
           />
@@ -148,6 +184,62 @@ export default function JourneyDocuments() {
             {t('journey.formats')}
           </p>
         </div>
+
+        {/* Preview card — shown when a file has been picked but not yet
+            confirmed. Lets the user check the file before uploading. */}
+        {selectedFile && (
+          <div className="mt-4 rounded-card border border-brand-200 bg-mint-50 p-4 animate-fade-up">
+            <p className="mb-3 text-[12px] font-extrabold uppercase tracking-wide text-brand-700">
+              {t('journey.previewTitle')}
+            </p>
+            <div className="flex items-start gap-3">
+              {previewUrl ? (
+                <img
+                  src={previewUrl}
+                  alt={selectedFile.name}
+                  className="h-16 w-16 shrink-0 rounded-lg object-cover border border-ink-100"
+                />
+              ) : (
+                <span className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-mint-100 text-brand-700">
+                  <Icon name="file" size={22} />
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-[14px] font-extrabold text-ink-900 truncate">
+                  {selectedFile.name}
+                </p>
+                <p className="mt-0.5 text-[12.5px] text-ink-400 flex items-center gap-1.5">
+                  <span>{typeLabel(selectedFile.type)}</span>
+                  <span>·</span>
+                  <span>
+                    {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button size="sm" icon="upload" onClick={handleConfirmUpload}>
+                {t('journey.confirmUpload')}
+              </Button>
+              <Button variant="secondary" size="sm" onClick={handleCancelUpload}>
+                {t('journey.cancelUpload')}
+              </Button>
+              <Button variant="ghost" size="sm" icon="refresh" onClick={() => {
+                setSelectedFile(null)
+                if (previewUrl) {
+                  URL.revokeObjectURL(previewUrl)
+                  setPreviewUrl(null)
+                }
+                fileRef.current?.click()
+              }}>
+                {t('journey.replaceFile')}
+              </Button>
+            </div>
+            <p className="mt-2 text-center text-[12px] text-ink-300">
+              {t('journey.previewSub')}
+            </p>
+          </div>
+        )}
 
         {notice && (
           <div

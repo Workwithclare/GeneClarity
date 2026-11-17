@@ -7,10 +7,6 @@ import { useRequireAuth } from '../store/useRequireAuth.js'
 import {
   understandSections,
   resultLabels,
-  interpretationBoundaryEn,
-  interpretationBoundaryAr,
-  futureAiEn,
-  futureAiAr,
   understandLinks,
 } from '../data/journeyContent.js'
 import { learnTopics } from '../data/demoData.js'
@@ -33,14 +29,16 @@ import { learnTopics } from '../data/demoData.js'
  */
 export default function JourneyUnderstand() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, tList, lang } = useLanguage()
   const user = useRequireAuth()
 
   if (!user) return null
 
-  const boundary = lang === 'ar' ? interpretationBoundaryAr : interpretationBoundaryEn
-  const futureAi = lang === 'ar' ? futureAiAr : futureAiEn
-  const boundaryText = [...boundary, futureAi].join(' ')
+  // The boundary + future-AI guardrail: two content strings joined
+  // into the single safety note (both must always be present).
+  const boundaryText = [tc('content.boundary'), tc('content.futureAi')]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <Screen>
@@ -64,11 +62,11 @@ export default function JourneyUnderstand() {
                   <Icon name={section.icon} size={18} />
                 </span>
                 <h2 className="text-[15.5px] font-extrabold text-ink-900">
-                  {lang === 'ar' ? section.titleAr : section.titleEn}
+                  {tc(`content.understand.${section.id}.title`)}
                 </h2>
               </div>
               <div className="mt-2.5 space-y-2">
-                {(lang === 'ar' ? section.bodyAr : section.bodyEn).map((para, j) => (
+                {tList(`content.understand.${section.id}.body`).map((para, j) => (
                   <p key={j} className="text-[13.5px] leading-relaxed text-ink-500">
                     {para}
                   </p>
@@ -88,10 +86,10 @@ export default function JourneyUnderstand() {
                 className="rounded-card border border-ink-100 bg-white p-4"
               >
                 <Pill tone={label.tone}>
-                  {lang === 'ar' ? label.labelAr : label.labelEn}
+                  {tc(`content.label.${label.id}.label`)}
                 </Pill>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
-                  {lang === 'ar' ? label.descAr : label.descEn}
+                  {tc(`content.label.${label.id}.desc`)}
                 </p>
               </li>
             ))}
@@ -122,7 +120,7 @@ export default function JourneyUnderstand() {
                       <Icon name="book" size={17} />
                     </span>
                     <span className="min-w-0 flex-1 text-[14px] font-bold text-ink-900">
-                      {lang === 'ar' ? topic.titleAr : topic.titleEn}
+                      {tc(`content.learn.${id}.title`)}
                     </span>
                     <Icon
                       name={lang === 'ar' ? 'chevronLeft' : 'chevronRight'}

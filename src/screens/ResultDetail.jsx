@@ -36,7 +36,7 @@ const TOPIC_BY_CONDITION = {
 export default function ResultDetail() {
   const { resultId } = useParams()
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc } = useLanguage()
   const { state } = useStore()
   const user = useRequireAuth()
 
@@ -63,11 +63,12 @@ export default function ResultDetail() {
     )
   }
 
-  const isAr = lang === 'ar'
-  const summary = isAr ? result.summaryAr : result.summaryEn
-  const plain = isAr ? result.plainAr : result.plainEn
-  const forYou = isAr ? result.forYouAr : result.forYouEn
-  const forCouple = isAr ? result.forCoupleAr : result.forCoupleEn
+  // Long-form copy comes from the content catalogue, keyed by the
+  // result's stable conditionId (all six languages, no EN/AR pairs).
+  const summary = tc(`content.result.${result.conditionId}.summary`)
+  const plain = tc(`content.result.${result.conditionId}.plain`)
+  const forYou = tc(`content.result.${result.conditionId}.forYou`)
+  const forCouple = tc(`content.result.${result.conditionId}.forCouple`)
 
   const stepLabel = {
     read: 'res.step1',

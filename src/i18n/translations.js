@@ -461,6 +461,32 @@ export const en = {
     'Documents you upload are stored separately, in your private area — this sample is built into the app for demonstration.',
   'journey.backToDocs': 'Back to my documents',
 
+  // --- Document upload preview ---
+  'journey.previewTitle': 'Preview before upload',
+  'journey.previewSub': 'Check the file, then confirm the upload.',
+  'journey.confirmUpload': 'Confirm upload',
+  'journey.cancelUpload': 'Cancel',
+  'journey.replaceFile': 'Choose a different file',
+
+  // --- My Appointments (Clinical Guidance) ---
+  'journey.apptTitle': 'My Appointments',
+  'journey.apptSub': 'Your consultation requests and their status.',
+  'journey.apptNone': 'No appointments yet',
+  'journey.apptNoneBody':
+    'When you request genetic counselling, your appointment will appear here with its date, time and status. Nothing is booked until a professional confirms it.',
+  'journey.apptStatusPending': 'Pending',
+  'journey.apptStatusConfirmed': 'Confirmed',
+  'journey.apptStatusCompleted': 'Completed',
+  'journey.apptStatusCancelled': 'Cancelled',
+  'journey.apptDetails': 'View details',
+  'journey.apptRequested': 'Requested',
+
+  // --- Relative time (notifications inbox) ------------------------
+  'time.now': 'Just now',
+  'time.min': '{n}m ago',
+  'time.hr': '{n}h ago',
+  'time.day': '{n}d ago',
+
   // --- Errors --------------------------------------------------------------------
   'err.title': 'This screen could not be found.',
   'err.body': 'The page you asked for does not exist in this prototype.',
@@ -472,7 +498,7 @@ export const en = {
  * this file as the single source of truth for both languages.
  */
 export const ar = {
-  'brand.tagline': 'ال理解和تقليل مخاطر الأمراض الوراثية.',
+  'brand.tagline': 'الفهم وتقليل مخاطر الأمراض الوراثية.',
   'brand.promise1': 'اعرف المزيد.',
   'brand.promise2': 'خطّط بشكل أفضل.',
   'brand.promiseSub': 'احصل على رؤى واضحة وبسيطة عن صحتك الوراثية.',
@@ -878,6 +904,32 @@ export const ar = {
     'المستندات التي ترفعها تُخزَّن بشكل منفصل، في منطقتك الخاصة — أما هذا النموذج فهو مدمج في التطبيق للعرض.',
   'journey.backToDocs': 'العودة إلى مستنداتي',
 
+  // --- معاينة قبل الرفع ---
+  'journey.previewTitle': 'معاينة قبل الرفع',
+  'journey.previewSub': 'تحقق من الملف، ثم أكّد الرفع.',
+  'journey.confirmUpload': 'تأكيد الرفع',
+  'journey.cancelUpload': 'إلغاء',
+  'journey.replaceFile': 'اختر ملفًا آخر',
+
+  // --- مواعيدي (التوجيه المهني) ---
+  'journey.apptTitle': 'مواعيدي',
+  'journey.apptSub': 'طلبات الاستشارة الخاصة بك وحالتها.',
+  'journey.apptNone': 'لا توجد مواعيد بعد',
+  'journey.apptNoneBody':
+    'عند طلب التوجيه الوراثي، سيظهر موعدك هنا مع تاريخه ووقتهما وحالته. لا يُحجز شيء حتى يؤكّده مختص.',
+  'journey.apptStatusPending': 'قيد الانتظار',
+  'journey.apptStatusConfirmed': 'مؤكّد',
+  'journey.apptStatusCompleted': 'مكتمل',
+  'journey.apptStatusCancelled': 'ملغى',
+  'journey.apptDetails': 'عرض التفاصيل',
+  'journey.apptRequested': 'مطلوب',
+
+  // --- الوقت النسبي (صندوق الإشعارات) ----------------------------
+  'time.now': 'الآن',
+  'time.min': 'قبل {n} دقيقة',
+  'time.hr': 'قبل {n} ساعة',
+  'time.day': 'قبل {n} يوم',
+
   'err.title': 'تعذّر العثور على هذه الشاشة.',
   'err.body': 'الصفحة المطلوبة غير موجودة في هذا النموذج.',
 }
@@ -897,3 +949,17 @@ export const languages = [
   { code: 'sw', native: 'Kiswahili', dir: 'ltr' },
   { code: 'ha', native: 'Hausa', dir: 'ltr' },
 ]
+
+/**
+ * BCP-47 locales for `Intl` (`toLocaleString`, `Intl.DateTimeFormat`,
+ * relative dates). Kept in step with `languages` — `npm run i18n:check`
+ * fails if a language code is missing a locale or vice versa.
+ */
+export const locales = {
+  en: 'en-GB',
+  ar: 'ar',
+  fr: 'fr-FR',
+  es: 'es-ES',
+  sw: 'sw-KE',
+  ha: 'ha-NG',
+}

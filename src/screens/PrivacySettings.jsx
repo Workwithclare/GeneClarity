@@ -18,7 +18,7 @@ import { useRequireAuth } from '../store/useRequireAuth.js'
  */
 export default function PrivacySettings() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, lang } = useLanguage()
   const { state, dispatch } = useStore()
   const user = useRequireAuth()
   const [note, setNote] = useState(null)
@@ -231,7 +231,11 @@ export default function PrivacySettings() {
                   <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
                   <div className="min-w-0">
                     <p className="text-[13px] font-semibold text-ink-700">
-                      {lang === 'ar' ? entry.detailAr : entry.detailEn}
+                      {entry.detailKey
+                        ? tc(entry.detailKey, entry.detailParams)
+                        : lang === 'ar'
+                          ? entry.detailAr
+                          : entry.detailEn}
                     </p>
                     <p className="text-[11.5px] text-ink-300">{entry.at.slice(0, 16).replace('T', ' ')}</p>
                   </div>

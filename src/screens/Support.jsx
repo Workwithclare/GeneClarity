@@ -23,7 +23,7 @@ const REASONS = ['sup.why1', 'sup.why2', 'sup.why3']
 
 export default function Support() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc } = useLanguage()
   const user = useRequireAuth()
   const [sent, setSent] = useState(false)
 
@@ -149,7 +149,7 @@ export default function Support() {
                 className="flex cursor-pointer items-center gap-3.5 rounded-card border border-mint-200 bg-white p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-button"
               >
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-700 text-[13px] font-extrabold text-white">
-                  {(lang === 'ar' ? c.nameAr : c.nameEn)
+                  {tc(`content.counsellor.${c.id}.name`)
                     .split(' ')
                     .slice(0, 2)
                     .map((w) => w[0])
@@ -157,13 +157,13 @@ export default function Support() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[14.5px] font-extrabold text-ink-900">
-                    {lang === 'ar' ? c.nameAr : c.nameEn}
+                    {tc(`content.counsellor.${c.id}.name`)}
                   </p>
                   <p className="text-[12.5px] text-brand-700">
-                    {lang === 'ar' ? c.roleAr : c.roleEn}
+                    {tc(`content.counsellor.${c.id}.role`)}
                   </p>
                   <p className="mt-0.5 text-[12.5px] text-ink-400">
-                    {lang === 'ar' ? c.focusAr : c.focusEn}
+                    {tc(`content.counsellor.${c.id}.focus`)}
                   </p>
                 </div>
                 <Button

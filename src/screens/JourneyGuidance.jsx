@@ -5,12 +5,6 @@ import { Screen, AppBar } from '../components/Shell.jsx'
 import { Button, SafetyNote, Pill, SectionTitle, Tick } from '../components/UI.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useRequireAuth } from '../store/useRequireAuth.js'
-import {
-  whenUseful,
-  questionBank,
-  counsellingEn,
-  counsellingAr,
-} from '../data/journeyContent.js'
 
 /**
  * Professional Guidance — genetic counselling information and a
@@ -30,13 +24,15 @@ import {
  */
 export default function JourneyGuidance() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, tList } = useLanguage()
   const user = useRequireAuth()
   const [picked, setPicked] = useState(() => new Set())
 
   if (!user) return null
 
-  const counselling = lang === 'ar' ? counsellingAr : counsellingEn
+  // Positional content lists — counts come from the English catalogue.
+  const useful = tList('content.useful')
+  const questions = tList('content.question')
 
   const toggle = (index) => {
     setPicked((prev) => {
@@ -63,11 +59,9 @@ export default function JourneyGuidance() {
             </h2>
           </div>
           <div className="mt-2.5 space-y-2">
-            {counselling.map((para, i) => (
-              <p key={i} className="text-[13.5px] leading-relaxed text-brand-900/85">
-                {para}
-              </p>
-            ))}
+            <p className="text-[13.5px] leading-relaxed text-brand-900/85">
+              {tc('content.counselling')}
+            </p>
           </div>
         </section>
 
@@ -75,17 +69,40 @@ export default function JourneyGuidance() {
         <section className="mt-6">
           <SectionTitle>{t('journey.whenTitle')}</SectionTitle>
           <ul className="space-y-2.5">
-            {whenUseful.map((item, i) => (
+            {useful.map((item, i) => (
               <li key={i} className="flex gap-3">
                 <span className="mt-0.5 shrink-0 text-brand-600">
                   <Icon name="checkCircle" size={17} />
                 </span>
                 <p className="text-[13.5px] leading-relaxed text-ink-700">
-                  {lang === 'ar' ? item.ar : item.en}
+                  {item}
                 </p>
               </li>
             ))}
           </ul>
+        </section>
+
+        {/* My Appointments — consultation requests and their status */}
+        <section className="mt-6">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <SectionTitle>{t('journey.apptTitle')}</SectionTitle>
+          </div>
+          <p className="mb-3 text-[13.5px] leading-relaxed text-ink-500">
+            {t('journey.apptSub')}
+          </p>
+          <div className="rounded-card border border-ink-100 bg-white p-4">
+            <div className="flex flex-col items-center justify-center py-6 text-center">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-ink-50 text-ink-400 mb-3">
+                <Icon name="calendar" size={24} />
+              </span>
+              <h3 className="text-[15px] font-extrabold text-ink-900 mb-1">
+                {t('journey.apptNone')}
+              </h3>
+              <p className="text-[13px] leading-relaxed text-ink-400 max-w-xs">
+                {t('journey.apptNoneBody')}
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Question bank — tick to build a personal list */}
@@ -101,14 +118,14 @@ export default function JourneyGuidance() {
           </p>
           <div className="rounded-card border border-mint-200 bg-white p-4">
             <ul className="space-y-3">
-              {questionBank.map((q, i) => (
+              {questions.map((q, i) => (
                 <li key={i}>
                   <Tick
                     id={`q-${i}`}
                     checked={picked.has(i)}
                     onChange={() => toggle(i)}
                   >
-                    {lang === 'ar' ? q.ar : q.en}
+                    {q}
                   </Tick>
                 </li>
               ))}

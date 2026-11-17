@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "i18n:check": "node scripts/i18n-parity.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

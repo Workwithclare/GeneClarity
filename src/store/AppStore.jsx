@@ -8,6 +8,7 @@ import {
 import { supabaseEnabled } from '../lib/supabase.js'
 import { restoreSession, onAuthChange } from '../lib/auth.js'
 import { loadServerData, syncDiffs, syncActivityEntries } from '../lib/db.js'
+import { contentEn, contentAr, interpolate } from '../i18n/content.js'
 
 /**
  * GeneClarity application state.
@@ -62,13 +63,25 @@ const initialState = {
   results: demoResults,
 }
 
-function logActivity(state, kind, detailEn, detailAr) {
+/**
+ * Append one audit entry.
+ *
+ * The entry stores a content KEY plus params — the Activity screen
+ * translates it in the user's language at render time. The finished
+ * English/Arabic strings are also derived here so the database's
+ * `detail_en` / `detail_ar` audit columns keep holding readable text
+ * (docs: migration 0006). Entries saved before this change carry only
+ * the legacy fields and still render via their fallback.
+ */
+function logActivity(state, kind, detailKey, detailParams) {
   const entry = {
     id: `act_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     kind,
     at: new Date().toISOString(),
-    detailEn,
-    detailAr,
+    detailKey,
+    detailParams: detailParams ?? null,
+    detailEn: interpolate(contentEn[detailKey] ?? '', detailParams),
+    detailAr: interpolate(contentAr[detailKey] ?? '', detailParams),
   }
   return [entry, ...state.activity].slice(0, 60)
 }
@@ -98,12 +111,7 @@ function reducer(state, action) {
       return {
         ...state,
         user: action.user,
-        activity: logActivity(
-          state,
-          'signedIn',
-          'Signed in on this device.',
-          'تسجيل دخول على هذا الجهاز.',
-        ),
+        activity: logActivity(state, 'signedIn', 'content.act.signedIn'),
       }
 
     case 'SET_USER':
@@ -121,12 +129,7 @@ function reducer(state, action) {
         ...state,
         consentAccepted: true,
         consentAt: new Date().toISOString(),
-        activity: logActivity(
-          state,
-          'settingsChanged',
-          'Accepted the privacy and consent notice.',
-          'قبول إشعار الخصوصية والموافقة.',
-        ),
+        activity: logActivity(state, 'settingsChanged', 'content.act.consentAccepted'),
       }
 
     case 'DECLINE_CONSENT':
@@ -150,12 +153,7 @@ function reducer(state, action) {
           grantedAt: null,
           revokedAt: null,
         },
-        activity: logActivity(
-          state,
-          'settingsChanged',
-          'Sent a partner invitation. Nothing shared yet.',
-          'إرسال دعوة شريك. لم يُشارك شيء بعد.',
-        ),
+        activity: logActivity(state, 'settingsChanged', 'content.act.inviteSent'),
       }
 
     case 'GRANT_PARTNER':
@@ -172,8 +170,8 @@ function reducer(state, action) {
         activity: logActivity(
           state,
           'consentGranted',
-          `Granted partner access (${Object.values(action.shares).filter(Boolean).length} categories).`,
-          `منح الوصول للشريك (${Object.values(action.shares).filter(Boolean).length} فئات).`,
+          'content.act.grantAccess',
+          { n: Object.values(action.shares).filter(Boolean).length },
         ),
       }
 
@@ -186,24 +184,14 @@ function reducer(state, action) {
           shares: { summary: false, full: false, activity: false },
           revokedAt: new Date().toISOString(),
         },
-        activity: logActivity(
-          state,
-          'consentRevoked',
-          'Revoked partner access. Future access stopped.',
-          'سحب الوصول من الشريك. توقف الوصول المستقبلي.',
-        ),
+        activity: logActivity(state, 'consentRevoked', 'content.act.revokeAccess'),
       }
 
     case 'CLEAR_PARTNER':
       return {
         ...state,
         partner: initialState.partner,
-        activity: logActivity(
-          state,
-          'consentRevoked',
-          'Removed partner connection entirely.',
-          'إزالة ربط الشريك بالكامل.',
-        ),
+        activity: logActivity(state, 'consentRevoked', 'content.act.clearPartner'),
       }
 
     case 'SET_SETTING':
@@ -213,8 +201,8 @@ function reducer(state, action) {
         activity: logActivity(
           state,
           'settingsChanged',
-          `Setting "${action.key}" changed to ${String(action.value)}.`,
-          `تغيير الإعداد "${action.key}" إلى ${String(action.value)}.`,
+          'content.act.settingChanged',
+          { key: action.key, value: String(action.value) },
         ),
       }
 

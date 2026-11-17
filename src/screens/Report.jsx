@@ -24,7 +24,7 @@ const STATUS_LABEL = {
 export default function Report() {
   const user = useRequireAuth()
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, lang } = useLanguage()
   const { state } = useStore()
 
   if (!user) return null
@@ -160,7 +160,7 @@ export default function Report() {
                     <span className="min-w-0 flex-1">
                       <span className="flex flex-wrap items-center gap-2">
                         <span className="text-[14.5px] font-extrabold text-ink-900">
-                          {lang === 'ar' ? result.summaryAr : result.summaryEn}
+                          {tc(`content.result.${result.conditionId}.summary`)}
                         </span>
                       </span>
                       <span className="mt-1 flex flex-wrap items-center gap-1.5">

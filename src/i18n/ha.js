@@ -478,6 +478,32 @@ export const ha = {
     'Takardun da kake saukarwa an ajiye su a bangare, a wurin sirri; wannan misali an shiga shi a cikin manhajar don nuna halin.',
   'journey.backToDocs': 'Dawo zuwa takardona',
 
+  // --- Sanya saɗon shaɗarwa ---
+  'journey.previewTitle': 'Sanya saɗon shaɗarwa',
+  'journey.previewSub': 'Kyauta file, saɓon sarrafawa.',
+  'journey.confirmUpload': 'Sarrafawa',
+  'journey.cancelUpload': 'Ci gaba',
+  'journey.replaceFile': 'Yi file bununu',
+
+  // --- Ƙarin yangu (Makonci jinetiki) ---
+  'journey.apptTitle': 'Ƙarin yangu',
+  'journey.apptSub': 'Tallafin makonci kai da ƙarinya.',
+  'journey.apptNone': 'Babu ƙarin bayanai',
+  'journey.apptNoneBody':
+    'Yakayi makonci jinetiki, ƙarin ya zamo a cikin haka ga lokaci, yawan sakamako da ƙarinya. Babu shaɗi yawan sake wani mai mahirri ya tasirin.',
+  'journey.apptStatusPending': 'Ina hankali',
+  'journey.apptStatusConfirmed': 'Yasarsuwa',
+  'journey.apptStatusCompleted': 'Yakarbi',
+  'journey.apptStatusCancelled': 'Yace',
+  'journey.apptDetails': 'Bincika bayanai',
+  'journey.apptRequested': 'Kare',
+
+  // --- Lokacin da ya wuce (akin sanarwa) -------------------------
+  'time.now': 'Yanzu',
+  'time.min': 'cikin minti {n} da ya wuce',
+  'time.hr': "cikin sa'a {n} da ya wuce",
+  'time.day': 'cikin kwana {n} da ya wuce',
+
   // --- Kuskure ---------------------------------------------------------------------------------------
   'err.title': 'Ba a sami wannan allon ba.',
   'err.body': 'Shafin da aka nemi ba ya wannan kwafi ba.',

@@ -23,8 +23,9 @@ constraint set, and this document was updated when the team chose to add it.
 src/
 ├─ App.jsx               # HashRouter routes + <html> lang/dir sync + scroll reset
 ├─ i18n/
-│  ├─ translations.js    # EN + AR key/value catalogue (all copy)
-│  └─ LanguageContext.jsx# lang state → localStorage + document.dir
+│  ├─ translations.js    # EN + AR UI catalogue (fr/es/sw/ha siblings)
+│  ├─ content.js         # EN + AR long-form content catalogue (content_* siblings)
+│  └─ LanguageContext.jsx# lang state → t()/tc()/tList()/locale + document.dir
 ├─ lib/
 │  ├─ supabase.js        # dual-mode client (null when env vars absent)
 │  ├─ auth.js            # sign-up/in/out + session restore + error→key mapping
@@ -32,12 +33,12 @@ src/
 ├─ store/
 │  ├─ AppStore.jsx       # reducer: consent, settings, notifications, activity
 │  └─ useRequireAuth.js  # guard: redirects to /login when no user
-├─ data/demoData.js      # synthetic results, topics, counsellors, activity
-├─ data/journeyContent.js# EN/AR Understand/Guidance copy + synthetic sample
+├─ data/demoData.js      # synthetic results, topics, counsellors (structure only)
+├─ data/journeyContent.js# Understand/Guidance structure + synthetic sample
 ├─ components/           # Icon, Logo, Illustrations, Shell, UI, LanguageToggle
 ├─ screens/              # one component per screen
 └─ styles/index.css      # tokens + .btn/.card/.field + reduced-motion
-supabase/migrations/     # 0001–0004 schema/RLS/sync · 0005 document storage
+supabase/migrations/     # 0001–0004 schema/RLS/sync · 0005 document storage · 0006 activity content keys
 ```
 
 ## State model (`AppStore.jsx`)
@@ -166,6 +167,11 @@ scope limits of that test.
   (`supabase/migrations/0005_screening_documents.sql` + `src/lib/documents.js`)
   — bucket limits, owner-only storage policies, signed URLs; **tested with
   two accounts** (see the section above).
+- Activity rows store content translation keys
+  (`supabase/migrations/0006_activity_content_keys.sql`): `detail_key` +
+  `detail_params` let one audit row render in all six languages, while the
+  existing `detail_en`/`detail_ar` columns are kept as a readable
+  server-side audit copy.
 - Partner-consent flow wired end-to-end (`consents` via `src/lib/db.js`:
   invite → grant → revoke → clear) — **tested with two accounts** on
   14 Nov 2026, including `has_consent()` partner reads and scope enforcement.

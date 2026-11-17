@@ -24,7 +24,7 @@ const KIND_META = {
  */
 export default function Activity() {
   const navigate = useNavigate()
-  const { t, lang } = useLanguage()
+  const { t, tc, lang, locale } = useLanguage()
   const { state } = useStore()
   const user = useRequireAuth()
 
@@ -83,7 +83,7 @@ export default function Activity() {
                         </p>
                         <p className="mt-0.5 text-[12px] text-ink-300">
                           {new Date(entry.at).toLocaleString(
-                            isAr ? 'ar' : 'en-GB',
+                            locale,
                             {
                               year: 'numeric',
                               month: 'short',
@@ -97,7 +97,11 @@ export default function Activity() {
                     </div>
 
                     <p className="mt-2.5 border-t border-ink-100 pt-2.5 text-[13px] leading-relaxed text-ink-500">
-                      {isAr ? entry.detailAr : entry.detailEn}
+                      {entry.detailKey
+                        ? tc(entry.detailKey, entry.detailParams)
+                        : isAr
+                          ? entry.detailAr
+                          : entry.detailEn}
                     </p>
                   </div>
                 </li>
