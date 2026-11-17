@@ -110,8 +110,7 @@ export const es = {
   'auth.errConfirm':
     'Revise su bandeja de entrada: le hemos enviado un enlace de confirmación.',
   'auth.backendTitle': 'Cuenta segura',
-  'auth.backendBody':
-    'Las cuentas se crean y se almacenan con Supabase Authentication. No se envía nada a ningún otro servicio.',
+  'auth.backendBody': 'Su cuenta está segura. No se envía nada a ningún otro servicio.',
   'auth.checkInbox':
     'Casi listo: abra el enlace que le enviamos por correo y luego inicie sesión.',
   'auth.working': 'Un momento…',

@@ -71,6 +71,26 @@ export default function LanguageToggle({ variant = 'inline', className = '' }) {
     </ul>
   )
 
+  if (variant === 'bare') {
+    // Invisible hit area. Used on the welcome artwork, where the
+    // "EN | العربية" label is already drawn into the supplied image —
+    // so this variant adds only the behaviour (same dropdown, same
+    // setLang call) and deliberately draws no chrome of its own.
+    return (
+      <div ref={wrapRef} className={`relative ${className}`}>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-label={t('set.language')}
+          className="h-full w-full cursor-pointer rounded focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300"
+        />
+        {open && menu}
+      </div>
+    )
+  }
+
   if (variant === 'chip') {
     // Compact pill for the settings row: shows the active language.
     return (

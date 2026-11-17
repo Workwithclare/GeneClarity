@@ -1,68 +1,105 @@
 import { useNavigate } from 'react-router-dom'
-import { LogoLockup } from '../components/Logo.jsx'
-import { FamilyIllustration } from '../components/Illustrations.jsx'
-import { Button } from '../components/UI.jsx'
 import LanguageToggle from '../components/LanguageToggle.jsx'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 
-/** Welcome screen — the front door described in the reference design. */
+/**
+ * Welcome screen — the SECOND screen in the sequence:
+ *
+ *   1. Splash        → src/screens/Splash.jsx (untouched)
+ *   2. THIS screen   → the supplied onboarding artwork, verbatim
+ *   3. Authentication → /register (Get Started) or /login (Sign In)
+ *
+ * ─────────────────────────────────────────────────────────────────
+ * WHY THIS SCREEN LOOKS DIFFERENT FROM THE OTHERS
+ *
+ * The visual is the exact image supplied for approval — logo, family
+ * illustration, headline, colours and the two buttons are all baked
+ * into `public/assets/welcome-onboarding.png` (226 × 476). Nothing is
+ * redrawn, re-created or approximated here; the file is the design.
+ *
+ * Because "Get Started", "Sign In" and "EN | العربية" are pixels in
+ * that picture rather than DOM nodes, they are made tappable with
+ * TRANSPARENT <button> hit areas layered over their measured
+ * positions (percentages of the artwork box). The wrapper carries the
+ * image's own aspect ratio, so the artwork and the wrapper are the
+ * same rectangle at every viewport size and the hit areas cannot
+ * drift away from the buttons they stand in for.
+ *
+ * ─────────────────────────────────────────────────────────────────
+ * HONEST LIMITS OF THIS APPROACH (also recorded in docs):
+ *   • The headline inside the image is English in every language —
+ *     the artwork is a flat picture, so switching language does not
+ *     re-translate it. The language PICKER itself is live (it opens
+ *     the real menu and really changes the app language).
+ *   • The "EN | العربية" label is likewise part of the picture; only
+ *     the tap target over it is functional.
+ *   • The 9:41 status bar is part of the supplied artwork and is
+ *     reproduced because the image must be used unmodified.
+ * ─────────────────────────────────────────────────────────────────
+ *
+ * The medical-safety line the old screen printed under the buttons is
+ * kept in the DOM as visually-hidden text: the artwork has no room
+ * for it and adding visible chrome would alter the approved image.
+ */
 export default function Welcome() {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
+  // Hit-area geometry, measured pixel-by-pixel against the 226 × 476
+  // source image and converted to percentages of that box.
+  //   Get Started pill : x 19–209, y 391–425
+  //   Sign In label    : x 97–130, y 443–453 (expanded to a tap size)
+  //   Language label   : x 160–204, y 44–53  (expanded to a tap size)
+  const HIT = {
+    getStarted: { left: '8.41%', top: '82.14%', width: '84.07%', height: '7.15%' },
+    signIn: { left: '35%', top: '91.5%', width: '30%', height: '6%' },
+    language: { left: '65%', top: '6.5%', width: '28%', height: '7%' },
+  }
+
   return (
     <div className="screen relative overflow-hidden bg-white">
-      {/* Soft organic brand blobs behind the illustration — the reference
-          art uses rounded mint shapes rather than a flat gradient. */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <span className="absolute -left-24 -top-28 h-72 w-72 rounded-full bg-brand-100" />
-        <span className="absolute -right-28 top-24 h-80 w-80 rounded-full bg-mint-100" />
-        <span className="absolute -right-16 top-64 h-56 w-56 rounded-full bg-brand-50" />
-        <span className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-mint-100 to-transparent" />
-      </div>
+      {/* Centre the artwork and cap it at the visible viewport height
+          so it fills the screen as closely as its ratio allows. */}
+      <div className="flex h-[100dvh] w-full items-center justify-center">
+        <div className="welcome-art relative">
+          <img
+            src="/assets/welcome-onboarding.png"
+            alt="GeneClarity. Know more. Plan better. Get clear, simple insights about your genetic health. A family of three."
+            className="block h-full w-full"
+            draggable={false}
+          />
 
-      {/* Language switch, top-right as in the reference */}
-      <div className="relative z-10 flex justify-end px-5 pt-5">
-        <LanguageToggle />
-      </div>
+          {/* Get Started → account registration */}
+          <button
+            type="button"
+            onClick={() => navigate('/register')}
+            aria-label={t('act.getStarted')}
+            style={HIT.getStarted}
+            className="absolute rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300"
+          />
 
-      <div className="relative z-10 flex flex-1 flex-col px-6 pb-8">
-        <div className="mt-2">
-          <LogoLockup markSize={68} showTagline={false} />
-        </div>
-
-        <div className="mt-5 text-center">
-          <h1 className="text-[27px] font-extrabold leading-[1.25] text-ink-900">
-            {t('brand.promise1')}
-            <br />
-            {t('brand.promise2')}
-          </h1>
-          <p className="mx-auto mt-2.5 max-w-[19rem] text-[14.5px] leading-relaxed text-ink-500">
-            {t('brand.promiseSub')}
-          </p>
-        </div>
-
-        <div className="mt-3 flex justify-center">
-          <FamilyIllustration width={300} />
-        </div>
-
-        <div className="mt-auto flex flex-col gap-3 pt-4">
-          <Button size="lg" iconEnd="arrowRight" onClick={() => navigate('/onboarding')}>
-            {t('act.getStarted')}
-          </Button>
+          {/* Sign In → login */}
           <button
             type="button"
             onClick={() => navigate('/login')}
-            className="btn btn--ghost"
-          >
-            {t('act.signIn')}
-          </button>
-        </div>
+            aria-label={t('act.signIn')}
+            style={HIT.signIn}
+            className="absolute rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300"
+          />
 
-        <p className="mt-5 text-center text-[11.5px] leading-snug text-ink-300">
-          {t('notice.notDiagnostic')} · {t('notice.sampleHeading')}
-        </p>
+          {/* Language selector — transparent hit area over the label
+              drawn into the artwork; opens the real language menu. */}
+          <div className="absolute" style={HIT.language}>
+            <LanguageToggle variant="bare" className="h-full w-full" />
+          </div>
+        </div>
       </div>
+
+      {/* Safety copy, visually hidden — the approved artwork has no
+          space for it and drawing over the image would change it. */}
+      <p className="sr-only">
+        {t('notice.notDiagnostic')} · {t('notice.sampleHeading')}
+      </p>
     </div>
   )
 }

@@ -110,8 +110,7 @@ export const sw = {
   'auth.errConfirm':
     'Angalia kikasha chako: tumekutumia kiungo cha kuthibitisha.',
   'auth.backendTitle': 'Akaunti salama',
-  'auth.backendBody':
-    'Akaunti hufunguliwa na kuhifadhiwa kwa Supabase Authentication. Hakuna kinachotumwa kwa huduma nyingine yoyote.',
+  'auth.backendBody': 'Akaunti yako salama. Hakuna kinachotumwa kwa huduma nyingine yoyote.',
   'auth.checkInbox':
     'Karibu umalize: fungua kiungo tulichokutumia kwa barua pepe kisha ingia.',
   'auth.working': 'Dakika moja…',

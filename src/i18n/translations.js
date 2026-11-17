@@ -117,8 +117,7 @@ export const en = {
   'auth.errGeneric': 'Something went wrong. Please try again.',
   'auth.errConfirm': 'Check your inbox - we sent you a confirmation link.',
   'auth.backendTitle': 'Secure account',
-  'auth.backendBody':
-    'Accounts are created and stored with Supabase Authentication. Nothing is sent to any other service.',
+  'auth.backendBody': 'Your account is secure. Nothing is sent to any other service.',
   'auth.checkInbox':
     'Almost there - open the link we emailed you, then sign in.',
   'auth.working': 'One moment...',
@@ -589,8 +588,7 @@ export const ar = {
   'auth.errGeneric': 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
   'auth.errConfirm': 'تحقق من بريدك الإلكتروني - أرسلنا لك رابط تأكيد.',
   'auth.backendTitle': 'حساب آمن',
-  'auth.backendBody':
-    'يتم إنشاء الحسابات وحفظها عبر Supabase Authentication ولا يُرسل شيء إلى أي خدمة أخرى.',
+  'auth.backendBody': 'حسابك آمن. لا يُرسل شيء إلى أي خدمة أخرى.',
   'auth.working': 'لحظة من فضلك...',
   'auth.checkInbox': 'اقتربنا - افتح الرابط الذي أرسلناه إلى بريدك ثم سجّل الدخول.',
   'auth.createTitle': 'إنشاء حساب',

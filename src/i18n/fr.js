@@ -108,8 +108,7 @@ export const fr = {
   'auth.errGeneric': 'Une erreur s’est produite. Veuillez réessayer.',
   'auth.errConfirm': 'Vérifiez votre boîte de réception - nous vous avons envoyé un lien de confirmation.',
   'auth.backendTitle': 'Compte sécurisé',
-  'auth.backendBody':
-    'Les comptes sont créés et stockés avec Supabase Authentication. Rien n’est envoyé à un autre service.',
+  'auth.backendBody': 'Votre compte est sûr. Rien n’est envoyé à un autre service.',
   'auth.checkInbox':
     'Presque terminé - ouvrez le lien que nous vous avons envoyé par e-mail, puis connectez-vous.',
   'auth.working': 'Un instant…',

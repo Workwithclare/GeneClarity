@@ -110,8 +110,7 @@ export const ha = {
   'auth.errConfirm':
     'Duba akwatin ka - mun aika maka mahadar tabbatarwa.',
   'auth.backendTitle': 'Asusu mai aminci',
-  'auth.backendBody':
-    'An buɗe asusu kuma an ajiye su da Supabase Authentication. Ba a aika wani bayani zuwa wata sira ba.',
+  'auth.backendBody': 'Asunka naka aminci. Ba a aika wani bayani zuwa wata sira ba.',
   'auth.checkInbox':
     'Kusan ya ƙare - buɗe mahadar da muka maka ta imel, sannan ka shiga.',
   'auth.working': 'Rana ɗaya…',
