@@ -14,10 +14,14 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
  *
  * The visual is the exact image supplied for approval — logo, family
  * illustration, headline, colours and the two buttons are all baked
- * into `public/assets/welcome-onboarding.png` (226 × 450). The only
- * edit made to the file was cropping the mock-up's 9:41 status bar
- * off the top, as requested. Nothing else is redrawn, re-created or
- * approximated here; the file is the design.
+ * into `public/assets/welcome-onboarding.png` (226 × 490). Two
+ * background-only edits were made to the file, as requested: the
+ * mock-up's 9:41 status bar was cropped off the top, and the
+ * artwork's own background was extended 20px top and bottom so the
+ * picture matches the 9:19.5 phone-screen ratio and fills the
+ * viewport exactly like every other screen. No illustration pixels
+ * were redrawn, re-created or approximated here; the file is the
+ * design.
  *
  * Because "Get Started", "Sign In" and "EN | العربية" are pixels in
  * that picture rather than DOM nodes, they are made tappable with
@@ -45,17 +49,17 @@ export default function Welcome() {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
-  // Hit-area geometry, measured pixel-by-pixel against the 226 × 450
+  // Hit-area geometry, measured pixel-by-pixel against the 226 × 490
   // source image and converted to percentages of that box, then padded
   // to a comfortable tap size (the raw text boxes are far smaller
   // than the recommended 44px touch target).
-  //   Get Started pill : x 19–209, y 365–399
-  //   Sign In label    : x 97–130, y 417–427 (expanded to a tap size)
-  //   Language label   : x 108–204, y 15–45  (expanded to a tap size)
+  //   Get Started pill : x 19–209, y 385–419
+  //   Sign In label    : x 97–130, y 437–447 (expanded to a tap size)
+  //   Language label   : x 160–204, y 38–47  (expanded to a tap size)
   const HIT = {
-    getStarted: { left: '8.41%', top: '81.11%', width: '84.51%', height: '7.78%' },
-    signIn: { left: '34%', top: '90.4%', width: '32%', height: '7%' },
-    language: { left: '50%', top: '2.8%', width: '38%', height: '8%' },
+    getStarted: { left: '8.41%', top: '78.57%', width: '84.51%', height: '7.14%' },
+    signIn: { left: '34.4%', top: '86.8%', width: '32%', height: '7%' },
+    language: { left: '65.8%', top: '4.8%', width: '30%', height: '8%' },
   }
 
   return (
