@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useLanguage } from './i18n/LanguageContext.jsx'
+import { isRecoveryLanding, settleRecoveryLanding } from './lib/auth.js'
 
 import Splash from './screens/Splash.jsx'
 import Welcome from './screens/Welcome.jsx'
@@ -8,6 +9,7 @@ import Onboarding from './screens/Onboarding.jsx'
 import Consent from './screens/Consent.jsx'
 import Login from './screens/Login.jsx'
 import Register from './screens/Register.jsx'
+import ResetPassword from './screens/ResetPassword.jsx'
 import Dashboard from './screens/Dashboard.jsx'
 import Journey from './screens/Journey.jsx'
 import JourneyDocuments from './screens/JourneyDocuments.jsx'
@@ -56,40 +58,81 @@ function DocumentDirection() {
   return null
 }
 
+/**
+ * Holds the routes back while a password-recovery email link is being
+ * settled. Supabase exchanges the tokens in the URL fragment for a
+ * session and then clears the fragment — which would otherwise leave
+ * the router on an unmatched path — so until that exchange finishes a
+ * neutral screen is shown, then the user is routed straight to the
+ * set-new-password screen. Renders nothing on ordinary page loads.
+ */
+function RecoveryGate({ children }) {
+  const navigate = useNavigate()
+  const { t } = useLanguage()
+  const [settling, setSettling] = useState(isRecoveryLanding)
+
+  useEffect(() => {
+    if (!settling) return
+    let alive = true
+    settleRecoveryLanding().finally(() => {
+      if (!alive) return
+      setSettling(false)
+      navigate('/reset-password', { replace: true })
+    })
+    return () => {
+      alive = false
+    }
+  }, [settling, navigate])
+
+  if (settling) {
+    return (
+      <div className="screen grid place-items-center bg-white" role="status">
+        <p className="text-[14px] font-semibold text-ink-400">
+          {t('auth.working')}
+        </p>
+      </div>
+    )
+  }
+  return children
+}
+
 export default function App() {
   return (
     <>
       <ScrollToTop />
       <DocumentDirection />
-      <Routes>
-        <Route path="/" element={<Splash />} />
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/consent" element={<Consent />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/journey" element={<Journey />} />
-        <Route path="/journey/documents" element={<JourneyDocuments />} />
-        <Route path="/journey/understand" element={<JourneyUnderstand />} />
-        <Route path="/journey/guidance" element={<JourneyGuidance />} />
-        <Route path="/journey/sample" element={<JourneySample />} />
-        <Route path="/report" element={<Report />} />
-        <Route path="/report/:resultId" element={<ResultDetail />} />
-        <Route path="/learn" element={<Learn />} />
-        <Route path="/learn/:conditionId" element={<ConditionDetail />} />
-        <Route path="/couple" element={<CoupleConnect />} />
-        <Route path="/couple/consent" element={<PartnerConsent />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="/faqs" element={<Faq />} />
-        <Route path="/done" element={<Done />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/settings/privacy" element={<PrivacySettings />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/activity" element={<Activity />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <RecoveryGate>
+        <Routes>
+          <Route path="/" element={<Splash />} />
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/consent" element={<Consent />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/journey" element={<Journey />} />
+          <Route path="/journey/documents" element={<JourneyDocuments />} />
+          <Route path="/journey/understand" element={<JourneyUnderstand />} />
+          <Route path="/journey/guidance" element={<JourneyGuidance />} />
+          <Route path="/journey/sample" element={<JourneySample />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/report/:resultId" element={<ResultDetail />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/learn/:conditionId" element={<ConditionDetail />} />
+          <Route path="/couple" element={<CoupleConnect />} />
+          <Route path="/couple/consent" element={<PartnerConsent />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/faqs" element={<Faq />} />
+          <Route path="/done" element={<Done />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/privacy" element={<PrivacySettings />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/activity" element={<Activity />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </RecoveryGate>
     </>
   )
 }

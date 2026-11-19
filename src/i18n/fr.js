@@ -130,6 +130,28 @@ export const fr = {
   'auth.show': 'Afficher le mot de passe',
   'auth.hide': 'Masquer le mot de passe',
 
+  // --- Réinitialisation du mot de passe ----------------------------
+  'auth.forgotTitle': 'Réinitialiser votre mot de passe',
+  'auth.forgotSub':
+    'Saisissez votre adresse e-mail et nous vous enverrons un lien pour définir un nouveau mot de passe.',
+  'auth.forgotSend': 'Envoyer le lien',
+  'auth.forgotSentTitle': 'Vérifiez votre boîte de réception',
+  'auth.forgotSentBody':
+    'Si un compte existe pour {email}, un lien de réinitialisation est en route. Ouvrez-le sur cet appareil pour choisir un nouveau mot de passe.',
+  'auth.forgotBack': 'Retour à la connexion',
+  'auth.resetTitle': 'Choisissez un nouveau mot de passe',
+  'auth.resetSub': 'Votre nouveau mot de passe doit comporter au moins 6 caractères.',
+  'auth.resetSubmit': 'Enregistrer le nouveau mot de passe',
+  'auth.resetDoneTitle': 'Mot de passe mis à jour',
+  'auth.resetDoneBody':
+    'Votre mot de passe a été modifié. Connectez-vous avec votre nouveau mot de passe.',
+  'auth.resetExpired':
+    'Ce lien de réinitialisation est absent ou a expiré. Demandez-en un nouveau depuis l’écran de connexion.',
+  'auth.errNoAccount': 'Aucun compte n’existe pour cette adresse e-mail.',
+  'auth.errRate': 'Trop de tentatives. Veuillez patienter un instant puis réessayer.',
+  'auth.errPasswordReuse':
+    'Votre nouveau mot de passe doit être différent de votre mot de passe actuel.',
+
   // --- Tableau de bord ------------------------------------------------------
   'dash.hello': 'Bonjour,',
   'dash.companion': 'Votre compagnon de santé génétique',

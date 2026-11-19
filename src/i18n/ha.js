@@ -132,6 +132,28 @@ export const ha = {
   'auth.show': 'Nuna kalmar sirri',
   'auth.hide': 'Boya kalmar sirri',
 
+  // --- Sabuntawa kalmar sirri ---------------------------------------
+  'auth.forgotTitle': 'Sabunta kalmar sirrinka',
+  'auth.forgotSub':
+    'Shigar da adireshin imelinka, za mu aika maka da mahadarin saita sabuwar kalmar sirri.',
+  'auth.forgotSend': 'Aika mahadi',
+  'auth.forgotSentTitle': 'Duba inboxɗinka',
+  'auth.forgotSentBody':
+    'Idan akwai asusu don {email}, mahadarin sabuntawa yana cikin hanya. Bude shi a na’arwan don zaɓi sabuwar kalmar sirri.',
+  'auth.forgotBack': 'Koma zuwa shiga',
+  'auth.resetTitle': 'Zaɓi sabuwar kalmar sirri',
+  'auth.resetSub': 'Sabuwar kalmar sirrinka dole ta ƙunshi aƙalla harufi 6.',
+  'auth.resetSubmit': 'Ajiye sabuwar kalmar sirri',
+  'auth.resetDoneTitle': 'An sabunta kalmar sirri',
+  'auth.resetDoneBody':
+    'An canza kalmar sirrinka. Shiga da sabuwar kalmar sirrinka.',
+  'auth.resetExpired':
+    'Wannan mahadin sabuntawa ba ya ko ya gusa. Nemi sabo daga allon shiga.',
+  'auth.errNoAccount': 'Babu asusu da wannan adireshin imel.',
+  'auth.errRate': 'Matakai da yawa. Da fatan za a jira ɗan ƙadan sake gwadawa.',
+  'auth.errPasswordReuse':
+    'Sabuwar kalmar sirrinka dole ta bambanta da kalmar sirrinka ta yanzu.',
+
   // --- Allon sarrafawa --------------------------------------------------------------
   'dash.hello': 'Sannu,',
   'dash.companion': 'Abokin lafiyar ijiniyarka',

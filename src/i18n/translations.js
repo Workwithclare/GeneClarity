@@ -139,6 +139,28 @@ export const en = {
   'auth.show': 'Show password',
   'auth.hide': 'Hide password',
 
+  // --- Password reset ------------------------------------------------
+  'auth.forgotTitle': 'Reset your password',
+  'auth.forgotSub':
+    'Enter your email address and we will send you a link to set a new password.',
+  'auth.forgotSend': 'Send reset link',
+  'auth.forgotSentTitle': 'Check your email',
+  'auth.forgotSentBody':
+    'If an account exists for {email}, a reset link is on its way. Open it on this device to choose a new password.',
+  'auth.forgotBack': 'Back to sign in',
+  'auth.resetTitle': 'Choose a new password',
+  'auth.resetSub': 'Your new password must be at least 6 characters.',
+  'auth.resetSubmit': 'Save new password',
+  'auth.resetDoneTitle': 'Password updated',
+  'auth.resetDoneBody':
+    'Your password has been changed. Sign in with your new password.',
+  'auth.resetExpired':
+    'This reset link is missing or has expired. Request a new one from the sign-in screen.',
+  'auth.errNoAccount': 'No account exists for that email address.',
+  'auth.errRate': 'Too many attempts. Please wait a moment and try again.',
+  'auth.errPasswordReuse':
+    'Your new password must be different from your current password.',
+
   // --- Dashboard -----------------------------------------------------
   'dash.hello': 'Hello,',
   'dash.companion': 'Your genetic health companion',
@@ -608,6 +630,28 @@ export const ar = {
   'auth.errTerms': 'يرجى قبول الشروط للمتابعة.',
   'auth.show': 'إظهار كلمة المرور',
   'auth.hide': 'إخفاء كلمة المرور',
+
+  // --- استعادة كلمة المرور ------------------------------------------
+  'auth.forgotTitle': 'إعادة تعيين كلمة المرور',
+  'auth.forgotSub':
+    'أدخل بريدك الإلكتروني وسنرسل لك رابطًا لتعيين كلمة مرور جديدة.',
+  'auth.forgotSend': 'إرسال رابط الاستعادة',
+  'auth.forgotSentTitle': 'تحقق من بريدك',
+  'auth.forgotSentBody':
+    'إذا كان هناك حساب على {email}، فرابط الاستعادة في طريقه إليه. افتحه على هذا الجهاز لاختيار كلمة مرور جديدة.',
+  'auth.forgotBack': 'العودة إلى تسجيل الدخول',
+  'auth.resetTitle': 'اختر كلمة مرور جديدة',
+  'auth.resetSub': 'يجب أن تتكون كلمة المرور الجديدة من 6 أحرف على الأقل.',
+  'auth.resetSubmit': 'حفظ كلمة المرور الجديدة',
+  'auth.resetDoneTitle': 'تم تحديث كلمة المرور',
+  'auth.resetDoneBody':
+    'تم تغيير كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.',
+  'auth.resetExpired':
+    'رابط الاستعادة مفقود أو منتهي الصلاحية. اطلب رابطًا جديدًا من شاشة تسجيل الدخول.',
+  'auth.errNoAccount': 'لا يوجد حساب بهذا البريد الإلكتروني.',
+  'auth.errRate': 'محاولات كثيرة. يرجى الانتظار قليلًا ثم المحاولة مرة أخرى.',
+  'auth.errPasswordReuse':
+    'يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور الحالية.',
 
   'dash.hello': 'مرحبًا،',
   'dash.companion': 'رفيقك في الصحة الوراثية',

@@ -132,6 +132,28 @@ export const sw = {
   'auth.show': 'Onesha nenosiri',
   'auth.hide': 'Ficha nenosiri',
 
+  // --- Kubadili nenosiri --------------------------------------------
+  'auth.forgotTitle': 'Weka upya nenosiri lako',
+  'auth.forgotSub':
+    'Weka anwani yako ya barua pepe tutakutumia kiungo cha kuweka nenosiri jipya.',
+  'auth.forgotSend': 'Tuma kiungo',
+  'auth.forgotSentTitle': 'Angalia barua pepe yako',
+  'auth.forgotSentBody':
+    'Kama akaunti ipo kwa {email}, kiungo cha kubadili nenosiri kinaelekea. Kifungue kwenye kifaa hiki kuweka nenosiri jipya.',
+  'auth.forgotBack': 'Rudi kuingia',
+  'auth.resetTitle': 'Chagua nenosiri jipya',
+  'auth.resetSub': 'Nenosiri lako jipya lazima liwe na herufi 6 au zaidi.',
+  'auth.resetSubmit': 'Hifadhi nenosiri jipya',
+  'auth.resetDoneTitle': 'Nenosiri limesasishwa',
+  'auth.resetDoneBody':
+    'Nenosiri lako limebadilishwa. Ingia kwa nenosiri lako jipya.',
+  'auth.resetExpired':
+    'Kiungo hiki cha kubadili nenosiri hakipo au kimeisha muda. Omba kipya kwenye skrini ya kuingia.',
+  'auth.errNoAccount': 'Hakuna akaunti kwa anwani hiyo ya barua pepe.',
+  'auth.errRate': 'Majaribio mengi mno. Tafadhali subua kidogo kisha jaribu tena.',
+  'auth.errPasswordReuse':
+    'Nenosiri lako jipya lazima litofautiane na nenosiri lako la sasa.',
+
   // --- Dashibodi --------------------------------------------------------------
   'dash.hello': 'Habari,',
   'dash.companion': 'Mwenzako wa afya ya jenetiki',

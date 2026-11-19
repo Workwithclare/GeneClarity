@@ -48,12 +48,18 @@ function mapError(error) {
   if (code === 'user_already_exists') return 'auth.errEmailTaken'
   if (code === 'invalid_credentials') return 'auth.errInvalid'
   if (code === 'email_not_confirmed') return 'auth.errConfirm'
-  if (code.startsWith('over_email_send_rate_limit')) return 'auth.errGeneric'
+  if (code === 'user_not_found') return 'auth.errNoAccount'
+  if (code === 'weak_password') return 'auth.errPasswordShort'
+  if (code.startsWith('over_email_send_rate_limit')) return 'auth.errRate'
   const msg = String(error.message || '').toLowerCase()
   if (msg.includes('invalid login credentials')) return 'auth.errInvalid'
   if (msg.includes('already registered') || msg.includes('already been registered'))
     return 'auth.errEmailTaken'
   if (/email address .* is invalid/.test(msg)) return 'auth.errEmailShape'
+  if (msg.includes('user not found')) return 'auth.errNoAccount'
+  if (msg.includes('rate limit') || msg.includes('for security purposes'))
+    return 'auth.errRate'
+  if (msg.includes('different from the old')) return 'auth.errPasswordReuse'
   if (msg.includes('confirm') || msg.includes('verification')) return 'auth.errConfirm'
   if (msg.includes('password')) return 'auth.errPasswordShort'
   if (msg.includes('fetch') || msg.includes('network') || msg.includes('failed to fetch'))
@@ -129,4 +135,86 @@ export function onAuthChange(handler) {
     handler(session?.user ? mapAuthUser(session.user) : null)
   })
   return data.subscription
+}
+
+/* ── Password reset ───────────────────────────────────────────────── */
+
+/**
+ * Set once the app is opened from an emailed password-recovery link
+ * (the URL fragment contains `access_token=`). The flag — not the URL —
+ * is the source of truth afterwards: the Supabase client clears the
+ * fragment as soon as it has exchanged the tokens, so anything running
+ * later must remember the landing happened here.
+ */
+let recoveryLanding = false
+
+/** True when this page load started from a password-recovery email. */
+export function isRecoveryLanding() {
+  return recoveryLanding
+}
+
+/**
+ * Record a password-recovery landing. Called once from `main.jsx`
+ * before the first render. The token exchange itself is done by the
+ * Supabase client (it starts when the client is created); this only
+ * remembers that a link was opened so `App` can hold the router back
+ * and then route to the set-new-password screen.
+ */
+export function captureRecoveryLink() {
+  if (!supabaseEnabled) return false
+  if (!(window.location.hash || '').includes('access_token=')) return false
+  recoveryLanding = true
+  return true
+}
+
+/**
+ * Wait for the client to finish handling the URL — a successful token
+ * exchange, or an expired/invalid link. Safe to call repeatedly: it
+ * awaits the same initialisation promise the client already started.
+ */
+export async function settleRecoveryLanding() {
+  if (!supabaseEnabled) return
+  try {
+    await supabase.auth.initialize()
+  } catch {
+    /* expired or invalid link — the screen shows the honest state */
+  }
+}
+
+/**
+ * Ask Supabase to email a password-reset link.
+ * @returns {{ok: boolean, errorKey?: string}}
+ */
+export async function resetPasswordWithBackend(address) {
+  if (!supabaseEnabled) return { ok: false, errorKey: 'auth.errGeneric' }
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(address.trim(), {
+      // Supabase appends `#access_token=…&type=recovery` to this URL, so
+      // it is sent without a hash of our own — `captureRecoveryLink()`
+      // turns that fragment into the `#/reset-password` route.
+      // The URL must be listed in the Supabase dashboard under
+      // Authentication → URL Configuration → Redirect URLs, otherwise
+      // the emailed link is refused when it is opened.
+      redirectTo: `${window.location.origin}${window.location.pathname}`,
+    })
+    if (error) return { ok: false, errorKey: mapError(error) }
+    return { ok: true }
+  } catch {
+    return { ok: false, errorKey: 'auth.errNetwork' }
+  }
+}
+
+/**
+ * Save a new password for the signed-in (recovery) session.
+ * @returns {{ok: boolean, errorKey?: string}}
+ */
+export async function updatePasswordWithBackend(password) {
+  if (!supabaseEnabled) return { ok: false, errorKey: 'auth.errGeneric' }
+  try {
+    const { error } = await supabase.auth.updateUser({ password })
+    if (error) return { ok: false, errorKey: mapError(error) }
+    return { ok: true }
+  } catch {
+    return { ok: false, errorKey: 'auth.errNetwork' }
+  }
 }

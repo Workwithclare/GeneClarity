@@ -166,6 +166,32 @@ RTL; menu rows mirror likewise.
   (`dir="rtl"`, appointments section): correct copy, **zero raw keys**.
 - Zero console errors across the checks above.
 
+**Password reset — "Forgot password?" (18 Nov 2026):**
+
+- Sign-in → *Forgot password?* swaps the panel to *Reset your password*
+  (`#forgot-email`) with the empty-field and malformed-email validation
+  messages; *Send reset link* → *Back to sign in* returns to the form.
+- A send to a **deliverable** address reached the honest *Check your
+  email* state ("If an account exists for {email}, a reset link is on its
+  way…"). A `example.com` address is rejected by the API (reserved,
+  non-deliverable domain → `400 email_address_invalid`) and surfaces as
+  the mapped catalogue string, never a raw provider message.
+- Recovery landing simulated by loading the page with
+  `#access_token=…&type=recovery`: the neutral "One moment…" gate held
+  the router while the Supabase client exchanged the tokens, then routed
+  to `#/reset-password` — which showed the honest *"link is missing or
+  has expired"* state for the invalid tokens (no blank page, no 404).
+- Password round-trip on the live backend with the test account:
+  sign-in → `#/reset-password` → saving the **same** password was
+  refused with the reuse message → changed the password → *Password
+  updated* → session dropped automatically → signed in with the new
+  password → changed back to the original and signed in with it again.
+- `npm run i18n:check`: **378 UI keys × 6 languages** (15 new `auth.*`
+  keys added for this flow) and 171 content keys × 6 — parity green.
+- Console errors during the walkthrough were limited to the deliberate
+  invalid requests described above. A clean reload with a restored
+  session produced zero errors.
+
 ### Known limitations
 
 - No professional translation review has been commissioned for **any**

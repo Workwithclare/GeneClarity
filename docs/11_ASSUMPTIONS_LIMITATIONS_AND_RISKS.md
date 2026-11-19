@@ -47,6 +47,26 @@ softened.
   the auth-gated redirect verified by manual/scripted browser testing — not a
   penetration test). Email confirmation is currently off on the project (see
   the notifications limitation below).
+- **Password reset ("Forgot password?") is wired to Supabase** and was
+  exercised against the live project on 18 Nov 2026 (send → *Check your
+  email*, recovery-link landing → `#/reset-password`, and a full
+  password change round-trip; see `06_ACCESSIBILITY_AND_I18N.md`). Honest
+  limits, all configuration rather than code:
+  - The site URL must be added to **Supabase Dashboard → Authentication →
+    URL Configuration → Redirect URLs**, otherwise the emailed link is
+    refused when opened.
+  - Email delivery needs a **deliverable** address: `example.com` is
+    reserved (no MX) and the API rejects it at send time
+    (`400 email_address_invalid`). Whether an inbox actually receives the
+    mail depends on Supabase's email configuration and could not be
+    verified from here — the landing was simulated, not clicked through
+    from a real inbox.
+  - In **demo mode** (no backend) no email can be sent, so the button
+    shows the existing honest `auth.forgotNote` message instead of
+    pretending anything was sent.
+  - The set-new-password screen accepts any active session (it is also
+    usable directly as "change my password"); an expired or invalid link
+    shows an honest expired state.
 - **Server persistence only partially wired.** Accounts authenticate via
   Supabase in backend mode, `localStorage` remains the primary store and
   changes are mirrored to the server through the local-first sync layer

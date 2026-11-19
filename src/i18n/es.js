@@ -132,6 +132,28 @@ export const es = {
   'auth.show': 'Mostrar contraseña',
   'auth.hide': 'Ocultar contraseña',
 
+  // --- Restablecer la contraseña ------------------------------------
+  'auth.forgotTitle': 'Restablecer su contraseña',
+  'auth.forgotSub':
+    'Escriba su dirección de correo y le enviaremos un enlace para establecer una contraseña nueva.',
+  'auth.forgotSend': 'Enviar enlace',
+  'auth.forgotSentTitle': 'Revise su correo',
+  'auth.forgotSentBody':
+    'Si existe una cuenta para {email}, el enlace de restablecimiento va en camino. Ábralo en este dispositivo para elegir una contraseña nueva.',
+  'auth.forgotBack': 'Volver a iniciar sesión',
+  'auth.resetTitle': 'Elija una contraseña nueva',
+  'auth.resetSub': 'Su contraseña nueva debe tener al menos 6 caracteres.',
+  'auth.resetSubmit': 'Guardar contraseña nueva',
+  'auth.resetDoneTitle': 'Contraseña actualizada',
+  'auth.resetDoneBody':
+    'Su contraseña ha sido cambiada. Inicie sesión con su contraseña nueva.',
+  'auth.resetExpired':
+    'Este enlace de restablecimiento no existe o ha caducado. Solicite uno nuevo desde la pantalla de inicio de sesión.',
+  'auth.errNoAccount': 'No existe ninguna cuenta con esa dirección de correo.',
+  'auth.errRate': 'Demasiados intentos. Espere un momento y vuelva a intentarlo.',
+  'auth.errPasswordReuse':
+    'Su contraseña nueva debe ser diferente de la contraseña actual.',
+
   // --- Panel --------------------------------------------------------------
   'dash.hello': 'Hola,',
   'dash.companion': 'Su compañero de salud genética',
